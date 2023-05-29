@@ -1,0 +1,175 @@
+import React, {Fragment} from 'react';
+import {useState} from 'react';
+import { Link } from 'react-router-dom';
+
+const UserRegister = props => {
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const [formError, setFormError] = useState({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    })
+    
+    const formInputHandler = event => {
+        const{id, value} = event.target;
+
+        console.log(event.target)
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+
+        setFormError({
+            username: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+        })
+        // formValidateHandler(event);
+    }
+    
+    const formValidateHandler = event => {
+        
+        let {id, value} = event.target;
+        console.log("hi", event.id)
+        setFormError(prev => {
+            const formObj = {...prev, [id]: ""};
+
+
+            switch(id){
+                case "username" :
+                    if(!value) {
+                        formObj[id] = "Please enter Username";
+                    }
+                    break;
+
+                case "email" :
+                    if(!value || value.trim() === '') {
+                        formObj[id] = "Please enter an email address";
+                    }else{
+                        console.log(value)                        
+                    }
+                    break;
+
+                case "password" :
+                    if(!value) {
+                        formObj[id] = "Please enter password";
+                    } else if (formData.confirmPassword && value !== formData.confirmPassword) {
+                        formObj["confirmPassword"] = "Password does not match.";
+                    } else {
+                        formObj["confirmPassword"] = formData.confirmPassword ? "" : formError.confirmPassword;
+                    }
+                    break;
+
+                case "confirmPassword" :
+                    if(!value) {
+                        formObj[id] = "Please enter confirm password";
+                    } else if(formData.password && value !== formData.password){
+                        formObj[id] = "Password does not match.";
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            return formObj;
+        });
+    }
+    
+    const registerFormHandler = event => {
+        console.log("start register handler", formData)
+        event.preventDefault();
+        
+    }
+
+    return (
+        <React.Fragment>
+            <div className="flex justify-center items-center h-screen">
+                <div className="w-full max-w-md px-4 lg:px-0 md:px-0 mb-4 lg:mb-0 md:mb-0">
+                    <p className=" text-center text-2xl mt-5 mb-9 font-bold">rOne</p>
+                    <form onSubmit={registerFormHandler} className="bg-white">
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+                                Username
+                            </label>
+                            <input 
+                                id="username" 
+                                type="text" 
+                                onChange={formInputHandler}
+                                onBlur={formValidateHandler}
+                                value={formData.username}
+                                autoComplete='off'
+                                placeholder="Enter username"
+                                className={" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"} />
+                            {formError.username && <p className="text-sm font-light">{formError.username}</p>}
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                                Email
+                            </label>
+                            <input 
+                                id="email" 
+                                type="text" 
+                                onChange={formInputHandler}
+                                onBlur={formValidateHandler}
+                                value={formData.email}
+                                autoComplete='off'
+                                placeholder="Enter email"
+                                className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                            {formError.email && <p className="text-sm font-light">{formError.email}</p>}                               
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                                Password
+                            </label>                        
+                            <input 
+                                id="password" 
+                                type="password" 
+                                onChange={formInputHandler}
+                                onBlur={formValidateHandler}
+                                value={formData.password}
+                                placeholder="********" 
+                                className={ " appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" }/>
+                            {formError.password && <p className="text-sm font-light">{formError.password}</p>}
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+                                Confirm Password
+                            </label>
+                            <input 
+                                id="confirmPassword" 
+                                type="password" 
+                                onChange={formInputHandler}
+                                onBlur={formValidateHandler}
+                                value={formData.confirmPassword}
+                                placeholder="********"
+                                className={" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}  />
+                            {formError.confirmPassword && <p className="text-sm font-light">{formError.confirmPassword}</p>}
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <button className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline" type="submit">
+                                Join
+                            </button>
+                        </div>
+                    </form>
+                    <button className="mt-4 w-full border bg-white hover:bg-[#1473E6] hover:text-white py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-100 ease-in-out" type="submit">
+                        Sign Up with Google
+                    </button>
+                    <div className='text-center mt-5'>
+                        {/* <p className='font-light'>Already have an account? <button className='text-[#1473E6] font-bold' onClick={userSignInHandler}>Sign In</button> here</p> */}
+                        <p className='font-light'>Already have an account? <Link to="/"><button className='text-[#1473E6] font-bold'>Sign In</button></Link> here</p>
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
+    )
+}
+export default UserRegister;
