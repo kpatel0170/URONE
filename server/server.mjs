@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connect from "./utils/connect.mjs";
+import routes from "./routes/routes.mjs";
 
 dotenv.config();
 
@@ -12,4 +13,5 @@ app.listen(port, async () => {
   console.log(`Server listening on port ${port}`);
 
   await connect();
+  routes(app);
 });
