@@ -6,9 +6,9 @@ export const registerUser = async (req, res) => {
 
     const newUser = await AuthService.registerUser(email, name, password, passwordConfirmation);
 
-    res.status(200).json(newUser);
+    res.status(200).json({success: true, data: newUser});
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({success: false, error: error.message });
   }
 };
 
@@ -19,11 +19,11 @@ export const loginUser = async (req, res) => {
     const user = await AuthService.loginUser(email, password);
 
     if (user) {
-      res.status(200).json(user);
+      res.status(200).json({success: true, data:user});
     } else {
-      res.status(400).json("Wrong Password");
+      res.status(400).json({success: false, error:"Wrong Password"});
     }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({success: false, error: error.message });
   }
 };
