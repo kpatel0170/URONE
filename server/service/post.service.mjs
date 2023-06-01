@@ -36,6 +36,15 @@ const PostService = {
     } catch (error) {
       throw new Error(error.message);
     }
+  },
+
+  async deletePost(id) {
+    try {
+      const deletedPost = await Post.findByIdAndDelete(id);
+      return deletedPost;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 };
 
