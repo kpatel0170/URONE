@@ -31,3 +31,17 @@ export const getPostById = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+export const updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { text, image } = req.body;
+    const updatedPost = await postService.updatePost(id, text, image);
+    if (!updatedPost) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+    res.json({ success: true, data: updatedPost });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};

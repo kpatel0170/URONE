@@ -27,6 +27,15 @@ const PostService = {
     } catch (error) {
       throw new Error(error.message);
     }
+  },
+
+  async updatePost(id, text, image) {
+    try {
+      const updatedPost = await postModel.findByIdAndUpdate(id, { text, image }, { new: true });
+      return updatedPost;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   }
 };
 
