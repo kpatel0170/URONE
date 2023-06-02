@@ -69,3 +69,14 @@ export const likePost = async (req, res) => {
     res.status(500).json({success: false, error: "Failed to add like" });
   }
 };
+
+export const rmlikePost = async (req, res) => {
+  const { postId } = req.params;
+  const { userId } = req.body;
+  try {
+    const post = await postService.removeLike(postId, userId);
+    res.json({success: true, data: post});
+  } catch (error) {
+    res.status(500).json({success: false, error: "Failed to remove like" });
+  }
+};
