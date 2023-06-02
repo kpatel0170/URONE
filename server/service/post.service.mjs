@@ -65,8 +65,17 @@ const PostService = {
       return post.save();
     }
     return post;
-  }
-};
+  },
 
+  async addComment(postId, userId, comment) {
+    const post = await postModel.findById(postId);
+    post.comments.push({
+      userId,
+      comment,
+      at: new Date(),
+    });
+    return post.save();
+  },
+};
 
 export default PostService;

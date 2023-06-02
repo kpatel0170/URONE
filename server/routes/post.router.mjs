@@ -7,6 +7,7 @@ import {
   deletePost,
   likePost,
   rmlikePost,
+  addComment,
 } from "../controller/post.controller.mjs";
 
 const router = express.Router();
@@ -18,5 +19,6 @@ router.put('/:id', updatePost);
 router.delete('/:id', deletePost);
 router.post('/:id/like', likePost);
 router.delete('/:id/like', rmlikePost);
+router.post('/:id/comment', addComment);
 
 export default router;

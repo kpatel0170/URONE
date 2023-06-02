@@ -64,6 +64,9 @@ export const likePost = async (req, res) => {
   const { userId } = req.body;
   try {
     const post = await postService.addLike(postId, userId);
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
     res.json({success: true, data: post});
   } catch (error) {
     res.status(500).json({success: false, error: "Failed to add like" });
@@ -75,8 +78,25 @@ export const rmlikePost = async (req, res) => {
   const { userId } = req.body;
   try {
     const post = await postService.removeLike(postId, userId);
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
     res.json({success: true, data: post});
   } catch (error) {
     res.status(500).json({success: false, error: "Failed to remove like" });
+  }
+};
+
+export const addComment = async (req, res) => {
+  const { postId } = req.params;
+  const { userId, comment } = req.body;
+  try {
+    const post = await postService.addComment(postId, userId, comment);
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+    res.json({success:true, data:post});
+  } catch (error) {
+    res.status(500).json({success:false, error: "Failed to add comment" });
   }
 };
