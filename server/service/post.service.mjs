@@ -1,4 +1,4 @@
-import postModel from '../model/post.model.mjs';
+import postModel from "../model/post.model.mjs";
 
 const PostService = {
   async createPost(text, image, userId) {
@@ -13,7 +13,7 @@ const PostService = {
 
   async getPosts() {
     try {
-      const posts = await postModel.find().populate('userId', 'username');
+      const posts = await postModel.find().populate("userId", "username");
       return posts;
     } catch (error) {
       throw new Error(error.message);
@@ -22,7 +22,7 @@ const PostService = {
 
   async getPostById(id) {
     try {
-      const post = await postModel.findById(id).populate('userId', 'username');
+      const post = await postModel.findById(id).populate("userId", "username");
       return post;
     } catch (error) {
       throw new Error(error.message);
@@ -31,7 +31,11 @@ const PostService = {
 
   async updatePost(id, text, image) {
     try {
-      const updatedPost = await postModel.findByIdAndUpdate(id, { text, image }, { new: true });
+      const updatedPost = await postModel.findByIdAndUpdate(
+        id,
+        { text, image },
+        { new: true }
+      );
       return updatedPost;
     } catch (error) {
       throw new Error(error.message);
@@ -45,7 +49,33 @@ const PostService = {
     } catch (error) {
       throw new Error(error.message);
     }
-  }
+  },
+
+  async addLike(postId, userId) {
+    const post = await postModel.findById(postId);
+    post.likes.push(userId);
+    return post.save();
+  },
+
+  async removeLike(postId, userId) {
+    const post = await postModel.findById(postId);
+    const index = post.likes.indexOf(userId);
+    if (index !== -1) {
+      post.likes.splice(index, 1);
+      return post.save();
+    }
+    return post;
+  },
+
+  async addComment(postId, userId, comment) {
+    const post = await postModel.findById(postId);
+    post.comments.push({
+      userId,
+      comment,
+      at: new Date(),
+    });
+    return post.save();
+  },
 };
 
 export default PostService;
