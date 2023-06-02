@@ -45,6 +45,12 @@ const PostService = {
     } catch (error) {
       throw new Error(error.message);
     }
+  },
+
+  async addLike(postId, userId) {
+    const post = await postModel.findById(postId);
+    post.likes.push(userId);
+    return post.save();
   }
 };
 
