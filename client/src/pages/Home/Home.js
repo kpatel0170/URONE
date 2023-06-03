@@ -26,7 +26,7 @@ function Home() {
         </Box>
       </Box>
 
-      <Grid container sx={{height: '100vh'}}>
+      <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={9} sx={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <Card sx={{ maxWidth: 480, mt: 3 }}>
             <CardHeader
@@ -68,7 +68,7 @@ function Home() {
             </CardActions>
           </Card>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3} sx={{position: 'relative'}}>
           <Sidebar />
         </Grid>
       </Grid>      
