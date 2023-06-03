@@ -20,14 +20,14 @@ function Home() {
 
   return (
     <>
-      <Box className="sticky z-10 top-0 left-0 right-0">
+      <Box sx={{position: 'fixed', width: '100%', zIndex: '2'}}>
         <Box className="header_wrap">
           <Header/>
         </Box>
       </Box>
 
       <Grid container sx={{height: '100vh'}}>
-        <Grid xs={9} sx={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Grid item xs={9} sx={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
           <Card sx={{ maxWidth: 480, mt: 3 }}>
             <CardHeader
               avatar={
@@ -68,7 +68,7 @@ function Home() {
             </CardActions>
           </Card>
         </Grid>
-        <Grid xs={3}>
+        <Grid item xs={3}>
           <Sidebar />
         </Grid>
       </Grid>      
