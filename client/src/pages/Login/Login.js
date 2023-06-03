@@ -22,11 +22,10 @@ function Login() {
     const {email, password} = formData;
 
     const [formError, setFormError] = useState({
-        error_email: '',
-        error_password: ''
-    });
-
-    const {error_email, error_password} = formError;
+        input_email: '',
+        input_password: ''
+    });    
+    const {input_email, input_password} = formError;
 
     useEffect(() => {
         if(isSuccess || user){
@@ -40,30 +39,77 @@ function Login() {
         setFormData((prevState) => ({
             ...prevState, 
             [event.target.name]: event.target.value,
-        }))
+        }));
+
+        setFormError({            
+            input_email: '',
+            input_password: ''
+        })
     }
 
     const formValidateHandler = (event) => {
+        let {name, value} = event.target;
+        console.log("hi", event.name)
+        setFormError(prev => {
+            const formInput = {...prev, [name]: ""};
 
+            console.log(formInput)
+
+            switch(name){
+                case "email" :
+                    if(!value || value.trim() === '') {
+                        formInput[name] = "Please enter an email address";
+                    }else{
+                        console.log(value)                        
+                    }
+                    break;
+
+                case "password" :
+                    if(!value) {
+                        formInput[name] = "Please enter password";
+                    }else if(value.length < 6){
+                        formInput[name] = "Password must be 6 characters or more";
+                    } else {
+                        console.log(value)
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            return formInput;
+        });
     }
 
     const loginFormHandler = (event) => {
         event.preventDefault();
 
-        const userData = {
-            email,
-            password
+        if(email.trim() === '' || password.length === 0){ 
+            setFormError({   
+                email: 'Please enter an email address',   
+                password: 'Please enter password'
+            })
+        }else{
+            console.log("valid")
+            if(password.length < 6){
+                setFormError({  
+                    password: 'Password must be 6 characters or more'
+                })
+            }else{
+                const userData = {
+                    email,
+                    password
+                }
+                dispatch(userLogin(userData))
+            } 
         }
-
-        console.log(userData)
-  
-        dispatch(userLogin(userData))
     }
 
     return (
-        <Grid container sx={{height: '100vh', alignItems: 'center'}}>
-            <Grid xs={9} className={styles.login_bg} sx={{height: '100%'}}></Grid>
-            <Grid xs={3} sx={{px: 4}}>
+        <Grid container sx={{height: '100vh', alignItems: 'center'}} className={styles.grid_wrap}>
+            <Grid item xs={0} md={8} lg={8} className={styles.login_bg} sx={{height: '100%'}}></Grid>
+            <Grid item xs={12} sm={7} md={4} lg={4} sx={{px: 4}}>
                 <Box sx={{mb: 3, textAlign: 'center'}}>
                     <Typography sx={{textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>
                     <Typography>Sign in to access your account</Typography>
@@ -82,6 +128,7 @@ function Login() {
                             sx={{width:1}}
                             className={styles.user_input}
                             />
+                        {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem' }}>{formError.email}</Typography>}
                     </Box>
                     <Box>
                         <Typography>Password</Typography>
@@ -92,10 +139,11 @@ function Login() {
                             onChange={formInputHandler}
                             onBlur={formValidateHandler}
                             value={password}
-                            placeholder="********"
+                            placeholder="******"
                             sx={{width:1}}
                             className={styles.user_input}
                             />
+                        {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem' }}>{formError.password}</Typography>}
                     </Box>
                     <Box>
                         <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6', boxShadow: 0}} type="submit">
@@ -103,12 +151,12 @@ function Login() {
                         </Button>
                     </Box>
                 </form>
-                <Box sx={{ borderTop: 1, mt: 4, mb: 10, borderColor: '#dedede' }}>
+                <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: '#dedede' }}>
                     <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
                         Sign In with Google
                     </Button>
                     <Link to="/register">
-                        <Button variant="outlined" sx={{p:1, width: 1, borderRadius: '25px', border: 2, borderColor: '#dedede'}}>New to rOne? Join now</Button>
+                        <Button variant="outlined" sx={{p:1, width: 1, borderRadius: '25px', border: 2, borderColor: '#dedede'}} className={styles.button_wrap}>New to rOne? Join now</Button>
                     </Link>
                 </Box>
             </Grid>
