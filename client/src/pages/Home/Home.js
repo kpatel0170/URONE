@@ -54,10 +54,10 @@ function Home() {
 
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={9} sx={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>
-          <Card sx={{ maxWidth: 540, mt: 3, padding: 2 }} className={styles.card_wrap}>
+          <Card sx={{ maxWidth: 540, mt: 3, padding: 2, marginBottom: 2 }} className={styles.card_wrap}>
             <CardHeader
               avatar={
-                <Avatar aria-label="recipe">
+                <Avatar aria-label="user-avatar">
                   R
                 </Avatar>
               }
@@ -68,7 +68,7 @@ function Home() {
                 </IconButton>
               }
               title="David"
-              subheader="September 14, 2016"
+              subheader="2023-05-31"
             />
             <CardContent>
               <Typography variant="body2" color="text.secondary">
