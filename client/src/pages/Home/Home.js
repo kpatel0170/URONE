@@ -1,9 +1,9 @@
 import React from 'react'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Box, Typography, Grid, Card, CardHeader, CardContent, CardMedia, CardActions, Avatar, IconButton } from '@mui/material';
+import { Box, Typography, Grid, Card, CardHeader, CardContent, CardMedia, CardActions, Avatar, IconButton, Collapse } from '@mui/material';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -12,6 +12,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
+import Comment from '../../components/Comments/Comments';
 import { getAllPosts, reset } from '../../features/Post/PostSlice';
 import styles from './Home.module.css';
 
@@ -24,6 +25,12 @@ function Home() {
   const { posts, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   )
+
+  const [isComment, setIsComment] = useState(false);
+
+  const showCommentHandler = () => {
+    setIsComment(!isComment);
+  };
 
   useEffect(() => {
     // if(!user){
@@ -47,7 +54,7 @@ function Home() {
 
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={9} sx={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>
-          <Card sx={{ maxWidth: 480, mt: 3 }} className={styles.card_wrap}>
+          <Card sx={{ maxWidth: 540, mt: 3, padding: 2 }} className={styles.card_wrap}>
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe">
@@ -79,20 +86,26 @@ function Home() {
               />
             </Box>
             
-            <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, justifyContent: 'space-between' }}>              
-              <IconButton aria-label="add to favorites">
+            <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, marginBottom: 0, justifyContent: 'space-between' }}>              
+              <IconButton aria-label="up-voting">
                 <ThumbUpOffAltIcon />
               </IconButton>
-              <IconButton aria-label="add to favorites">
+              <IconButton aria-label="down-voting">
                 <ThumbDownOffAltIcon />
               </IconButton>
-              <IconButton aria-label="add to favorites">
+              <IconButton aria-label="comment" onClick={showCommentHandler}>
                 <ChatBubbleOutlineIcon />
               </IconButton>
-              <IconButton aria-label="add to favorites">
+              <IconButton aria-label="share">
                 <ShareIcon />
               </IconButton>
             </CardActions>
+
+            <Collapse in={isComment} timeout="auto">
+              <CardContent sx={{paddingTop: 0}}>
+                <Comment />
+              </CardContent>
+            </Collapse>
           </Card>
         </Grid>
         <Grid item xs={3} sx={{position: 'relative'}}>
