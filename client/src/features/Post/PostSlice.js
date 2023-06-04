@@ -20,11 +20,33 @@ export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) =
     }
 })
 
+// Update post
+export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, thunkAPI) => {
+    try{
+        const token = thunkAPI.getState().auth.user.token;
+        return await postService.updatePost(token)
+    } catch(error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
 // Get all posts
 export const getAllPosts = createAsyncThunk('posts/getPosts', async(_, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token;
         return await postService.getAllPosts(token)
+    } catch(error) {
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message);
+    }
+})
+
+// Get post
+export const getSinglePost = createAsyncThunk('posts/getPost', async(_, thunkAPI) => {
+    try{
+        const token = thunkAPI.getState().auth.user.token;
+        return await postService.getSinglePost(token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -88,6 +110,36 @@ export const postSlice = createSlice({
                 )
             })
             .addCase(deletePost.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(updateSinglePost.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateSinglePost.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                const index = state.findIndex(post => post.id === action.payload.id);                
+                state.posts = state[index] = {
+                    ...state[index],
+                    ...action.payload,
+                };
+            })
+            .addCase(updateSinglePost.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+            })
+            .addCase(getSinglePost.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getSinglePost.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.posts = action.payload
+            })
+            .addCase(getSinglePost.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
