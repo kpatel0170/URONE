@@ -10,15 +10,15 @@ export default function PostForm() {
 
     // initialize values
     const [formData, setFormData] = useState({
-        post: '',
-        images: [],
-        up: false,
-        down: false,
-        comment: false,
+        text: '',
+        image: [],
+        likes: false,
+        dislikes: false,
+        comments: false,
         share: false,
         checkAll: false
     });
-    const {post, images, up, down, comment, share, checkAll} = formData;    
+    const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
     
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -27,9 +27,9 @@ export default function PostForm() {
             console.log('in the if')
             setFormData((prevState) => ({
                 ...prevState,
-                up: checked,
-                down: checked,
-                comment: checked,
+                likes: checked,
+                dislikes: checked,
+                comments: checked,
                 share: checked,
                 [event.target.name]: event.target.checked
             }));
@@ -51,11 +51,11 @@ export default function PostForm() {
         event.preventDefault();
         console.log("hello ...")
         const postFormData = {
-            post,
-            images,
-            up,
-            down,
-            comment,
+            text,
+            image,
+            likes,
+            dislikes,
+            comments,
             share
         }
 
@@ -71,10 +71,10 @@ export default function PostForm() {
             </Box>
             <form onSubmit={postFormHandler}>                
                 <TextField
-                    id="post"
-                    name="post"
+                    id="text"
+                    name="text"
                     onChange={formInputHandler}
-                    value={post}
+                    value={text}
                     label="What's up ..."
                     multiline
                     rows={4}
@@ -97,7 +97,7 @@ export default function PostForm() {
                         <Box>
                             <FormControlLabel
                                 control={
-                                    <Switch checked={formData.up} onChange={formInputHandler} name="up" />
+                                    <Switch checked={formData.likes} onChange={formInputHandler} name="up" />
                                 }
                             />
                             <ThumbUpOffAltIcon />
@@ -105,7 +105,7 @@ export default function PostForm() {
                         <Box>
                             <FormControlLabel
                                 control={
-                                    <Switch checked={formData.down} onChange={formInputHandler} name="down" />
+                                    <Switch checked={formData.dislikes} onChange={formInputHandler} name="down" />
                                 }
                             />
                             <ThumbDownOffAltIcon />
@@ -113,7 +113,7 @@ export default function PostForm() {
                         <Box>
                             <FormControlLabel
                                 control={
-                                    <Switch checked={formData.comment} onChange={formInputHandler} name="comment" />
+                                    <Switch checked={formData.comments} onChange={formInputHandler} name="comment" />
                                 }
                             />
                             <ChatBubbleOutlineIcon />

@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import Search from './Search';
+import Search from '../Search/Search';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../features/Auth/AuthSlice';
