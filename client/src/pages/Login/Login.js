@@ -49,7 +49,6 @@ function Login() {
 
     const formValidateHandler = (event) => {
         let {name, value} = event.target;
-        console.log("hi", event.name)
         setFormError(prev => {
             const formInput = {...prev, [name]: ""};
 

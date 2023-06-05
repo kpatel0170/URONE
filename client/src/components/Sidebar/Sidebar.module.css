@@ -1,3 +1,4 @@
-.mt61{
-    margin-top: 61px;
+.backdrop_wrap{
+    -webkit-backdrop-filter: blur(28px);
+    backdrop-filter: blur(28px);
 }
