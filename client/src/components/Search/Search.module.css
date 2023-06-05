@@ -4,3 +4,6 @@
 .form_wrap fieldset{
     border-radius: 25px;
 }
+.button_wrap:hover{
+    background: transparent;
+}

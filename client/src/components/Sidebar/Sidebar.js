@@ -26,23 +26,25 @@ const Sidebar = props => {
 
     return(
         <>
-            <Box sx={{ position: 'fixed', width: 1/4, borderLeft: 1, borderColor: '#dedede', height: '100%', p: 2}}>               
-                <Button 
-                    variant="contained" 
-                    sx={{
-                        p:1, 
-                        borderRadius: 
-                        '25px', 
-                        width: 1, 
-                        mt: 3, 
-                        bgcolor: '#0e69d6', 
-                        boxShadow: 0}} 
-                        type="submit"
-                        onClick={modalOpenHandler}
-                        >                    
-                    <AddIcon />
-                    <Typography sx={{ml: 1}}>Create</Typography>
-                </Button>
+            <Box sx={{ position: 'fixed', width: 1/4, borderLeft: 1, borderColor: '#dedede', height: '100%'}}> 
+                <Box sx={{p: 2}}>             
+                    <Button 
+                        variant="contained" 
+                        sx={{
+                            p:1, 
+                            borderRadius: 
+                            '25px',  
+                            mt: 3, 
+                            width: 1,
+                            bgcolor: '#0e69d6', 
+                            boxShadow: 0}} 
+                            type="submit"
+                            onClick={modalOpenHandler}
+                            >                    
+                        <AddIcon />
+                        <Typography sx={{ml: 1}}>Create</Typography>
+                    </Button>
+                </Box> 
             </Box>
 
             <Modal

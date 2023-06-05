@@ -1,6 +1,6 @@
-import React, {Fragment, useState} from 'react';
+import React, { useState} from 'react';
 import Search from '../Search/Search';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -23,6 +23,8 @@ const Header = props => {
             console.log('dispatch logout ...')
             dispatch(logOut());
             navigate('/login')
+        }else if(event.target.innerText === 'Profile'){
+            navigate('/profile')
         }
         setToggle(null);
     }; 
@@ -37,7 +39,7 @@ const Header = props => {
                     <Search />
                 </Grid>
                 <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <Button onClick={enableToggleHandler}>
+                    <Button onClick={enableToggleHandler} sx={{background: 'transparent', color: '#9a9595'}}>
                         <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="Remy Sharp" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />                                
                         <Box>
                             <MoreVertIcon />
@@ -54,7 +56,7 @@ const Header = props => {
                         }}
                         
                     >
-                        <Link to="/profile"><MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Profile</MenuItem></Link>
+                        <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Profile</MenuItem>
                         <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Logout</MenuItem>
                     </Menu>
                 </Grid>
