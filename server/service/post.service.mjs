@@ -13,7 +13,7 @@ const PostService = {
 
   async getPosts() {
     try {
-      const posts = await postModel.find().populate("userId", "username");
+      const posts = await postModel.find().populate("userId", "name");
       return posts;
     } catch (error) {
       throw new Error(error.message);
@@ -22,7 +22,7 @@ const PostService = {
 
   async getPostById(id) {
     try {
-      const post = await postModel.findById(id).populate("userId", "username");
+      const post = await postModel.findById(id).populate("userId", "name");
       return post;
     } catch (error) {
       throw new Error(error.message);
