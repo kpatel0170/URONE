@@ -37,7 +37,7 @@ const Header = props => {
                     LOGO ICON
                 </Grid>
                 <Grid item xs={6}>
-                    <Search />
+                    {/* <Search /> */}
                 </Grid>
                 <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                     <Button onClick={enableToggleHandler} sx={{background: 'transparent', color: '#9a9595'}}>
