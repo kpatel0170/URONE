@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API = '/api/posts/'
+const API = 'https://rone.onrender.com/api/v1/posts/'
 
 // Get all posts
 const getAllPosts = async (token) => {
@@ -9,7 +9,7 @@ const getAllPosts = async (token) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.get(API + "getPosts/", config)
+    const response = await axios.get(API , config)
     return response.data
 }
 

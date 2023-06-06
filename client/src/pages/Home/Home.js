@@ -23,7 +23,7 @@ function Home() {
   const {user} = useSelector((state) => state.auth)
   // destructure the states
   const { posts, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
+    (state) => state.post
   )
 
   const [isComment, setIsComment] = useState(false);
@@ -33,9 +33,10 @@ function Home() {
   };
 
   useEffect(() => {
-    // if(!user){
-    //   navigate('/login')
-    // }
+    console.log(user)
+    if(!user){
+      navigate('/login')
+    }
 
     dispatch(getAllPosts());
 

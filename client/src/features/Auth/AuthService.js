@@ -1,11 +1,10 @@
 import axios from 'axios'
 
-const API = '/api/users/'
+const API = 'https://rone.onrender.com/api/v1/auth/'
 
 //Register
 const userRegister = async (userData) => {
-    const response = await axios.post(API + "register/", userData)
-
+    const response = await axios.post(API + "register/", userData)    
     if(response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
     }

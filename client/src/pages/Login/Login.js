@@ -28,6 +28,14 @@ function Login() {
     const {input_email, input_password} = formError;
 
     useEffect(() => {
+        if(isError){
+            if(message === 'Invalid password'){
+                setFormError({  
+                  password: "Wrong password"
+                }) 
+            }
+        }
+
         if(isSuccess || user){
           navigate('/')
         }
@@ -66,8 +74,8 @@ function Login() {
                 case "password" :
                     if(!value) {
                         formInput[name] = "Please enter password";
-                    }else if(value.length < 6){
-                        formInput[name] = "Password must be 6 characters or more";
+                    }else if(value.length < 8){
+                        formInput[name] = "Password must be 8 characters or more";
                     } else {
                         console.log(value)
                     }
@@ -91,9 +99,9 @@ function Login() {
             })
         }else{
             console.log("valid")
-            if(password.length < 6){
+            if(password.length < 8){
                 setFormError({  
-                    password: 'Password must be 6 characters or more'
+                    password: 'Password must be 8 characters or more'
                 })
             }else{
                 const userData = {
@@ -138,7 +146,7 @@ function Login() {
                             onChange={formInputHandler}
                             onBlur={formValidateHandler}
                             value={password}
-                            placeholder="******"
+                            placeholder="********"
                             sx={{width:1}}
                             className={styles.user_input}
                             />
