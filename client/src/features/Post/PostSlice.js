@@ -15,7 +15,7 @@ export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) =
         const token = thunkAPI.getState().auth.user.token;
         return await postService.createPost(postData, token)
     } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
     }
 })
@@ -26,7 +26,7 @@ export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, t
         const token = thunkAPI.getState().auth.user.token;
         return await postService.updatePost(token)
     } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
     }
 })
@@ -37,7 +37,7 @@ export const getAllPosts = createAsyncThunk('posts/getPosts', async(_, thunkAPI)
         const token = thunkAPI.getState().auth.user.token;
         return await postService.getAllPosts(token)
     } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
     }
 })
@@ -48,7 +48,7 @@ export const getSinglePost = createAsyncThunk('posts/getPost', async(_, thunkAPI
         const token = thunkAPI.getState().auth.user.token;
         return await postService.getSinglePost(token)
     } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
     }
 })
@@ -59,7 +59,7 @@ export const deletePost = createAsyncThunk('posts/deletePost', async(id, thunkAP
         const token = thunkAPI.getState().auth.user.token;
         return await postService.deletePost(token)
     } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
     }
 })

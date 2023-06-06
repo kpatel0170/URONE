@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import Search from '../Search/Search';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { logOut } from '../../features/Auth/AuthSlice';
+import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import {Avatar, Grid, Menu, MenuItem, Box, Button } from '@mui/material';
@@ -22,12 +22,13 @@ const Header = props => {
         if(event.target.innerText === 'Logout'){
             console.log('dispatch logout ...')
             dispatch(logOut());
-            navigate('/login')
+            dispatch(reset())
+            navigate('/')
         }else if(event.target.innerText === 'Profile'){
             navigate('/profile')
         }
         setToggle(null);
-    }; 
+    };
      
     return(
         <React.Fragment>

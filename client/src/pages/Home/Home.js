@@ -33,15 +33,21 @@ function Home() {
   };
 
   useEffect(() => {
-    console.log(user)
-    if(!user){
-      navigate('/login')
+    if (isError) {
+      console.log(message)
     }
 
-    dispatch(getAllPosts());
+    if (!user) {
+      navigate('/login')
+    }else{
+      dispatch(getAllPosts())
+    }
+    
 
-    return() => {
-      dispatch(reset());
+    console.log(posts)
+    
+    return () => {
+      dispatch(reset())
     }
   }, [user, isError, message, navigate, dispatch])
 
@@ -109,6 +115,18 @@ function Home() {
               </CardContent>
             </Collapse>
           </Card>
+
+          <Box>
+            {posts.length > 0 ? (
+              <Box>
+                {posts.map((post) => (
+                  <Box key={post._id}>hi</Box>
+                ))}
+              </Box>
+            ) : (
+              <Typography>You have no post</Typography>
+            )}
+          </Box>
         </Grid>
         <Grid item xs={0} sm={3} sx={{position: 'relative'}}>
           <Sidebar />

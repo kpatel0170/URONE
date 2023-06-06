@@ -10,7 +10,7 @@ const getAllPosts = async (token) => {
         }
     }
     const response = await axios.get(API , config)
-    return response.data
+    return response.data.data
 }
 
 // Get single post
@@ -31,7 +31,7 @@ const createPost = async (postData, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.post(API + "createPost/", postData, config)
+    const response = await axios.post(API , postData, config)
     return response.data
 }
 

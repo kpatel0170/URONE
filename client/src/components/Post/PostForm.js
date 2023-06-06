@@ -6,7 +6,12 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ShareIcon from '@mui/icons-material/Share';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { createPost } from '../../features/Post/PostSlice';
+
 export default function PostForm() {
+    const dispatch = useDispatch();
+    const {user} = useSelector((state) => state.auth)
 
     // initialize values
     const [formData, setFormData] = useState({
@@ -33,7 +38,7 @@ export default function PostForm() {
                 share: checked,
                 [event.target.name]: event.target.checked
             }));
-        } else if(name === 'post'){
+        } else if(name === 'text'){
             setFormData((prevState) => ({
                 ...prevState, 
                 [event.target.name]: event.target.value,
@@ -49,17 +54,26 @@ export default function PostForm() {
 
     const postFormHandler = (event) => {
         event.preventDefault();
-        console.log("hello ...")
+        console.log("hello ...", user.data._id)
+        const userId = user.data._id
         const postFormData = {
             text,
             image,
-            likes,
-            dislikes,
-            comments,
-            share
+            userId
         }
 
         console.log(postFormData)
+        dispatch(createPost())
+
+        setFormData({
+            text: '',
+            image: [],
+            likes: false,
+            dislikes: false,
+            comments: false,
+            share: false,
+            checkAll: false
+        })
     }
 
     return (
