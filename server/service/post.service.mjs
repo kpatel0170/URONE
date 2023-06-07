@@ -44,7 +44,7 @@ const PostService = {
 
   async deletePost(id) {
     try {
-      const deletedPost = await Post.findByIdAndDelete(id);
+      const deletedPost = await postModel.findByIdAndDelete(id);
       return deletedPost;
     } catch (error) {
       throw new Error(error.message);
@@ -52,20 +52,46 @@ const PostService = {
   },
 
   async addLike(postId, userId) {
-    const post = await postModel.findById(postId);
-    post.likes.push(userId);
-    return post.save();
+    try {
+      const post = await postModel.findById(postId);
+      
+      if (!post) {
+        throw new Error("Post not found");
+      }
+      if (post.likes.includes(userId)) {
+        throw new Error("User has already liked the post");
+      }
+      
+      post.likes.push(userId);
+      await post.save();
+      
+      return post;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   },
+  
 
   async removeLike(postId, userId) {
-    const post = await postModel.findById(postId);
-    const index = post.likes.indexOf(userId);
-    if (index !== -1) {
-      post.likes.splice(index, 1);
-      return post.save();
+    try {
+      const post = await postModel.findById(postId);
+  
+      if (!post) {
+        throw new Error("Post not found");
+      }
+  
+      const index = post.likes.indexOf(userId);
+      if (index !== -1) {
+        post.likes.splice(index, 1);
+        await post.save();
+      }
+  
+      return post;
+    } catch (error) {
+      throw new Error(error.message);
     }
-    return post;
   },
+  
 
   async addComment(postId, userId, comment) {
     const post = await postModel.findById(postId);
