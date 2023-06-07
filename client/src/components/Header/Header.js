@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import {Avatar, Grid, Menu, MenuItem, Box, Button } from '@mui/material';
+import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography } from '@mui/material';
 
 const Header = props => {  
     const dispatch = useDispatch();
@@ -34,7 +34,9 @@ const Header = props => {
         <React.Fragment>
             <Grid container spacing={2} sx={{ alignItems: 'center' }}>
                 <Grid item xs={3}>
-                    LOGO ICON
+                    <Box sx={{width: '50px', height: '50px', borderRadius: '50%', background: '#1976d2', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <Typography sx={{color:'white', fontWeight: 'bold'}}>rOne</Typography>
+                    </Box>
                 </Grid>
                 <Grid item xs={6}>
                     {/* <Search /> */}
