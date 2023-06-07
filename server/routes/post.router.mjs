@@ -7,6 +7,8 @@ import {
   deletePost,
   likePost,
   rmlikePost,
+  dislikePost,
+  rmdislikePost,
   addComment,
 } from "../controller/post.controller.mjs";
 
@@ -19,6 +21,8 @@ router.put('/:id', updatePost);
 router.delete('/:id', deletePost);
 router.post('/:id/like', likePost);
 router.delete('/:id/like', rmlikePost);
+router.post('/:id/dislike', dislikePost);
+router.delete('/:id/dislike', rmdislikePost);
 router.post('/:id/comment', addComment);
 
 export default router;
