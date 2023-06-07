@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Box, Grid} from '@mui/material';
+import { Box, Grid, Typography} from '@mui/material';
 
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
@@ -21,7 +21,6 @@ function Home() {
   const { posts, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.post
   )
-  const [latestPost, setLatestPost] = useState([])
 
   useEffect(() => {
     if (isError) {
@@ -31,9 +30,7 @@ function Home() {
     if (!user) {
       navigate('/login')
     }else{
-      console.log('user has already loggedin')
-      if (!isError) {
-        console.log('hi no error, so call the post')
+      if(!isError){
         dispatch(getAllPosts())
         console.log(posts)
       }
@@ -58,11 +55,23 @@ function Home() {
               <Box> data is still loading </Box>
             ) : (
               <Box>
-                {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post) => (
+                {posts.length != 0 ? (
+                  <>
+                    {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post, index) => (
+                      <Box key={index}>
+                        <Newsfeed post={post}/>
+                      </Box>
+                    ))}
+                    
+                  </>
+                ) : (
+                  <Typography>No post yet</Typography>
+                )}
+                {/* {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post) => (
                   <Box key={post._id}>
                     <Newsfeed post={post}/>
                   </Box>
-                ))}
+                ))} */}
               </Box>
           )}
         </Grid>

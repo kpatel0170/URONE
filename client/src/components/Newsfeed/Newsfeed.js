@@ -4,7 +4,6 @@ import { Button, Modal, Box, Typography, Card, CardHeader, CardContent, CardMedi
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CloseIcon from '@mui/icons-material/Close';
@@ -91,7 +90,7 @@ function Newsfeed(post) {
                     <IconButton 
                         aria-label="settings" 
                         onClick={enableToggleHandler}
-                        style={{ display: post.post.userId._id === user.data._id ? 'flex' : 'none' }}
+                        style={{ display: post.post.userId?._id === user.data._id ? 'flex' : 'none' }}
                     >
                         <MoreVertIcon />
                     </IconButton>
@@ -179,9 +178,6 @@ function Newsfeed(post) {
                         <ChatBubbleOutlineIcon />
                     </IconButton>
                 </Box>
-                {/* <IconButton aria-label="share">
-                    <ShareIcon />
-                </IconButton> */}
             </CardActions>
 
             <Collapse in={isComment} timeout="auto">

@@ -84,6 +84,16 @@ export default function PostForm() {
         }
 
         dispatch(createPost(formData))
+
+        setFormData({
+            text: '',
+            image: [],
+            likes: false,
+            dislikes: false,
+            comments: false,
+            share: false,
+            checkAll: false
+        })
     }
 
     return (

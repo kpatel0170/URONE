@@ -34,7 +34,7 @@ const createPost = async (postData, token) => {
         }
     }    
     const response = await axios.post(API , postData, config)
-    return response.data
+    return response.data.data
 }
 
 // Update post
