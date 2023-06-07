@@ -54,44 +54,82 @@ const PostService = {
   async addLike(postId, userId) {
     try {
       const post = await postModel.findById(postId);
-      
+
       if (!post) {
         throw new Error("Post not found");
       }
       if (post.likes.includes(userId)) {
         throw new Error("User has already liked the post");
       }
-      
+
       post.likes.push(userId);
       await post.save();
-      
+
       return post;
     } catch (error) {
       throw new Error(error.message);
     }
   },
-  
 
   async removeLike(postId, userId) {
     try {
       const post = await postModel.findById(postId);
-  
+
       if (!post) {
         throw new Error("Post not found");
       }
-  
+
       const index = post.likes.indexOf(userId);
       if (index !== -1) {
         post.likes.splice(index, 1);
         await post.save();
       }
-  
+
       return post;
     } catch (error) {
       throw new Error(error.message);
     }
   },
-  
+
+  async addDislike(postId, userId) {
+    try {
+      const post = await postModel.findById(postId);
+
+      if (!post) {
+        throw new Error("Post not found");
+      }
+      if (post.dislikes.includes(userId)) {
+        throw new Error("User has already liked the post");
+      }
+
+      post.dislikes.push(userId);
+      await post.save();
+
+      return post;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+
+  async removeDislike(postId, userId) {
+    try {
+      const post = await postModel.findById(postId);
+
+      if (!post) {
+        throw new Error("Post not found");
+      }
+
+      const index = post.dislikes.indexOf(userId);
+      if (index !== -1) {
+        post.dislikes.splice(index, 1);
+        await post.save();
+      }
+
+      return post;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
 
   async addComment(postId, userId, comment) {
     const post = await postModel.findById(postId);
