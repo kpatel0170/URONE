@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
 
-import { Box, Typography, Card, CardHeader, CardContent, CardMedia, CardActions, Avatar, IconButton, Collapse, Menu, MenuItem, } from '@mui/material';
+import { Button, Modal, Box, Typography, Card, CardHeader, CardContent, CardMedia, CardActions, Avatar, IconButton, Collapse, Menu, MenuItem, } from '@mui/material';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import CloseIcon from '@mui/icons-material/Close';
 
 import Comment from '../../components/Comments/Comments';
 import styles from './Newsfeed.module.css';
 
 import { useDispatch } from 'react-redux';
 import { deletePost } from '../../features/Post/PostSlice';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '25%',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: 1
+};
 
 function Newsfeed(post) {
     const dispatch = useDispatch();
@@ -21,6 +34,9 @@ function Newsfeed(post) {
     const [isReadMore, setIsReadMore]= useState(true);
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
+
+    const [modal, setModal] = useState(false)
+    const modalCloseHandler = () => setModal(false);
 
     const showCommentHandler = () => {
         setIsComment(!isComment);
@@ -41,12 +57,18 @@ function Newsfeed(post) {
         setToggle(null);
         if(event.target.innerText === 'Delete Post'){
             console.log('delete the current post', post.post._id)
-            dispatch(deletePost(post.post._id))
+            setModal(true);
+            
         }
     };
 
+    const deletePostHandler = (event)=> {
+        setModal(false);
+        dispatch(deletePost(post.post._id))
+    }
+
     return (
-        
+        <>
         <Card key={post.post._id} sx={{ maxWidth: 540, mt: 3, padding: 2, marginBottom: 2 }} className={styles.card_wrap}>                        
             <CardHeader
                 avatar={
@@ -77,7 +99,7 @@ function Newsfeed(post) {
                     <MenuItem name="delete_post" onClick={hideToggleHandler} sx={{ width: '250px'}}><DeleteOutlineIcon sx={{paddingRight: 1}} /> Delete Post</MenuItem>
                 </Menu>
             {post.post.text && 
-                <CardContent>
+                <CardContent sx={{paddingTop: 0}}>
                     <Box>
                         {post.post.text.length > 250 ?
                             <>
@@ -139,7 +161,36 @@ function Newsfeed(post) {
                 </CardContent>
             </Collapse>
         </Card>
-        
+
+        <Modal
+            open={modal}
+            onClose={modalCloseHandler}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            className='styles.backdrop_wrap'
+        >
+            <Box sx={style}>
+                <Box sx={{position: 'absolute', right: '10px', top: '10px'}}>
+                    <IconButton aria-label="close" onClick={modalCloseHandler}>
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
+                <Box>
+                    <Box sx={{ borderBottom: 1, borderColor: '#dfdfdf', padding: 2, alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+                        
+                        <Typography variant="h6">Delete Post !</Typography>
+                    </Box>
+                    <Box sx={{paddingY: 1}}>
+                        <Typography sx={{paddingY: 2}}>Are you sure you want to delete your post?</Typography>
+                        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                            <Button onClick={modalCloseHandler} variant="contained" sx={{ width: 1.9/4, color: 'black', background: 'gray'}}>No</Button>
+                            <Button onClick={deletePostHandler} variant="contained" color="error" sx={{ width: 1.9/4 }}>Yes, Delete Post</Button>
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
+        </Modal>
+        </>
     )
 }
 
