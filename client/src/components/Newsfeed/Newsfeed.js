@@ -78,6 +78,7 @@ function Newsfeed(post) {
 
     return (
         <>
+        {user && 
         <Card key={post.post._id} sx={{ maxWidth: 540, mt: 3, padding: 2, marginBottom: 2 }} className={styles.card_wrap}>                        
             <CardHeader
                 avatar={
@@ -172,7 +173,7 @@ function Newsfeed(post) {
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                     {post.post.comments.length != 0 &&
-                        <Typography sx={{marginRight: 1}}>{post.post.likes.length}</Typography>
+                        <Typography sx={{marginRight: 1}}>{post.post.comments.length}</Typography>
                     }
                     <IconButton aria-label="comment" onClick={showCommentHandler}>
                         <ChatBubbleOutlineIcon />
@@ -185,11 +186,11 @@ function Newsfeed(post) {
 
             <Collapse in={isComment} timeout="auto">
                 <CardContent sx={{paddingTop: 0}}>
-                    <Comment />
+                    <Comment comment={post.post.comments}/>
                 </CardContent>
             </Collapse>
         </Card>
-
+        }
         <Modal
             open={modal}
             onClose={modalCloseHandler}
