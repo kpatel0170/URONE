@@ -24,7 +24,7 @@ export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) =
 export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token;
-        return await postService.updatePost(token)
+        return await postService.updatePost(id, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -44,10 +44,10 @@ export const getAllPosts = createAsyncThunk('posts/getPosts', async(_, thunkAPI)
 })
 
 // Get post
-export const getSinglePost = createAsyncThunk('posts/getPost', async(_, thunkAPI) => {
+export const getSinglePost = createAsyncThunk('posts/getPost', async(id, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token;
-        return await postService.getSinglePost(token)
+        return await postService.getSinglePost(id, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -58,7 +58,9 @@ export const getSinglePost = createAsyncThunk('posts/getPost', async(_, thunkAPI
 export const deletePost = createAsyncThunk('posts/deletePost', async(id, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token;
-        return await postService.deletePost(token)
+
+        console.log("slice ... ", id)
+        return await postService.deletePost(id, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -107,7 +109,7 @@ export const postSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 state.posts = state.posts.filter(
-                    (post) => post._id !== action.payload.id
+                    (post) => post._id !== action.payload._id
                 )
             })
             .addCase(deletePost.rejected, (state, action) => {

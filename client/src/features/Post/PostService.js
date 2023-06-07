@@ -53,7 +53,8 @@ const deletePost = async (id, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.delete(API + "deletePost/" + id , config)
+    console.log("post service ... ", id)
+    const response = await axios.delete(API + id , config)
     return response.data
 }
 
