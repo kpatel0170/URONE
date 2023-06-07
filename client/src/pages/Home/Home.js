@@ -55,11 +55,11 @@ function Home() {
               <Box> data is still loading </Box>
             ) : (
               <Box>
-              {posts.map((post) => (
-                <Box key={post._id}>
-                  <Newsfeed post={post}/>
-                </Box>
-              ))}
+                {posts.map((post) => (
+                  <Box key={post._id}>
+                    <Newsfeed post={post}/>
+                  </Box>
+                ))}
               </Box>
           )}
         </Grid>

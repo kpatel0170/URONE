@@ -30,11 +30,9 @@ const createPost = async (postData, token) => {
         headers: {
             Authorization: `Bearer ${token}`
         }
-    }
-
-    console.log(postData)
-    // const response = await axios.post(API , postData, config)
-    // return response.data
+    }    
+    const response = await axios.post(API , postData, config)
+    return response.data
 }
 
 // Update post
