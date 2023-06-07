@@ -61,26 +61,30 @@ const deletePost = async (id, token) => {
 }
 
 // Like Post
-const LikePost = async (id, token) => {
+const LikePost = async (postData, token) => {
     const config ={
         headers: {
             Authorization: `Bearer ${token}`
         }
     }
-    console.log("post service ... ", id)
-    const response = await axios.post(API + id  + '/like', config)
+    const body = {
+        "userId": postData.userId
+    }
+    const response = await axios.post(API + postData.id  + '/like', body, config)
     return response.data
 }
 
 // disLike Post
-const disLikePost = async (id, token) => {
+const disLikePost = async (postData, token) => {
     const config ={
         headers: {
             Authorization: `Bearer ${token}`
         }
     }
-    console.log("post service ... ", id)
-    const response = await axios.delete(API + id  + '/like', config)
+    const body = {
+        "userId": postData.userId
+    }
+    const response = await axios.delete(API + postData.id  + '/like', body, config)
     return response.data
 }
 

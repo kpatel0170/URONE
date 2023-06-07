@@ -12,8 +12,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Comment from '../../components/Comments/Comments';
 import styles from './Newsfeed.module.css';
 
-import { useDispatch } from 'react-redux';
-import { deletePost } from '../../features/Post/PostSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { deletePost, likePost, dislikePost } from '../../features/Post/PostSlice';
 
 const style = {
     position: 'absolute',
@@ -29,6 +29,7 @@ const style = {
 
 function Newsfeed(post) {
     const dispatch = useDispatch();
+    const {user} = useSelector((state) => state.auth)
 
     const [isComment, setIsComment] = useState(false);
     const [isReadMore, setIsReadMore]= useState(true);
@@ -67,6 +68,14 @@ function Newsfeed(post) {
         dispatch(deletePost(post.post._id))
     }
 
+    const likeHandler = (event) => {
+        const data = {
+            'id': post.post._id,
+            'userId': user.data._id
+        }
+        dispatch(likePost(data))
+    }
+
     return (
         <>
         <Card key={post.post._id} sx={{ maxWidth: 540, mt: 3, padding: 2, marginBottom: 2 }} className={styles.card_wrap}>                        
@@ -78,7 +87,11 @@ function Newsfeed(post) {
                     </Avatar>
                 }
                 action={
-                    <IconButton aria-label="settings" onClick={enableToggleHandler}>
+                    <IconButton 
+                        aria-label="settings" 
+                        onClick={enableToggleHandler}
+                        style={{ display: post.post.userId._id === user.data._id ? 'flex' : 'none' }}
+                    >
                         <MoreVertIcon />
                     </IconButton>
                 }
@@ -141,15 +154,30 @@ function Newsfeed(post) {
                 </Box>
             }
             <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, marginBottom: 0, justifyContent: 'space-between' }}>              
-                <IconButton aria-label="up-voting">
-                    <ThumbUpOffAltIcon />
-                </IconButton>
-                <IconButton aria-label="down-voting">
-                    <ThumbDownOffAltIcon />
-                </IconButton>
-                <IconButton aria-label="comment" onClick={showCommentHandler}>
-                    <ChatBubbleOutlineIcon />
-                </IconButton>
+                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                    {post.post.likes.length != 0 &&
+                        <Typography sx={{marginRight: 1}}>{post.post.likes.length}</Typography>
+                    }
+                    <IconButton aria-label="up-voting" onClick={likeHandler} style={{ color: post.post.likes.includes(user.data._id) ? '#1976d2' : '' }}>
+                        <ThumbUpOffAltIcon />
+                    </IconButton>
+                </Box>
+                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                    {post.post.dislikes.length != 0 &&
+                        <Typography sx={{marginRight: 1}}>{post.post.likes.length}</Typography>
+                    }
+                    <IconButton aria-label="down-voting" style={{ color: post.post.dislikes.includes(user.data._id) ? '#1976d2' : '' }}>
+                        <ThumbDownOffAltIcon />
+                    </IconButton>
+                </Box>
+                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                    {post.post.comments.length != 0 &&
+                        <Typography sx={{marginRight: 1}}>{post.post.likes.length}</Typography>
+                    }
+                    <IconButton aria-label="comment" onClick={showCommentHandler}>
+                        <ChatBubbleOutlineIcon />
+                    </IconButton>
+                </Box>
                 {/* <IconButton aria-label="share">
                     <ShareIcon />
                 </IconButton> */}

@@ -21,6 +21,7 @@ function Home() {
   const { posts, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.post
   )
+  const [latestPost, setLatestPost] = useState([])
 
   useEffect(() => {
     if (isError) {
@@ -30,9 +31,11 @@ function Home() {
     if (!user) {
       navigate('/login')
     }else{
-      console.log('user is here')
+      console.log('user has already loggedin')
       if (!isError) {
+        console.log('hi no error, so call the post')
         dispatch(getAllPosts())
+        console.log(posts)
       }
     }
     
@@ -55,7 +58,7 @@ function Home() {
               <Box> data is still loading </Box>
             ) : (
               <Box>
-                {posts.map((post) => (
+                {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post) => (
                   <Box key={post._id}>
                     <Newsfeed post={post}/>
                   </Box>

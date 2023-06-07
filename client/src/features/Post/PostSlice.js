@@ -3,6 +3,9 @@ import postService from './PostService';
 
 const initialState = {
     posts: [],
+    like: [],
+    disLike: [],
+    comment: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -68,12 +71,10 @@ export const deletePost = createAsyncThunk('posts/deletePost', async(id, thunkAP
 })
 
 // Like posts
-export const likePost = createAsyncThunk('posts/like', async(id, thunkAPI) => {
+export const likePost = createAsyncThunk('posts/like', async(postData, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;
-
-        console.log("slice ... ", id)
-        return await postService.LikePost(id, token)
+        const token = thunkAPI.getState().auth.user.token;        
+        return await postService.LikePost(postData, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -82,12 +83,10 @@ export const likePost = createAsyncThunk('posts/like', async(id, thunkAPI) => {
 
 
 // Dislike posts
-export const dislikePost = createAsyncThunk('posts/dislike', async(id, thunkAPI) => {
+export const dislikePost = createAsyncThunk('posts/dislike', async(postData, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user.token;
-
-        console.log("slice ... ", id)
-        return await postService.disLikePost(id, token)
+        return await postService.disLikePost(postData, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -180,6 +179,7 @@ export const postSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 state.posts = action.payload
+                console.log('like post from slice', action.payload)
             })
             .addCase(likePost.rejected, (state, action) => {
                 state.isLoading = false

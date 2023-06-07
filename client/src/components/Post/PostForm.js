@@ -76,6 +76,14 @@ export default function PostForm() {
         for (let [key, value] of data) {
             console.log(`${key}: ${value}`);
         }
+
+        const formData = {
+            text,
+            image,
+            userId
+        }
+
+        dispatch(createPost(formData))
     }
 
     return (

@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import Search from '../Search/Search';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
@@ -10,6 +10,8 @@ import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography } from '@mui/mater
 const Header = props => {  
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const {user} = useSelector((state) => state.auth)
 
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
@@ -44,6 +46,7 @@ const Header = props => {
                 <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                     <Button onClick={enableToggleHandler} sx={{background: 'transparent', color: '#9a9595'}}>
                         <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="Remy Sharp" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />                                
+                        <Typography sx={{paddingX: 1}}>{user.data.name}</Typography>
                         <Box>
                             <MoreVertIcon />
                         </Box>

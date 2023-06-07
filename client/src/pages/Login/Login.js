@@ -25,7 +25,6 @@ function Login() {
         input_email: '',
         input_password: ''
     });    
-    const {input_email, input_password} = formError;
 
     useEffect(() => {
         if(isError){
@@ -159,6 +158,7 @@ function Login() {
                             />
                         {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem' }}>{formError.password}</Typography>}
                     </Box>
+                        {isError && <Box>error</Box>}
                     <Box>
                         <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6', boxShadow: 0}} type="submit">
                             Sign In
