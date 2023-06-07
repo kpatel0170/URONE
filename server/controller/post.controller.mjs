@@ -120,10 +120,10 @@ export const rmdislikePost = async (req, res) => {
 };
 
 export const addComment = async (req, res) => {
-  const { postId } = req.params;
+  const { id } = req.params;
   const { userId, comment } = req.body;
   try {
-    const post = await postService.addComment(postId, userId, comment);
+    const post = await postService.addComment(id, userId, comment);
     if (!post) {
       return res.status(404).json({ success: false, error: "Post not found" });
     }

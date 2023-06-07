@@ -132,13 +132,24 @@ const PostService = {
   },
 
   async addComment(postId, userId, comment) {
-    const post = await postModel.findById(postId);
-    post.comments.push({
-      userId,
-      comment,
-      at: new Date(),
-    });
-    return post.save();
+    try {
+      const post = await postModel.findById(postId);
+
+      if (!post) {
+        throw new Error("Post not found");
+      }
+
+      post.comments.push({
+        userId,
+        comment,
+        at: new Date(),
+      });
+      await post.save();
+
+      return post;
+    } catch (error) {
+      throw new Error(error.message);
+    }
   },
 };
 
