@@ -3,7 +3,8 @@
 }
 
 .login_bg{
-    background-image: url('https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80');
+    background-image: url('https://wallpaperaccess.com/full/1691700.jpg');
+    /* background-image: url'(https://i.pinimg.com/736x/e1/4b/70/e14b7097d76237a8f5aba0dc66d01e1b.jpg'); */
     background-size: cover;
 }
 .button_wrap:hover{
@@ -15,6 +16,9 @@
 
 /* smartphones, iPhone, portrait 480x320 phones */
 @media (min-width:320px)  {  
+    .hide_sm{
+        display: none;
+    }
     .grid_wrap{
         display: flex;
         justify-content: center;
@@ -24,5 +28,8 @@
     .grid_wrap{
         display: flex;
         justify-content: center;
+    }
+    .hide_sm{
+        display: block;
     }
 }

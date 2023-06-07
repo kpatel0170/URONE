@@ -210,10 +210,10 @@ function Register() {
               </Box>
           </form>
           <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: '#dedede' }}>
-              <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
+              {/* <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
                 Sign Up with Google
-              </Button>
-              <Typography sx={{ textAlign: 'center'}}>Already have an account? <Link to="/login"><Button>Sign In</Button></Link></Typography>              
+              </Button> */}
+              <Typography sx={{ textAlign: 'center',  mt: 4,}}>Already have an account? <Link to="/login"><Button>Sign In</Button></Link></Typography>              
           </Box>
         </Grid>
       </Grid>

@@ -28,7 +28,9 @@ const getSinglePost = async (id, token) => {
 const createPost = async (postData, token) => {
     const config ={
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            Content_Type: 'multipart/form-data',
         }
     }    
     const response = await axios.post(API , postData, config)
@@ -58,13 +60,37 @@ const deletePost = async (id, token) => {
     return response.data
 }
 
+// Like Post
+const LikePost = async (id, token) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    console.log("post service ... ", id)
+    const response = await axios.post(API + id  + '/like', config)
+    return response.data
+}
+
+// disLike Post
+const disLikePost = async (id, token) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    console.log("post service ... ", id)
+    const response = await axios.delete(API + id  + '/like', config)
+    return response.data
+}
 
 const postService = {
     createPost,
     updatePost,
     getAllPosts,
     getSinglePost,
-    deletePost
+    deletePost,
+    LikePost
 }
 
 export default postService;

@@ -115,7 +115,14 @@ function Login() {
 
     return (
         <Grid container sx={{height: '100vh', alignItems: 'center'}} className={styles.grid_wrap}>
-            <Grid item xs={0} md={8} lg={8} className={styles.login_bg} sx={{height: '100%'}}></Grid>
+            <Grid item xs={0} md={8} lg={8} className={`${styles.login_bg} ${styles.hide_sm}`} sx={{height: '100%'}}>
+                <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh', paddingX: 9}}>
+                    <Typography sx={{fontSize: '11rem', fontWeight: 'bold', color: 'white'}}>rOne</Typography>
+                    <Typography sx={{color: 'white', width: 3/4,}}>
+                        Be the one to connect through rOne ...
+                    </Typography>
+                </Box>
+            </Grid>
             <Grid item xs={12} sm={7} md={4} lg={4} sx={{px: 4}}>
                 <Box sx={{mb: 3, textAlign: 'center'}}>
                     <Typography sx={{textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>
@@ -159,11 +166,11 @@ function Login() {
                     </Box>
                 </form>
                 <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: '#dedede' }}>
-                    <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
+                    {/* <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
                         Sign In with Google
-                    </Button>
+                    </Button> */}
                     <Link to="/register">
-                        <Button variant="outlined" sx={{p:1, width: 1, borderRadius: '25px', border: 2, borderColor: '#dedede'}} className={styles.button_wrap}>New to rOne? Join now</Button>
+                        <Button variant="outlined" sx={{ mt: 4, p:1, width: 1, borderRadius: '25px', border: 2, borderColor: '#dedede'}} className={styles.button_wrap}>New to rOne? Join now</Button>
                     </Link>
                 </Box>
             </Grid>

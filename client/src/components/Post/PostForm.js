@@ -13,6 +13,8 @@ export default function PostForm() {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
 
+    
+
     // initialize values
     const [formData, setFormData] = useState({
         text: '',
@@ -52,28 +54,28 @@ export default function PostForm() {
         }
     };
 
-    const postFormHandler = (event) => {
+    const filesUploadHandler = (event) => {
+        console.log(event.target.files)
+        console.log(Array.prototype.slice.call(event.target.files))
+        const uploadedImage = Array.prototype.slice.call(event.target.files);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: [...uploadedImage]
+        }));
+    }
+
+    const submitFormHandler = (event) => {
         event.preventDefault();
-        console.log("hello ...", user.data._id)
-        const userId = user.data._id
-        const postFormData = {
-            text,
-            image,
-            userId
+        const userId = user.data._id;
+        const data = new FormData();
+        data.append('text', text)
+        data.append('image', image)
+        data.append('userId', userId)
+
+        console.log(data.get('text'))
+        for (let [key, value] of data) {
+            console.log(`${key}: ${value}`);
         }
-
-        console.log(postFormData)
-        dispatch(createPost())
-
-        setFormData({
-            text: '',
-            image: [],
-            likes: false,
-            dislikes: false,
-            comments: false,
-            share: false,
-            checkAll: false
-        })
     }
 
     return (
@@ -83,7 +85,7 @@ export default function PostForm() {
                     Create Post
                 </Typography>
             </Box>
-            <form onSubmit={postFormHandler}>                
+            <form onSubmit={submitFormHandler}>                
                 <TextField
                     id="text"
                     name="text"
@@ -94,11 +96,23 @@ export default function PostForm() {
                     rows={4}
                     sx={{width:1}}
                     />
+                <Box sx={{marginTop: 2}}>
+                    <input 
+                        id="file"
+                        name="file"
+                        type='file'
+                        accept="jpg/jpeg/png"
+                        onChange={filesUploadHandler}
+                        multiple
+                        
+                    />
+                </Box>
+                
                 {/* <IconButton>
                     <PhotoLibraryIcon />
                 </IconButton> */}
                 
-                <Box sx={{ borderTop: 1, borderBottom: 1, borderColor: '#dcdcdc', marginTop: 3, marginBottom: 3, paddingBottom: 2, paddingTop: 2}}>
+                {/* <Box sx={{ borderTop: 1, borderBottom: 1, borderColor: '#dcdcdc', marginTop: 3, marginBottom: 3, paddingBottom: 2, paddingTop: 2}}>
                     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                         <Typography sx={{fontWeight: 'bold', marginBottom: 2}}>Manage Post</Typography>                        
                         <FormControlLabel
@@ -141,8 +155,8 @@ export default function PostForm() {
                             <ShareIcon />
                         </Box>
                     </Box>
-                </Box>
-                <Box sx={{ marginBottom: 3, paddingBottom: 2, display: 'flex', justifyContent: 'space-between'}}>
+                </Box> */}
+                <Box sx={{ marginY: 3, display: 'flex', justifyContent: 'space-between'}}>
                     <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
                     <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Post</Button>
                 </Box>
