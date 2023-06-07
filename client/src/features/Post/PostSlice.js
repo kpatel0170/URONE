@@ -134,7 +134,7 @@ export const postSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 state.posts = state.posts.filter(
-                    (post) => post._id !== action.payload._id
+                    (post) => post._id !== action.payload.data._id
                 )
             })
             .addCase(deletePost.rejected, (state, action) => {
@@ -148,7 +148,7 @@ export const postSlice = createSlice({
             .addCase(updateSinglePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                const index = state.findIndex(post => post.id === action.payload.id);                
+                const index = state.findIndex(post => post.id === action.payload.data._id);                
                 state.posts = state[index] = {
                     ...state[index],
                     ...action.payload,
