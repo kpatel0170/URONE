@@ -61,7 +61,7 @@ function Newsfeed(post) {
                     </IconButton>
                 }
                 title={post.post.userId?.name}
-                subheader={post.post.createdAt}
+                subheader={post.post.createdAt.slice(0, 10)}
             />
 
                 <Menu
