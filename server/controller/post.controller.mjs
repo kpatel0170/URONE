@@ -2,7 +2,8 @@ import postService from "../service/post.service.mjs";
 
 export const createPost = async (req, res) => {
   try {
-    const { text, image, userId } = req.body;
+    const { text, userId } = req.body;
+    const image = req.file.filename;
     const newPost = await postService.createPost(text, image, userId);
     res.status(201).json({ success: true, data: newPost });
   } catch (error) {
@@ -75,20 +76,6 @@ export const likePost = async (req, res) => {
   }
 };
 
-export const rmlikePost = async (req, res) => {
-  const { id } = req.params;
-  const { userId } = req.body;
-  try {
-    const post = await postService.removeLike(id, userId);
-    if (!post) {
-      return res.status(404).json({ success: false, error: "Post not found" });
-    }
-    res.json({ success: true, data: post });
-  } catch (error) {
-    res.status(500).json({ success: false, error: "Failed to remove like" });
-  }
-};
-
 export const dislikePost = async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
@@ -102,20 +89,6 @@ export const dislikePost = async (req, res) => {
     return res.json({ success: true, data: post });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
-  }
-};
-
-export const rmdislikePost = async (req, res) => {
-  const { id } = req.params;
-  const { userId } = req.body;
-  try {
-    const post = await postService.removeDislike(id, userId);
-    if (!post) {
-      return res.status(404).json({ success: false, error: "Post not found" });
-    }
-    res.json({ success: true, data: post });
-  } catch (error) {
-    res.status(500).json({ success: false, error: "Failed to remove like" });
   }
 };
 
