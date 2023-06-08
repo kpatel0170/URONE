@@ -123,7 +123,7 @@ function Login() {
                 </Box>
             </Grid>
             <Grid item xs={12} sm={7} md={4} lg={4} sx={{px: 4}}>
-                <Box sx={{mb: 3, textAlign: 'center'}}>
+                <Box sx={{mb: 5, textAlign: 'center'}}>
                     <Typography sx={{textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>
                     <Typography>Sign in to access your account</Typography>
                 </Box>

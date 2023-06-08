@@ -148,7 +148,7 @@ export const postSlice = createSlice({
             .addCase(updateSinglePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                const index = state.findIndex(post => post.id === action.payload.data._id);                
+                const index = state.findIndex(post => post._id === action.payload.data._id);                
                 state.posts = state[index] = {
                     ...state[index],
                     ...action.payload,
@@ -178,8 +178,10 @@ export const postSlice = createSlice({
             .addCase(likePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.posts = action.payload
-                console.log('like post from slice', action.payload)
+                const { _id } = action.payload;
+                state.posts = state.posts.map((post) =>
+                    post._id === _id ? { ...post, ...action.payload } : post
+                );
             })
             .addCase(likePost.rejected, (state, action) => {
                 state.isLoading = false

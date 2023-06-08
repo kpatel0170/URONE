@@ -71,7 +71,7 @@ const LikePost = async (postData, token) => {
         "userId": postData.userId
     }
     const response = await axios.post(API + postData.id  + '/like', body, config)
-    return response.data
+    return response.data.data;
 }
 
 // disLike Post
