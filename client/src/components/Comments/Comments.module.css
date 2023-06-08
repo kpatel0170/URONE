@@ -1,0 +1,10 @@
+.form_wrap input{
+    margin-right: 40px;
+}
+.comment_container{
+    max-height: 350px;
+    overflow: overlay;
+}
+.comment_items:last-child{
+    margin-bottom: 0;
+}

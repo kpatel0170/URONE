@@ -5,7 +5,7 @@ import { fabClasses } from '@mui/material';
 const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
-    user: null,
+    user: user ? user : null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -13,21 +13,21 @@ const initialState = {
 }
 
 // Register
-export const userRegister = createAsyncThunk('auth/userRegister', async(user, thunkAPI) => {
+export const userRegister = createAsyncThunk('auth/register', async(user, thunkAPI) => {
     try{
         return await authService.userRegister(user)
     } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()        
         return thunkAPI.rejectWithValue(message);
     }
 })
 
 // Login
-export const userLogin = createAsyncThunk('auth/userLogin', async(user, thunkAPI) => {
+export const userLogin = createAsyncThunk('auth/login', async(user, thunkAPI) => {
     try{
         return await authService.userLogin(user)
     } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
     }
 })

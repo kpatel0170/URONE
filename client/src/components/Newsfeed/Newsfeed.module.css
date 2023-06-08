@@ -1,0 +1,9 @@
+.card_wrap{
+    border: 1px solid #dcdcdc;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+.readmore{
+    color: #1976d2 !important;
+    cursor: pointer;
+}
