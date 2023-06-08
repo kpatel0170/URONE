@@ -3,7 +3,7 @@ import postService from "../service/post.service.mjs";
 export const createPost = async (req, res) => {
   try {
     const { text, userId } = req.body;
-    const image = req.files;
+    const image = req.files.map((file) => file.filename);
     const newPost = await postService.createPost(text, image, userId);
     res.status(201).json({ success: true, data: newPost });
   } catch (error) {
