@@ -22,8 +22,9 @@ function Login() {
     const {email, password} = formData;
 
     const [formError, setFormError] = useState({
-        input_email: '',
-        input_password: ''
+        email: '',
+        password: '',
+        error: ''
     });    
 
     useEffect(() => {
@@ -32,6 +33,11 @@ function Login() {
                 setFormError({  
                   password: "Wrong password"
                 }) 
+            }else if(message === 'User not found'){
+                setFormError({  
+                    email: "There is no user with this email address.",
+                    error: "No user has found with the email you provided. It seems like user has not registered yet."
+                })
             }
         }
 
@@ -141,7 +147,7 @@ function Login() {
                             sx={{width:1}}
                             className={styles.user_input}
                             />
-                        {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem' }}>{formError.email}</Typography>}
+                        {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.email}</Typography>}
                     </Box>
                     <Box>
                         <Typography>Password</Typography>
@@ -156,9 +162,9 @@ function Login() {
                             sx={{width:1}}
                             className={styles.user_input}
                             />
-                        {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem' }}>{formError.password}</Typography>}
+                        {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.password}</Typography>}
                     </Box>
-                        {isError && <Box>error</Box>}
+                        {formError.error && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.error}</Typography>}
                     <Box>
                         <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6', boxShadow: 0}} type="submit">
                             Sign In
