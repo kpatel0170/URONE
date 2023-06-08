@@ -83,8 +83,8 @@ export default function PostForm() {
     const renderImagePreview = (data) => {
         return data.map((image, index) => {
             return (
-                <Box sx={{width: 0.5/3, padding: 1, border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>
-                    <img key={index} src={image} className={styles.preview_img_wrap} />
+                <Box key={index} sx={{width: 0.5/3, padding: 1, border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>
+                    <img src={image} className={styles.preview_img_wrap} />
                 </Box>
             )
         })

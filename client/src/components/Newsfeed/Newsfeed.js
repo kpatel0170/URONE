@@ -188,7 +188,7 @@ function Newsfeed(post) {
 
             <Collapse in={isComment} timeout="auto">
                 <CardContent sx={{paddingTop: 0}}>
-                    <Comment comment={post.post.comments}/>
+                    <Comment comment={post.post}/>
                 </CardContent>
             </Collapse>
         </Card>

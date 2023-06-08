@@ -1,43 +1,60 @@
-import React from 'react';
-import { Typography, Box, TextField, IconButton, Avatar} from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Box, TextField, Avatar, Button} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import styles from "./Comments.module.css";
 
 import { useSelector, useDispatch } from 'react-redux';
-import { createComment, deleteComment } from '../../features/Comment/CommentSlice';
+import { createComment } from '../../features/Post/PostSlice';
 
 const Comment = (comment) => {  
     const dispatch = useDispatch();
-    const {user} = useSelector((state) => state.auth)  
+    const {user} = useSelector((state) => state.auth)
+
+    const [commentInput, setCommentInput] = useState(''); 
+
+    const commentInputHandler = (event) => {
+        setCommentInput(event.target.value)
+        console.log('...')
+    }
 
     const submitCommentHandler = (event) => {
-        event.preventDefault();
+        event.preventDefault(event);
+        console.log(comment.comment)
+        console.log(comment.comment.comments)
 
-        console.log(comment)
-        // dispatch(createComment())
+        const data = {
+            'id': comment.comment._id,
+            'userId': user.data._id,
+            'commentInput': commentInput
+        }
+        
+        dispatch(createComment(data))
+        setCommentInput("");
     }
 
     return(
         <Box sx={{ borderTop: 1, borderColor: '#dcdcdc', paddingTop: 3}}>
-            <form onClick={submitCommentHandler}>
+            <form onSubmit={submitCommentHandler}>
                 <Box sx={{ display: 'flex', position: 'relative' }}>
                     <TextField 
-                        id="comment" 
-                        name="comment"
-                        type="text" 
+                        id="commentInput" 
+                        name="commentInput"
+                        type="text"
+                        value={commentInput} 
+                        onChange={commentInputHandler}
                         placeholder="Write your comment ..."
                         sx={{width:1}}
                         className={styles.form_wrap}
                         />
-                    <IconButton aria-label="comment-send" sx={{position: 'absolute', right: '10px', top: '10px'}}>
+                    <Button type="submit" sx={{position: 'absolute', right: '10px', top: '10px'}}>                        
                         <SendIcon />
-                    </IconButton>
+                    </Button>
                 </Box>
             </form>
             
-            {comment.comment.length != 0 ? (
+            {comment.comment.comments.length != 0 ? (
                 <Box sx={{marginTop: 2}} className={styles.comment_container}>
-                    {comment.comment.map((data) => (
+                    {comment.comment.comments.map((data) => (
                         <Box className={styles.comment_items} key={data._id} sx={{marginBottom: 2, borderRadius: 2, padding: 2, background: '#e6e7ee'}}>
                             <Typography sx={{fontSize: '0.875rem', lineHeight: '1.2', marginBottom: 1}}>
                                 {data.comment}

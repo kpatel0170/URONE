@@ -116,6 +116,36 @@ const undoDisLikePost = async (postData, token) => {
     return response.data.data
 }
 
+// create comment
+const createComment = async (postData, token) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    }    
+    const body = {
+        "userId": postData.userId,
+        "comment": postData.commentInput
+    }
+    const response = await axios.post(API + postData.id  + '/comment', body, config)
+    return response.data.data
+}
+
+// delete comment
+const deleteComment = async (postData, token) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    }    
+    const body = {
+        "userId": postData.userId,
+        "comment": postData.commentInput
+    }
+    const response = await axios.patch(API + postData.id  + '/comment', body, config)
+    return response.data.data
+}
+
 const postService = {
     createPost,
     updatePost,
@@ -125,7 +155,9 @@ const postService = {
     LikePost,
     undoLikePost,
     disLikePost,
-    undoDisLikePost
+    undoDisLikePost,
+    createComment,
+    deleteComment
 }
 
 export default postService;
