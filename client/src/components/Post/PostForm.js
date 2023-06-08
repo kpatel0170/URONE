@@ -28,7 +28,7 @@ export default function PostForm(props) {
     const isEmpty = formData.text.trim().length === 0;
     const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
     const [previewImages, setPreviewImages] = useState([]);
-    const [fileName, setFileName] = useState('');
+    const [fileName, setFileName] = useState(null);
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -61,14 +61,14 @@ export default function PostForm(props) {
         console.log(event.target.files)
         const uploadedImage = Array.prototype.slice.call(event.target.files);
         // const uploadedImage = event.target.files;
+
         setFormData((prevFormData) => ({
             ...prevFormData,
             image: [...uploadedImage]
         }));
 
-        setFileName(event.target.files[0])
-
-
+        let uploadedImages = event.target.files;
+        setFileName(uploadedImages)
 
         if(event.target.files){
             const files = Array.from(event.target.files).map((file)=> URL.createObjectURL(file))
@@ -79,6 +79,20 @@ export default function PostForm(props) {
             )
         }
     }
+
+
+    const handleFileChange = (e) => {
+        const images = e.target.files;
+        const formData = new FormData();
+    
+        for (let image of images) {
+          formData.append('image', image);
+        }
+    
+        // if (images) {
+        //   dispatch(uploadProductImage(formData));
+        // }
+    };
 
     const renderImagePreview = (data) => {
         return data.map((previewImage, index) => {
@@ -99,14 +113,13 @@ export default function PostForm(props) {
         const userId = user.data._id;
         const data = new FormData();
         data.append('text', text)
-        data.append('image', image)
+        // data.append('image', image)
         data.append('userId', userId)
 
         // data.append('image', image)
 
-        console.log(data.get('text'))
-        for (let [key, value] of data) {
-            console.log(`${key}: ${value}`);
+        for (let i of image) {
+            data.append('image', i);
         }
 
         const formData = {
@@ -117,7 +130,7 @@ export default function PostForm(props) {
 
         console.log(formData)
 
-        dispatch(createPost(formData))
+        dispatch(createPost(data))
 
         setFormData({
             text: '',

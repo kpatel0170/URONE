@@ -29,8 +29,7 @@ const createPost = async (postData, token) => {
     const config ={
         headers: {
             Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-            "Content-Type": `multipart/form-data`,
+            formData: true
         }
     }    
     console.log('render from service', postData)
