@@ -10,11 +10,12 @@ const Comment = (comment) => {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
 
-    const [commentInput, setCommentInput] = useState(''); 
+    const [commentInput, setCommentInput] = useState('');
+    const isEmpty = commentInput.trim().length === 0;
+ 
 
     const commentInputHandler = (event) => {
         setCommentInput(event.target.value)
-        console.log('...')
     }
 
     const submitCommentHandler = (event) => {
@@ -46,7 +47,7 @@ const Comment = (comment) => {
                         sx={{width:1}}
                         className={styles.form_wrap}
                         />
-                    <Button type="submit" sx={{position: 'absolute', right: '10px', top: '10px'}}>                        
+                    <Button disabled={isEmpty} type="submit" sx={{position: 'absolute', right: '10px', top: '10px'}} className={styles.send_btn_wrap}>                        
                         <SendIcon />
                     </Button>
                 </Box>
