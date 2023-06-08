@@ -43,12 +43,7 @@ function Home() {
 
   return (
     <>
-      <Box sx={{position: 'fixed', width: '100%', zIndex: '2'}}>
-        <Box className="header_wrap">
-          <Header/>
-        </Box>
-      </Box>
-
+      <Header/>
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={12} sm={9} sx={{width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>          
           {isLoading ? (

@@ -144,7 +144,7 @@ function Register() {
           <Typography sx={{mb: 6, textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>            
           <form sx={{width: 1}} onSubmit={registerFormHandler}>
               <Box sx={{mb:2}}>
-                  <Typography sx={{mb: 1}}>Username</Typography>
+                  <Typography sx={{mb: 1}}>Name</Typography>
                   <TextField 
                       id="name" 
                       name="name"

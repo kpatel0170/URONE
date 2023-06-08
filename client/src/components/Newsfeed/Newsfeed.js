@@ -12,7 +12,7 @@ import Comment from '../../components/Comments/Comments';
 import styles from './Newsfeed.module.css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { deletePost, likePost, undoLikePost } from '../../features/Post/PostSlice';
+import { deletePost, likePost, disLikePost } from '../../features/Post/PostSlice';
 
 const style = {
     position: 'absolute',
@@ -89,12 +89,16 @@ function Newsfeed(post) {
             'userId': user.data._id
         }
         
-        if(post.post.likes.includes(user.data._id)){
-            console.log("undo like")
-            dispatch(undoLikePost(data))
-        }else{
-            dispatch(likePost(data))
+        dispatch(likePost(data))
+    }
+
+    const likeHandler1 = (event) => {
+        const data = {
+            'id': post.post._id,
+            'userId': user.data._id
         }
+        
+        dispatch(disLikePost(data))
     }
 
     return (
@@ -192,9 +196,9 @@ function Newsfeed(post) {
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                     {post.post.dislikes.length != 0 &&
-                        <Typography sx={{marginRight: 1}}>{post.post.likes.length}</Typography>
+                        <Typography sx={{marginRight: 1}}>{post.post.dislikes.length}</Typography>
                     }
-                    <IconButton aria-label="down-voting" style={{ color: post.post.dislikes.includes(user.data._id) ? '#1976d2' : '' }}>
+                    <IconButton aria-label="down-voting" onClick={likeHandler1} style={{ color: post.post.dislikes.includes(user.data._id) ? '#1976d2' : '' }}>
                         <ThumbDownOffAltIcon />
                     </IconButton>
                 </Box>

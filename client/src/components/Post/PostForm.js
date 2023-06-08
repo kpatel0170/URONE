@@ -27,6 +27,7 @@ export default function PostForm() {
     });
     const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
     const [previewImages, setPreviewImages] = useState([]);
+    const [fileName, setFileName] = useState('');
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -56,6 +57,17 @@ export default function PostForm() {
     };
 
     const filesUploadHandler = (event) => {
+        console.log(event.target.files)
+        const uploadedImage = Array.prototype.slice.call(event.target.files);
+        // const uploadedImage = event.target.files;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: [...uploadedImage]
+        }));
+
+        setFileName(event.target.files[0])
+
+
 
         if(event.target.files){
             const files = Array.from(event.target.files).map((file)=> URL.createObjectURL(file))
@@ -65,26 +77,13 @@ export default function PostForm() {
                 (file)=>URL.revokeObjectURL(file)
             )
         }
-
-
-
-        // const { files } = event.target
-        // for (let i = 0; i < files.length; i++) {
-        //     const file = files[i]; // OR const file = files.item(i);
-        // }
-
-        // const uploadedImage = Array.prototype.slice.call(event.target.files);
-        // setFormData((prevFormData) => ({
-        //     ...prevFormData,
-        //     image: [...uploadedImage]
-        // }));
     }
 
     const renderImagePreview = (data) => {
-        return data.map((image, index) => {
+        return data.map((previewImage, index) => {
             return (
                 <Box key={index} sx={{width: 0.5/3, padding: 1, border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>
-                    <img src={image} className={styles.preview_img_wrap} />
+                    <img src={previewImage} className={styles.preview_img_wrap} />
                 </Box>
             )
         })
@@ -98,6 +97,8 @@ export default function PostForm() {
         data.append('image', image)
         data.append('userId', userId)
 
+        // data.append('image', image)
+
         console.log(data.get('text'))
         for (let [key, value] of data) {
             console.log(`${key}: ${value}`);
@@ -108,6 +109,8 @@ export default function PostForm() {
             image,
             userId
         }
+
+        console.log(formData)
 
         dispatch(createPost(formData))
 
