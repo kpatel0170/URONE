@@ -38,6 +38,22 @@ function Newsfeed(post) {
     const [modal, setModal] = useState(false)
     const modalCloseHandler = () => setModal(false);
 
+    const images = [
+        'https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80',
+        'https://media1.popsugar-assets.com/files/thumbor/LVytyEgKryOQhGCoQis8Uudzpp0/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/09/23/953/n/1922507/c3018d08a1be257e_pexels-sharon-mccutcheon-3713892/i/Pastel-iPhone-Wallpaper.jpg']
+    const [currentImgIndex, setCurrentImgIndex] = useState(0);
+    const nextSlide = () => {
+        setCurrentImgIndex((prevIndex) =>
+          prevIndex === images.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+    
+    const prevSlide = () => {
+        setCurrentImgIndex((prevIndex) =>
+            prevIndex === 0 ? images.length - 1 : prevIndex - 1
+        );
+    };
+
     const showCommentHandler = () => {
         setIsComment(!isComment);
     };
@@ -159,6 +175,12 @@ function Newsfeed(post) {
                     />
                 </Box>
             }
+            {/* image slider */}
+            {/* <div className="image-slider">
+                <button onClick={prevSlide}>Previous</button>
+                <img src={images[currentImgIndex]} alt="Slider" />
+                <button onClick={nextSlide}>Next</button>
+            </div> */}
             <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, marginBottom: 0, justifyContent: 'space-between' }}>              
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                     {post.post.likes.length != 0 &&
