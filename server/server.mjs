@@ -29,8 +29,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-app.post("/api/v1/posts/", upload.single("image"), createPost);
-app.patch("/api/v1/posts/:id", upload.single("image"), updatePost);
+app.post("/api/v1/posts/", upload.array("image", 3), createPost);
+app.patch("/api/v1/posts/:id", upload.array("image", 3), updatePost);
 
 
 const port = process.env.PORT;
