@@ -11,7 +11,7 @@ import { createPost } from '../../features/Post/PostSlice';
 import styles from './PostForm.module.css';
 import '../../App.css';
 
-export default function PostForm() {
+export default function PostForm(props) {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
 
@@ -25,6 +25,7 @@ export default function PostForm() {
         share: false,
         checkAll: false
     });
+    const isEmpty = formData.text.trim().length === 0;
     const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
     const [previewImages, setPreviewImages] = useState([]);
     const [fileName, setFileName] = useState('');
@@ -89,6 +90,10 @@ export default function PostForm() {
         })
     }
 
+    const modalHandler = (event) => {
+        props.onModalClose(true);
+    }
+
     const submitFormHandler = (event) => {
         event.preventDefault();
         const userId = user.data._id;
@@ -123,6 +128,7 @@ export default function PostForm() {
             share: false,
             checkAll: false
         })
+        props.onModalClose(true);
     }
 
     return (
@@ -222,8 +228,8 @@ export default function PostForm() {
                     </Box>
                 </Box> */}
                 <Box sx={{ marginY: 3, display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingTop: 3}}>
-                    <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
-                    <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Post</Button>
+                    <Button onClick={modalHandler} type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                    <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%'}}>Post</Button>
                 </Box>
             </form>
         </>
