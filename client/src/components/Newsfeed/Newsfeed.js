@@ -38,6 +38,8 @@ function Newsfeed(post) {
     const [modal, setModal] = useState(false)
     const modalCloseHandler = () => setModal(false);
 
+    const baseUrl = 'https://rone.onrender.com/posts/';
+
     const images = [
         'https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80',
         'https://media1.popsugar-assets.com/files/thumbor/LVytyEgKryOQhGCoQis8Uudzpp0/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/09/23/953/n/1922507/c3018d08a1be257e_pexels-sharon-mccutcheon-3713892/i/Pastel-iPhone-Wallpaper.jpg']
@@ -102,7 +104,7 @@ function Newsfeed(post) {
     }
 
     return (
-        <>
+        <>        
         {user && 
         <Card key={post.post._id} sx={{ maxWidth: 540, mt: 3, padding: 2, marginBottom: 2 }} className={styles.card_wrap}>                        
             <CardHeader
@@ -173,12 +175,15 @@ function Newsfeed(post) {
                 <Box sx={{margin: 2}}>
                     <CardMedia
                         component="img"
-                        image="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80"
+                        image={baseUrl + post.post.image[0]}
                         alt="Paella dish"
                         sx={{height: '250px'}}
                     />
                 </Box>
             }
+
+            
+
             {/* image slider */}
             {/* <div className="image-slider">
                 <button onClick={prevSlide}>Previous</button>
