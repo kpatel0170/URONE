@@ -8,12 +8,12 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { createPost } from '../../features/Post/PostSlice';
+import styles from './PostForm.module.css';
+import '../../App.css';
 
 export default function PostForm() {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
-
-    
 
     // initialize values
     const [formData, setFormData] = useState({
@@ -26,7 +26,8 @@ export default function PostForm() {
         checkAll: false
     });
     const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
-    
+    const [previewImages, setPreviewImages] = useState([]);
+
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
 
@@ -55,13 +56,38 @@ export default function PostForm() {
     };
 
     const filesUploadHandler = (event) => {
-        console.log(event.target.files)
-        console.log(Array.prototype.slice.call(event.target.files))
-        const uploadedImage = Array.prototype.slice.call(event.target.files);
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            image: [...uploadedImage]
-        }));
+
+        if(event.target.files){
+            const files = Array.from(event.target.files).map((file)=> URL.createObjectURL(file))
+            console.log(files)
+            setPreviewImages((prev) => prev.concat(files));
+            Array.from(event.target.files).map(
+                (file)=>URL.revokeObjectURL(file)
+            )
+        }
+
+
+
+        // const { files } = event.target
+        // for (let i = 0; i < files.length; i++) {
+        //     const file = files[i]; // OR const file = files.item(i);
+        // }
+
+        // const uploadedImage = Array.prototype.slice.call(event.target.files);
+        // setFormData((prevFormData) => ({
+        //     ...prevFormData,
+        //     image: [...uploadedImage]
+        // }));
+    }
+
+    const renderImagePreview = (data) => {
+        return data.map((image, index) => {
+            return (
+                <Box sx={{width: 0.5/3, padding: 1, border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>
+                    <img key={index} src={image} className={styles.preview_img_wrap} />
+                </Box>
+            )
+        })
     }
 
     const submitFormHandler = (event) => {
@@ -114,17 +140,35 @@ export default function PostForm() {
                     rows={4}
                     sx={{width:1}}
                     />
-                <Box sx={{marginTop: 2}}>
+                <Box sx={{marginTop: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <input 
                         id="file"
                         name="file"
                         type='file'
-                        accept="jpg/jpeg/png"
+                        accept="image/png, image/jpeg"
                         onChange={filesUploadHandler}
                         multiple
-                        
+                        sx={{display: 'none'}}
                     />
+                    <Box>
+                        <label htmlFor="file" className="image_upload_label">
+                            <PhotoLibraryIcon /> 
+                            <Typography sx={{paddingLeft: 1}} variant='caption'>Upload Images</Typography>
+                        </label>
+                    </Box>
+
+                    {previewImages.length != 0 && 
+                        <Box className={styles.image_count}>
+                            <Typography variant='subtitle2'>{previewImages.length}</Typography>
+                        </Box>
+                    }
                 </Box>
+                {previewImages.length != 0 &&
+                    <Box sx={{display: 'flex', flexWrap: 'wrap', marginTop: 2, background: '#f7f7f7', border: '1px dashed #dcdcdc', borderRadius: '10px', padding: 2}} className={styles.preview_container}>
+                        {renderImagePreview(previewImages)}
+                    </Box>
+                }
+                
                 
                 {/* <IconButton>
                     <PhotoLibraryIcon />
@@ -174,7 +218,7 @@ export default function PostForm() {
                         </Box>
                     </Box>
                 </Box> */}
-                <Box sx={{ marginY: 3, display: 'flex', justifyContent: 'space-between'}}>
+                <Box sx={{ marginY: 3, display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingTop: 3}}>
                     <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
                     <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Post</Button>
                 </Box>

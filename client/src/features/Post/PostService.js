@@ -75,6 +75,20 @@ const LikePost = async (postData, token) => {
 }
 
 // disLike Post
+const undoLikePost = async (postData, token) => {  
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }  
+    const body = {
+        "userId": postData.userId
+    }    
+    const response = await axios.delete(API + postData.id  + '/like', body, config);  
+    return response.data.data
+}
+
+// Like Post
 const disLikePost = async (postData, token) => {
     const config ={
         headers: {
@@ -84,8 +98,22 @@ const disLikePost = async (postData, token) => {
     const body = {
         "userId": postData.userId
     }
-    const response = await axios.delete(API + postData.id  + '/like', body, config)
-    return response.data
+    const response = await axios.post(API + postData.id  + '/dislike', body, config)
+    return response.data.data;
+}
+
+// disLike Post
+const undoDisLikePost = async (postData, token) => {  
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }  
+    const body = {
+        "userId": postData.userId
+    }     
+    const response = await axios.patch(API + postData.id  + '/dislike', body, config);  
+    return response.data.data
 }
 
 const postService = {
@@ -94,7 +122,10 @@ const postService = {
     getAllPosts,
     getSinglePost,
     deletePost,
-    LikePost
+    LikePost,
+    undoLikePost,
+    disLikePost,
+    undoDisLikePost
 }
 
 export default postService;

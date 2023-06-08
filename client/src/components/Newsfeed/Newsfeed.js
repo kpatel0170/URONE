@@ -12,7 +12,7 @@ import Comment from '../../components/Comments/Comments';
 import styles from './Newsfeed.module.css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { deletePost, likePost, dislikePost } from '../../features/Post/PostSlice';
+import { deletePost, likePost, undoLikePost } from '../../features/Post/PostSlice';
 
 const style = {
     position: 'absolute',
@@ -72,7 +72,13 @@ function Newsfeed(post) {
             'id': post.post._id,
             'userId': user.data._id
         }
-        dispatch(likePost(data))
+        
+        if(post.post.likes.includes(user.data._id)){
+            console.log("undo like")
+            dispatch(undoLikePost(data))
+        }else{
+            dispatch(likePost(data))
+        }
     }
 
     return (

@@ -4,6 +4,7 @@ import SendIcon from '@mui/icons-material/Send';
 import styles from "./Comments.module.css";
 
 import { useSelector, useDispatch } from 'react-redux';
+import { createComment, deleteComment } from '../../features/Comment/CommentSlice';
 
 const Comment = (comment) => {  
     const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Comment = (comment) => {
         event.preventDefault();
 
         console.log(comment)
+        // dispatch(createComment())
     }
 
     return(
@@ -34,9 +36,9 @@ const Comment = (comment) => {
             </form>
             
             {comment.comment.length != 0 ? (
-                <Box>
+                <Box sx={{marginTop: 2}} className={styles.comment_container}>
                     {comment.comment.map((data) => (
-                        <Box key={data._id} sx={{marginTop: 2, borderRadius: 2, padding: 2, background: '#e6e7ee'}}>
+                        <Box className={styles.comment_items} key={data._id} sx={{marginBottom: 2, borderRadius: 2, padding: 2, background: '#e6e7ee'}}>
                             <Typography sx={{fontSize: '0.875rem', lineHeight: '1.2', marginBottom: 1}}>
                                 {data.comment}
                             </Typography>

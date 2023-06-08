@@ -12,3 +12,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#file[type="file"] {
+	display: none;
+}
+
+.image_upload_label{
+  display: flex;
+  align-items: 'center'
+}
+label.image_upload_label:hover{
+  cursor: pointer;
+  color: #1976d2;
+}

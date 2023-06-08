@@ -15,8 +15,24 @@ const createComment = async (postData, token) => {
     const response = await axios.post(API + postData.id  + '/comment', body, config)
     return response.data
 }
+
+// delete comment
+const deleteComment = async (postData, token) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    }    
+    const body = {
+        "userId": postData.userId
+    }
+    const response = await axios.patch(API + postData.id  + '/comment', body, config)
+    return response.data
+}
+
 const commentService = {
-    createComment
+    createComment,
+    deleteComment
 }
 
 export default commentService;

@@ -15,7 +15,7 @@ const initialState = {
 // Create post
 export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;
+        const token = thunkAPI.getState().auth.user._id;
         return await postService.createPost(postData, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
@@ -26,7 +26,7 @@ export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) =
 // Update post
 export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;
+        const token = thunkAPI.getState().auth.user._id;
         return await postService.updatePost(id, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
@@ -37,7 +37,7 @@ export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, t
 // Get all posts
 export const getAllPosts = createAsyncThunk('posts/getPosts', async(_, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;
+        const token = thunkAPI.getState().auth.user._id;
         return await postService.getAllPosts(token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
@@ -49,7 +49,7 @@ export const getAllPosts = createAsyncThunk('posts/getPosts', async(_, thunkAPI)
 // Get post
 export const getSinglePost = createAsyncThunk('posts/getPost', async(id, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;
+        const token = thunkAPI.getState().auth.user._id;
         return await postService.getSinglePost(id, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
@@ -60,9 +60,7 @@ export const getSinglePost = createAsyncThunk('posts/getPost', async(id, thunkAP
 // Delete posts
 export const deletePost = createAsyncThunk('posts/deletePost', async(id, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;
-
-        console.log("slice ... ", id)
+        const token = thunkAPI.getState().auth.user._id;
         return await postService.deletePost(id, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
@@ -73,7 +71,7 @@ export const deletePost = createAsyncThunk('posts/deletePost', async(id, thunkAP
 // Like posts
 export const likePost = createAsyncThunk('posts/like', async(postData, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;        
+        const token = thunkAPI.getState().auth.user._id;        
         return await postService.LikePost(postData, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
@@ -82,11 +80,11 @@ export const likePost = createAsyncThunk('posts/like', async(postData, thunkAPI)
 })
 
 
-// Dislike posts
-export const dislikePost = createAsyncThunk('posts/dislike', async(postData, thunkAPI) => {
+// Undo like posts
+export const undoLikePost = createAsyncThunk('posts/undoLike', async(postData, thunkAPI) => {
     try{
-        const token = thunkAPI.getState().auth.user.token;
-        return await postService.disLikePost(postData, token)
+        const token = thunkAPI.getState().auth.user._id;
+        return await postService.undoLikePost(postData, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -148,11 +146,10 @@ export const postSlice = createSlice({
             .addCase(updateSinglePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                const index = state.findIndex(post => post._id === action.payload.data._id);                
-                state.posts = state[index] = {
-                    ...state[index],
-                    ...action.payload,
-                };
+                const {_id} = action.payload;
+                state.posts = state.posts.map((post) =>
+                    post._id === _id ? { ...post, ...action.payload } : post
+                );
             })
             .addCase(updateSinglePost.rejected, (state, action) => {
                 state.isLoading = false
@@ -178,7 +175,7 @@ export const postSlice = createSlice({
             .addCase(likePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                const { _id } = action.payload;
+                const {_id} = action.payload;
                 state.posts = state.posts.map((post) =>
                     post._id === _id ? { ...post, ...action.payload } : post
                 );
@@ -188,15 +185,18 @@ export const postSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
-            .addCase(dislikePost.pending, (state) => {
+            .addCase(undoLikePost.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(dislikePost.fulfilled, (state, action) => {
+            .addCase(undoLikePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.posts = action.payload
+                const {_id2} = action.payload;
+                state.posts = state.posts.map((post) =>
+                    post._id === _id2 ? { ...post, ...action.payload } : post
+                );
             })
-            .addCase(dislikePost.rejected, (state, action) => {
+            .addCase(undoLikePost.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
