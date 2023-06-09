@@ -29,3 +29,7 @@
 .send_btn_wrap:hover{
     background: #f6f6f6 !important;    
 }
+.readmore{
+    color: #1976d2 !important;
+    cursor: pointer;
+}

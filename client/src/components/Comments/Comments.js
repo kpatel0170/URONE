@@ -19,9 +19,14 @@ const Comment = (comment) => {
     const [commentInput, setCommentInput] = useState('');
     const isEmpty = commentInput.trim().length === 0;
     const [firstTimeDisplay, setFirstTimeDisplay] = useState(true); 
+    const [isReadMore, setIsReadMore]= useState(true);
 
     const commentInputHandler = (event) => {
         setCommentInput(event.target.value)
+    }
+
+    const readMoreHandler = () => {
+        setIsReadMore(!isReadMore)
     }
 
     const submitCommentHandler = (event) => {
@@ -70,9 +75,32 @@ const Comment = (comment) => {
                 <Box ref={scrollCommentRef} sx={{marginTop: 2, paddingRight: '20px'}} className={styles.comment_container}>
                     {comment.comment.comments.map((data) => (
                         <Box className={styles.comment_items} key={data._id} sx={{marginBottom: 2, borderRadius: 2, padding: 2, background: '#e6e7ee'}}>
-                            <Typography sx={{fontSize: '0.875rem', lineHeight: '1.2', marginBottom: 1}}>
-                                {data.comment}
-                            </Typography>
+                            <Box sx={{marginBottom: 1}}>
+                                {data.comment.length > 250 ?
+                                    <>
+                                    {isReadMore ? (
+                                        <>
+                                            <Typography sx={{fontSize: '0.875rem', lineHeight: '1.3', color: '#6e6f78'}}>
+                                                {data.comment.slice(0, 250) + `...` } 
+                                                <span onClick={readMoreHandler} className={styles.readmore}> read more</span>
+                                            </Typography>
+                                        </>
+                                    ) :                                 
+                                    (
+                                        <>
+                                            <Typography sx={{fontSize: '0.875rem', lineHeight: '1.3', color: '#6e6f78'}}>
+                                                {data.comment}
+                                                <span onClick={readMoreHandler} className={styles.readmore}> read less</span>
+                                            </Typography>
+                                        </>
+                                    )}
+                                </> 
+                            : 
+                                <Typography sx={{fontSize: '0.875rem', lineHeight: '1.3', color: '#6e6f78'}}>
+                                    {data.comment}
+                                </Typography>
+                            } 
+                            </Box>
                             <Box sx={{display: 'flex', justifyContent: 'end', alignItems: 'center'}}>
                                 {/* <Avatar
                                     alt="Remy Sharp"
@@ -90,7 +118,7 @@ const Comment = (comment) => {
                                         </>
                                     )
                                 }
-                                <Typography variant="subtitle1" sx={{fontWeight: '500', pr: 1, pl: 1}}>{data.userId.name}</Typography>
+                                <Typography variant="subtitle1" sx={{fontWeight: '500', pr: 1, pl: 1, color: '#5f6069'}}>{data.userId.name}</Typography>
                                 <Box sx={{width: '3px', height: '3px', background: '#95969c', borderRadius: '50%'}}></Box>
                                 <Typography variant="subtitle1" sx={{fontSize: '0.8rem', lineHeight: '2.2', pl: 1}}>{data.at.slice(0, 10)}</Typography>
                             </Box>
