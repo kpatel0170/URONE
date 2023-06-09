@@ -23,7 +23,6 @@ function Home() {
   )
 
   useEffect(() => {
-    console.log('general ... ')
     if (isError) {
       console.log(message)
     }
@@ -32,7 +31,6 @@ function Home() {
       navigate('/login')
     }else{
       if(!isError){
-        console.log('no error')
         dispatch(getAllPosts())
         console.log(posts)
       }

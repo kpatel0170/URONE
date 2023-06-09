@@ -5,7 +5,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, IconButton } from '@mui/material';
 
 function Slider(media) {
-    console.log(media)
     const baseUrl = 'https://rone.onrender.com/posts/';
     
     const [currentActiveSlide, setCurrentActiveSlide] = useState(0);     
@@ -21,8 +20,8 @@ function Slider(media) {
     return (
         <Box>
             <Box sx={{position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', marginX:2, background: '#e6e7ee'}}> 
-                <IconButton sx={{position: 'absolute', left: '1rem', top: '50%', zIndex: 10}}>
-                    <ArrowBackIosIcon onClick ={previousSlide} />
+                <IconButton onClick ={previousSlide} sx={{position: 'absolute', left: '1rem', top: '50%', zIndex: 10}}>
+                    <ArrowBackIosIcon />
                 </IconButton>
                                
                 {media.media.map((currentSlide, index) => {
@@ -37,8 +36,8 @@ function Slider(media) {
                     );
                 })}
 
-                <IconButton sx={{position: 'absolute', right: '1rem', top: '50%', zIndex: 10}}> 
-                    <ArrowForwardIosIcon onClick ={nextSlide} />
+                <IconButton onClick ={nextSlide} sx={{position: 'absolute', right: '1rem', top: '50%', zIndex: 10}}> 
+                    <ArrowForwardIosIcon />
                 </IconButton>
             </Box>
         </Box>

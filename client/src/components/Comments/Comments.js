@@ -17,7 +17,7 @@ const Comment = (comment) => {
 
     const [commentInput, setCommentInput] = useState('');
     const isEmpty = commentInput.trim().length === 0;
- 
+    const [firstTimeDisplay, setFirstTimeDisplay] = useState(true); 
 
     const commentInputHandler = (event) => {
         setCommentInput(event.target.value)
@@ -35,13 +35,14 @@ const Comment = (comment) => {
         }  
         dispatch(createComment(data))
         setCommentInput("");
+        setFirstTimeDisplay(false);
     }
 
     useEffect(() => {
-        if (scrollCommentRef.current) {
-          scrollCommentRef.current.scrollTop = scrollCommentRef.current.scrollHeight;
+        if (!firstTimeDisplay && scrollCommentRef.current) { // Scroll after comment success
+            scrollCommentRef.current.scrollTop = scrollCommentRef.current.scrollHeight;
         }
-      }, [comment.comment.comments]);
+      }, [comment.comment.comments, firstTimeDisplay]);
 
     return(
         <Box sx={{ borderTop: 1, borderColor: '#dcdcdc', paddingTop: 3}}>
