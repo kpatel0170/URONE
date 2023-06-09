@@ -8,6 +8,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CloseIcon from '@mui/icons-material/Close';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 import Comment from '../../components/Comments/Comments';
 import styles from './Newsfeed.module.css';
@@ -115,18 +116,22 @@ function Newsfeed(post) {
 
     const renderImageSlider = (data) => {
         if(data.length === 1){
-            return data.map((sliderImage, index) => {
-                return (
-                    <Box key={index}>
-                        <CardMedia
-                            component="img"
-                            image={baseUrl + sliderImage}
-                            alt="rone_image"
-                            sx={{height: '350px'}}
-                        />
-                    </Box>
-                )
-            })
+            return (
+                <Box sx={{paddingX: 2}}>
+                    {data.map((sliderImage, index) => {
+                        return (
+                            <Box key={index}>
+                                <CardMedia
+                                    component="img"
+                                    image={baseUrl + sliderImage}
+                                    alt="rone_image"
+                                    sx={{height: '350px'}}
+                                />
+                            </Box>
+                        )
+                    })}
+                </Box>
+            )
         }else{
             return (
                 <Slider media={data} />
@@ -138,7 +143,43 @@ function Newsfeed(post) {
         <>        
         {user && 
         <Card key={post.post._id} sx={{ maxWidth: 540, mt: 3, padding: 2, marginBottom: 2 }} className={styles.card_wrap}>                        
-            <CardHeader
+            <Box sx={{display: 'flex', justifyContent: 'space-between', padding: 2}}>
+                <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                    <Box>
+                        {post.post.userId?.profilePicture != undefined ?                                     
+                            (
+                                <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
+                            ) :
+                            (   <Box sx={{display: 'flex'}}>
+                                    <Box sx={{color: '#85868f', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#e6e7ee'}}>
+                                        <PersonOutlineIcon />
+                                    </Box>
+                                </Box>
+                            )
+                        }
+                    </Box>
+                    <Box sx={{paddingLeft: 2}}>
+                        <Box>
+                            <Typography sx={{color: '#rgba(0, 0, 0, 0.87)', fontSize: '0.875rem'}}>{post.post.userId?.name}</Typography>
+                        </Box>
+                        <Box>
+                            <Typography sx={{color: 'rgba(0, 0, 0, 0.6)', fontSize: '0.875rem'}}>{post.post.createdAt.slice(0, 10)}</Typography>
+                        </Box>
+                    </Box>
+                </Box>
+
+                <Box>
+                    <IconButton 
+                            aria-label="settings" 
+                            onClick={enableToggleHandler}
+                            style={{ display: post.post.userId?._id === user.data._id ? 'flex' : 'none' }}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                </Box>
+            </Box>
+            
+            {/* <CardHeader
                 avatar={
                     <Avatar 
                     aria-label="user-avatar"
@@ -156,7 +197,7 @@ function Newsfeed(post) {
                 }
                 title={post.post.userId?.name}
                 subheader={post.post.createdAt.slice(0, 10)}
-            />
+            /> */}
                 <Menu
                     id="profile-menu"
                     anchorEl={toggle}

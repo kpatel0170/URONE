@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Typography, Box, TextField, Avatar, Button} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import styles from "./Comments.module.css";
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -73,11 +74,22 @@ const Comment = (comment) => {
                                 {data.comment}
                             </Typography>
                             <Box sx={{display: 'flex', justifyContent: 'end', alignItems: 'center'}}>
-                                <Avatar
+                                {/* <Avatar
                                     alt="Remy Sharp"
                                     src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80"
                                     sx={{ width: 27, height: 27 }}
-                                />
+                                /> */}
+                                {data.userId?.profilePicture != undefined ?                                     
+                                    (
+                                        <Avatar sx={{width: 27, height: 27}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
+                                    ) :
+                                    (   <>
+                                            <Box sx={{background: '#f3f3f3', width: '27px', height: '27px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>
+                                                <PersonOutlineIcon />
+                                            </Box>
+                                        </>
+                                    )
+                                }
                                 <Typography variant="subtitle1" sx={{fontWeight: '500', pr: 1, pl: 1}}>{data.userId.name}</Typography>
                                 <Box sx={{width: '3px', height: '3px', background: '#95969c', borderRadius: '50%'}}></Box>
                                 <Typography variant="subtitle1" sx={{fontSize: '0.8rem', lineHeight: '2.2', pl: 1}}>{data.at.slice(0, 10)}</Typography>

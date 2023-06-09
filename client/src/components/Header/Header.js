@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography } from '@mui/material';
 
@@ -50,9 +51,20 @@ const Header = props => {
                             {/* <Search /> */}
                         </Grid>
                         <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                            <Button onClick={enableToggleHandler} sx={{background: 'transparent', color: '#9a9595'}}>
-                                <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="Remy Sharp" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />                                
-                                {/* <Typography sx={{paddingX: 1}}>{user.data.name}</Typography> */}
+                            <Button onClick={enableToggleHandler} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
+                                {user.data?.profilePicture != undefined ?                                     
+                                    (
+                                        <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
+                                    ) :
+                                    (   <>
+                                            <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: 2, borderColor: '#1473E6', background: '#e6e7ee'}}>
+                                                <PersonOutlineIcon />
+                                            </Box>
+                                        </>
+                                    )
+                                }
+                                
+                                <Typography sx={{paddingX: 1}}>{user.data.name}</Typography>
                                 <Box>
                                     <MoreVertIcon />
                                 </Box>
