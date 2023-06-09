@@ -5,6 +5,16 @@
     max-height: 350px;
     overflow: overlay;
 }
+.comment_container::-webkit-scrollbar { 
+  background: transparent;
+  width: 5px;
+}
+
+.comment_container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, .3);
+}
+
 .comment_items:last-child{
     margin-bottom: 0;
 }
@@ -15,6 +25,7 @@
     min-width: auto !important;
     border-radius: 50% !important;
 }
+
 .send_btn_wrap:hover{
     background: #f6f6f6 !important;    
 }
