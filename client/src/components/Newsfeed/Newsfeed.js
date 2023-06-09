@@ -12,6 +12,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Comment from '../../components/Comments/Comments';
 import styles from './Newsfeed.module.css';
 
+import Slider from '../Slider/Slider';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { deletePost, likePost, disLikePost } from '../../features/Post/PostSlice';
 
@@ -42,8 +44,9 @@ function Newsfeed(post) {
     const baseUrl = 'https://rone.onrender.com/posts/';
 
     const images = [
-        'https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80',
-        'https://media1.popsugar-assets.com/files/thumbor/LVytyEgKryOQhGCoQis8Uudzpp0/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/09/23/953/n/1922507/c3018d08a1be257e_pexels-sharon-mccutcheon-3713892/i/Pastel-iPhone-Wallpaper.jpg']
+        'https://www.researchgate.net/publication/352855059/figure/fig1/AS:1040501021097984@1625086183640/a-Sample-Image-of-size-64x64.ppm',
+        'https://media1.popsugar-assets.com/files/thumbor/LVytyEgKryOQhGCoQis8Uudzpp0/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/09/23/953/n/1922507/c3018d08a1be257e_pexels-sharon-mccutcheon-3713892/i/Pastel-iPhone-Wallpaper.jpg',
+        'https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80']
     const [currentImgIndex, setCurrentImgIndex] = useState(0);
     const nextSlide = () => {
         setCurrentImgIndex((prevIndex) =>
@@ -101,13 +104,34 @@ function Newsfeed(post) {
         dispatch(likePost(data))
     }
 
-    const likeHandler1 = (event) => {
+    const dislikeHandler = (event) => {
         const data = {
             'id': post.post._id,
             'userId': user.data._id
         }
         
         dispatch(disLikePost(data))
+    }
+
+    const renderImageSlider = (data) => {
+        if(data.length === 1){
+            return data.map((sliderImage, index) => {
+                return (
+                    <Box key={index}>
+                        <CardMedia
+                            component="img"
+                            image={baseUrl + sliderImage}
+                            alt="rone_image"
+                            sx={{height: '350px'}}
+                        />
+                    </Box>
+                )
+            })
+        }else{
+            return (
+                <Slider media={data} />
+            )
+        }
     }
 
     return (
@@ -141,7 +165,6 @@ function Newsfeed(post) {
                     MenuListProps={{
                     'aria-labelledby': 'profile-button',
                     }}
-                    
                 >
                     <MenuItem name="delete_post" onClick={showDeletePostModal} sx={{ width: '250px'}}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Delete Post</MenuItem>
                 </Menu>
@@ -178,19 +201,24 @@ function Newsfeed(post) {
                 </CardContent>
             }
             {post.post.image.length != 0 &&
-                // <Box sx={{width: 1, position: 'relative'}}>
-                //     <SimpleImageSlider
-                //         width="100%"
-                //         height={250}
-                //         position="relative"
-                //         images={baseUrl + post.post.image}
-                //         showBullets={true}
-                //         showNavs={true}
-                //     />
-                // </Box>
+
+                
+                
 
                 <>
-                <Box className="image-slider" sx={{display: 'flex'}}>
+                {/* <Box sx={{width: 1, position: 'relative'}}>
+                    <SimpleImageSlider
+                        width="100%"
+                        height={250}
+                        position="relative"
+                        images={images}
+                        showBullets={true}
+                        showNavs={true}
+                    />
+                </Box> */}
+                
+                {renderImageSlider(post.post.image)}
+                {/* <Box className="image-slider" sx={{display: 'flex'}}>
                     {post.post.image.map((image, index) => (
                         <Box key={index}>
                             <CardMedia
@@ -201,7 +229,7 @@ function Newsfeed(post) {
                             />
                         </Box>
                     ))}
-                </Box>
+                </Box> */}
                 {/* <Box className="image-slider" sx={{display: 'flex'}}>
                     {post.post.image.map((image, index) => (
                         <Box key={index}>
@@ -210,10 +238,7 @@ function Newsfeed(post) {
                     ))}
                 </Box> */}
                 </>
-            }
-
-
-                
+            }   
             
 
             {/* image slider */}
@@ -222,6 +247,8 @@ function Newsfeed(post) {
                 <img src={images[currentImgIndex]} alt="Slider" />
                 <button onClick={nextSlide}>Next</button>
             </div> */}
+
+
             <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, marginBottom: 0, justifyContent: 'space-between' }}>              
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
                     {post.post.likes.length != 0 &&
@@ -235,7 +262,7 @@ function Newsfeed(post) {
                     {post.post.dislikes.length != 0 &&
                         <Typography sx={{marginRight: 1}}>{post.post.dislikes.length}</Typography>
                     }
-                    <IconButton aria-label="down-voting" onClick={likeHandler1} style={{ color: post.post.dislikes.includes(user.data._id) ? '#1976d2' : '' }}>
+                    <IconButton aria-label="down-voting" onClick={dislikeHandler} style={{ color: post.post.dislikes.includes(user.data._id) ? '#1976d2' : '' }}>
                         <ThumbDownOffAltIcon />
                     </IconButton>
                 </Box>
