@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userLogin, reset } from '../../features/Auth/AuthSlice';
 import { Box, TextField, Button, Typography, Grid } from '@mui/material';
 import styles from "./Login.module.css";
+import Loading from '../../components/Loading/Loading';
 
 function Login() {
     const dispatch = useDispatch();
@@ -119,68 +120,71 @@ function Login() {
     }
 
     return (
-        <Grid container sx={{height: '100vh', alignItems: 'center'}} className={styles.grid_wrap}>
-            <Grid item xs={0} md={8} lg={8} className={`${styles.login_bg} ${styles.hide_sm}`} sx={{height: '100%'}}>
-                <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh', paddingX: 9}}>
-                    <Typography sx={{fontSize: '11rem', fontWeight: 'bold', color: 'white'}}>rOne</Typography>
-                    <Typography sx={{color: 'white', width: 3/4,}}>
-                        Be the one to connect through rOne ...
-                    </Typography>
-                </Box>
+        <>
+            {isLoading && <Loading />}
+            <Grid container sx={{height: '100vh', alignItems: 'center'}} className={styles.grid_wrap}>
+                <Grid item xs={0} md={8} lg={8} className={`${styles.login_bg} ${styles.hide_sm}`} sx={{height: '100%'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100vh', paddingX: 9}}>
+                        <Typography sx={{fontSize: '11rem', fontWeight: 'bold', color: 'white'}}>rOne</Typography>
+                        <Typography sx={{color: 'white', width: 3/4,}}>
+                            Be the one to connect through rOne ...
+                        </Typography>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} sm={7} md={4} lg={4} sx={{px: 4}}>
+                    <Box sx={{mb: 5, textAlign: 'center'}}>
+                        <Typography sx={{textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>
+                        <Typography>Sign in to access your account</Typography>
+                    </Box>
+                    <form sx={{width: 1}} onSubmit={loginFormHandler}>
+                        <Box sx={{mb:2}}>
+                            <Typography>Email</Typography>
+                            <TextField 
+                                id="email" 
+                                name="email"
+                                type="email" 
+                                onChange={formInputHandler}
+                                onBlur={formValidateHandler}
+                                value={email}
+                                placeholder="Enter email"
+                                sx={{width:1}}
+                                className={styles.user_input}
+                                />
+                            {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.email}</Typography>}
+                        </Box>
+                        <Box>
+                            <Typography>Password</Typography>
+                            <TextField
+                                id="password" 
+                                name="password"
+                                type="password" 
+                                onChange={formInputHandler}
+                                onBlur={formValidateHandler}
+                                value={password}
+                                placeholder="********"
+                                sx={{width:1}}
+                                className={styles.user_input}
+                                />
+                            {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.password}</Typography>}
+                        </Box>
+                            {formError.error && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.error}</Typography>}
+                        <Box>
+                            <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6', boxShadow: 0}} type="submit">
+                                Sign In
+                            </Button>
+                        </Box>
+                    </form>
+                    <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: '#dedede' }}>
+                        {/* <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
+                            Sign In with Google
+                        </Button> */}
+                        <Link to="/register">
+                            <Button variant="outlined" sx={{ mt: 4, p:1, width: 1, borderRadius: '25px', border: 2, borderColor: '#dedede'}} className={styles.button_wrap}>New to rOne? Join now</Button>
+                        </Link>
+                    </Box>
+                </Grid>
             </Grid>
-            <Grid item xs={12} sm={7} md={4} lg={4} sx={{px: 4}}>
-                <Box sx={{mb: 5, textAlign: 'center'}}>
-                    <Typography sx={{textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>
-                    <Typography>Sign in to access your account</Typography>
-                </Box>
-                <form sx={{width: 1}} onSubmit={loginFormHandler}>
-                    <Box sx={{mb:2}}>
-                        <Typography>Email</Typography>
-                        <TextField 
-                            id="email" 
-                            name="email"
-                            type="email" 
-                            onChange={formInputHandler}
-                            onBlur={formValidateHandler}
-                            value={email}
-                            placeholder="Enter email"
-                            sx={{width:1}}
-                            className={styles.user_input}
-                            />
-                        {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.email}</Typography>}
-                    </Box>
-                    <Box>
-                        <Typography>Password</Typography>
-                        <TextField
-                            id="password" 
-                            name="password"
-                            type="password" 
-                            onChange={formInputHandler}
-                            onBlur={formValidateHandler}
-                            value={password}
-                            placeholder="********"
-                            sx={{width:1}}
-                            className={styles.user_input}
-                            />
-                        {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.password}</Typography>}
-                    </Box>
-                        {formError.error && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.error}</Typography>}
-                    <Box>
-                        <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6', boxShadow: 0}} type="submit">
-                            Sign In
-                        </Button>
-                    </Box>
-                </form>
-                <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: '#dedede' }}>
-                    {/* <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
-                        Sign In with Google
-                    </Button> */}
-                    <Link to="/register">
-                        <Button variant="outlined" sx={{ mt: 4, p:1, width: 1, borderRadius: '25px', border: 2, borderColor: '#dedede'}} className={styles.button_wrap}>New to rOne? Join now</Button>
-                    </Link>
-                </Box>
-            </Grid>
-        </Grid>
+        </>
     )
 }
 

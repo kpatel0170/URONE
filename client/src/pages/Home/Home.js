@@ -7,8 +7,8 @@ import { Box, Grid, Typography} from '@mui/material';
 
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
-import Comment from '../../components/Comments/Comments';
 import Newsfeed from '../../components/Newsfeed/Newsfeed';
+import Loading from '../../components/Loading/Loading';
 
 import { getAllPosts, reset } from '../../features/Post/PostSlice';
 
@@ -49,7 +49,7 @@ function Home() {
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={12} sm={9} sx={{width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>          
           {isLoading ? (
-              <Box> data is still loading </Box>
+              <Loading />
             ) : (
               <Box>
                 {posts.length != 0 ? (
