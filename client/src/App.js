@@ -1,5 +1,6 @@
-import React, {Fragment, useState} from 'react';
+
 import { Route, Routes } from "react-router-dom";
+// import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import './main.css';
 
 import Register from './pages/Register/Register';

@@ -59,12 +59,16 @@ export default function PostForm(props) {
 
     const filesUploadHandler = (event) => {
         console.log(event.target.files)
-        const uploadedImage = Array.prototype.slice.call(event.target.files);
+        // const uploadedImage = Array.prototype.slice.call(event.target.files);
+        const uploadedImage = event.target.files;
+        console.log('...image', formData.image)
 
         setFormData((prevFormData) => ({
             ...prevFormData,
-            image: [...uploadedImage]
+            image: [...prevFormData.image,...uploadedImage], 
         }));
+
+        console.log('...AFimage', formData.image)
 
         if(event.target.files){
             const files = Array.from(event.target.files).map((file)=> URL.createObjectURL(file))
@@ -80,6 +84,10 @@ export default function PostForm(props) {
         console.log(index)
         const filteredImages = previewImages.filter((_, i) => i !== index);
         setPreviewImages(filteredImages);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: [...filteredImages]
+        }));
     }
 
     const renderImagePreview = (data) => {

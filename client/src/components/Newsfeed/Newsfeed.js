@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SimpleImageSlider from "react-simple-image-slider";
 
 import { Button, Modal, Box, Typography, Card, CardHeader, CardContent, CardMedia, CardActions, Avatar, IconButton, Collapse, Menu, MenuItem, } from '@mui/material';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
@@ -80,12 +81,18 @@ function Newsfeed(post) {
         }
     };
 
+    const showDeletePostModal = (event) => {
+        setModal(true);
+        setToggle(null);
+    }
+
     const deletePostHandler = (event)=> {
         setModal(false);
         dispatch(deletePost(post.post._id))
     }
 
     const likeHandler = (event) => {
+        console.log('like handler from post list[newsfeed]')
         const data = {
             'id': post.post._id,
             'userId': user.data._id
@@ -126,7 +133,6 @@ function Newsfeed(post) {
                 title={post.post.userId?.name}
                 subheader={post.post.createdAt.slice(0, 10)}
             />
-                {user.data._id} - {post.post.userId?._id} 
                 <Menu
                     id="profile-menu"
                     anchorEl={toggle}
@@ -137,7 +143,7 @@ function Newsfeed(post) {
                     }}
                     
                 >
-                    <MenuItem name="delete_post" onClick={hideToggleHandler} sx={{ width: '250px'}}><DeleteOutlineIcon sx={{paddingRight: 1}} /> Delete Post</MenuItem>
+                    <MenuItem name="delete_post" onClick={showDeletePostModal} sx={{ width: '250px'}}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Delete Post</MenuItem>
                 </Menu>
             {post.post.text && 
                 <CardContent sx={{paddingTop: 0}}>
@@ -172,16 +178,42 @@ function Newsfeed(post) {
                 </CardContent>
             }
             {post.post.image.length != 0 &&
-                <Box sx={{margin: 2}}>
-                    <CardMedia
-                        component="img"
-                        image={baseUrl + post.post.image[0]}
-                        alt="rone_image"
-                        sx={{height: '250px'}}
-                    />
+                // <Box sx={{width: 1, position: 'relative'}}>
+                //     <SimpleImageSlider
+                //         width="100%"
+                //         height={250}
+                //         position="relative"
+                //         images={baseUrl + post.post.image}
+                //         showBullets={true}
+                //         showNavs={true}
+                //     />
+                // </Box>
+
+                <>
+                <Box className="image-slider" sx={{display: 'flex'}}>
+                    {post.post.image.map((image, index) => (
+                        <Box key={index}>
+                            <CardMedia
+                                component="img"
+                                image={baseUrl + post.post.image[index]}
+                                alt="rone_image"
+                                sx={{height: '250px'}}
+                            />
+                        </Box>
+                    ))}
                 </Box>
+                {/* <Box className="image-slider" sx={{display: 'flex'}}>
+                    {post.post.image.map((image, index) => (
+                        <Box key={index}>
+                            <img src={baseUrl + post.post.image[index]} sx={{height: '250px'}}/>
+                        </Box>
+                    ))}
+                </Box> */}
+                </>
             }
 
+
+                
             
 
             {/* image slider */}

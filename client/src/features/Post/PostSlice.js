@@ -9,6 +9,7 @@ const initialState = {
     isError: false,
     isSuccess: false,
     isLoading: false,
+    isCommentLoading: false,
     message: ''
 }
 
@@ -148,7 +149,7 @@ export const postSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(deletePost.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false;
             })
             .addCase(deletePost.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -192,7 +193,7 @@ export const postSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(likePost.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false;
             })
             .addCase(likePost.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -208,7 +209,7 @@ export const postSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(disLikePost.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false;
             })
             .addCase(disLikePost.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -224,10 +225,12 @@ export const postSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(createComment.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false
+                state.isCommentLoading = true;
             })
             .addCase(createComment.fulfilled, (state, action) => {
                 state.isLoading = false
+                state.isCommentLoading = false
                 state.isSuccess = true
                 const {_id} = action.payload;
                 state.posts = state.posts.map((post) =>
@@ -236,6 +239,7 @@ export const postSlice = createSlice({
             })
             .addCase(createComment.rejected, (state, action) => {
                 state.isLoading = false
+                state.isCommentLoading = false
                 state.isError = true
                 state.message = action.payload
             })

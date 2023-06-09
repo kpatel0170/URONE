@@ -9,6 +9,9 @@ import { createComment } from '../../features/Post/PostSlice';
 const Comment = (comment) => {  
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
+    const { isCommentLoading } = useSelector(
+        (state) => state.post
+    )
 
     const [commentInput, setCommentInput] = useState('');
     const isEmpty = commentInput.trim().length === 0;
@@ -52,6 +55,8 @@ const Comment = (comment) => {
                     </Button>
                 </Box>
             </form>
+
+            {isCommentLoading && <Box>... loading </Box>}
             
             {comment.comment.comments.length != 0 ? (
                 <Box sx={{marginTop: 2}} className={styles.comment_container}>

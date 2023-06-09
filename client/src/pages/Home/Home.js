@@ -23,6 +23,7 @@ function Home() {
   )
 
   useEffect(() => {
+    console.log('general ... ')
     if (isError) {
       console.log(message)
     }
@@ -31,6 +32,7 @@ function Home() {
       navigate('/login')
     }else{
       if(!isError){
+        console.log('no error')
         dispatch(getAllPosts())
         console.log(posts)
       }
@@ -57,16 +59,10 @@ function Home() {
                         <Newsfeed post={post}/>
                       </Box>
                     ))}
-                    
                   </>
                 ) : (
                   <Typography>No post yet</Typography>
                 )}
-                {/* {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post) => (
-                  <Box key={post._id}>
-                    <Newsfeed post={post}/>
-                  </Box>
-                ))} */}
               </Box>
           )}
         </Grid>
