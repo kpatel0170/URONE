@@ -25,3 +25,26 @@ label.image_upload_label:hover{
   cursor: pointer;
   color: #1976d2;
 }
+
+
+/* smartphones, iPhone, portrait 480x320 phones */
+@media (min-width:320px)  {  
+  .modal_wrap{
+    width: 80%;
+  }
+}
+@media (min-width:481px)  {
+  .modal_wrap{
+    width: 80%;
+  }
+}
+@media (min-width:482px) and (max-width:640px) {
+  .modal_wrap{
+    width: 50% !important;
+  }
+}
+@media (min-width:960px)  {
+  .modal_wrap{
+    width: 30% !important;
+  }
+}

@@ -126,7 +126,7 @@ function Newsfeed(post) {
                 title={post.post.userId?.name}
                 subheader={post.post.createdAt.slice(0, 10)}
             />
-
+                {user.data._id} - {post.post.userId?._id} 
                 <Menu
                     id="profile-menu"
                     anchorEl={toggle}
@@ -176,7 +176,7 @@ function Newsfeed(post) {
                     <CardMedia
                         component="img"
                         image={baseUrl + post.post.image[0]}
-                        alt="Paella dish"
+                        alt="rone_image"
                         sx={{height: '250px'}}
                     />
                 </Box>
@@ -231,22 +231,23 @@ function Newsfeed(post) {
             aria-describedby="modal-modal-description"
             className='styles.backdrop_wrap'
         >
-            <Box sx={style}>
+
+            <Box className="modal_wrap" sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, borderRadius: 1}}>
                 <Box sx={{position: 'absolute', right: '10px', top: '10px'}}>
                     <IconButton aria-label="close" onClick={modalCloseHandler}>
                         <CloseIcon />
                     </IconButton>
                 </Box>
                 <Box>
-                    <Box sx={{ borderBottom: 1, borderColor: '#dfdfdf', padding: 2, alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
-                        
+                    <Box sx={{ borderBottom: 1, borderColor: '#dfdfdf', padding: 2, alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>                        
                         <Typography variant="h6">Delete Post !</Typography>
                     </Box>
                     <Box sx={{paddingY: 1}}>
                         <Typography sx={{paddingY: 2}}>Are you sure you want to delete your post?</Typography>
                         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                            <Button onClick={modalCloseHandler} variant="contained" sx={{ width: 1.9/4, color: 'black', background: 'gray'}}>No</Button>
-                            <Button onClick={deletePostHandler} variant="contained" color="error" sx={{ width: 1.9/4 }}>Yes, Delete Post</Button>
+                            {/* <Button onClick={modalCloseHandler} variant="contained" sx={{ width: 1.9/4, color: 'black', background: 'rgb(0 0 0 / 10%)', boxShadow: 'none'}} className="cancel_btn">No</Button> */}
+                            <Button onClick={modalCloseHandler} type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                            <Button onClick={deletePostHandler} variant="contained" color="error" sx={{ width: 1.9/4, boxShadow: 'none' }}>Yes, Delete Post</Button>
                         </Box>
                     </Box>
                 </Box>
