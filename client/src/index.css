@@ -25,7 +25,9 @@ label.image_upload_label:hover{
   cursor: pointer;
   color: #1976d2;
 }
-
+.dropdown_width{
+  width: 200px;
+}
 
 /* smartphones, iPhone, portrait 480x320 phones */
 @media (min-width:320px)  {  

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userRegister, reset } from '../../features/Auth/AuthSlice';
-import { Box, Grid, TextField, Button, Typography } from '@mui/material';
+import { Box, Grid, TextField, Button, Typography, MenuItem } from '@mui/material';
 import styles from "../Login/Login.module.css";
 import Loading from '../../components/Loading/Loading';
 
@@ -20,10 +20,11 @@ function Register() {
     name: '',
     email: '',
     password: '',
-    passwordConfirmation: ''
+    passwordConfirmation: '',
+    type: 'student'
   });
 
-  const {name, email, password, passwordConfirmation} = formData;
+  const {name, email, password, passwordConfirmation, type} = formData;
 
   const [formError, setFormError] = useState({
       input_name: '',
@@ -31,8 +32,26 @@ function Register() {
       input_password: '',
       input_passwordConfirmation: ''
   });
-
   const { input_name, input_email, input_password, input_passwordConfirmation } = formError;
+
+  const userType = [
+    {
+      value: 'student',
+      label: 'student',
+    },
+    {
+      value: 'professor',
+      label: 'professor',
+    },
+    {
+      value: 'staff',
+      label: 'staff',
+    },
+    {
+      value: 'other',
+      label: 'other',
+    }
+  ]
 
   useEffect(() => {
     if(isError){
@@ -132,7 +151,8 @@ function Register() {
           name,
           email,
           password,
-          passwordConfirmation
+          passwordConfirmation,
+          type
         }
 
         console.log(userData)
@@ -191,7 +211,7 @@ function Register() {
                         />
                       {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.password}</Typography>}
                 </Box>
-                <Box>
+                <Box sx={{mb:2}}>
                     <Typography sx={{mb: 1}}>Confirm Password</Typography>
                     <TextField
                         id="passwordConfirmation" 
@@ -205,6 +225,24 @@ function Register() {
                         className={styles.user_input}
                         />
                     {formError.passwordConfirmation && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.passwordConfirmation}</Typography>}
+                </Box>
+                <Box>
+                  <Typography sx={{mb: 1}}>Type</Typography>
+                  <TextField
+                    id="type"
+                    name="type"
+                    select
+                    defaultValue="student"
+                    sx={{width: '100%'}}  
+                    size='small'
+                    onChange={formInputHandler}             
+                  >
+                    {userType.map((option) => (
+                      <MenuItem name={option.value} key={option.value} value={option.value} className={styles.user_input}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Box>
                 <Box>
                     <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6',}} type="submit">
