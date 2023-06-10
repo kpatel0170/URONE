@@ -107,7 +107,7 @@ const Comment = (comment) => {
                                     src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80"
                                     sx={{ width: 27, height: 27 }}
                                 /> */}
-                                {data.userId?.profilePicture != undefined ?                                     
+                                {data.userId?.profilePicture.length != 0 ?                                     
                                     (
                                         <Avatar sx={{width: 27, height: 27}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
                                     ) :

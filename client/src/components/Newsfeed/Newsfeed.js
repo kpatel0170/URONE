@@ -146,7 +146,7 @@ function Newsfeed(post) {
             <Box sx={{display: 'flex', justifyContent: 'space-between', padding: 2}}>
                 <Box sx={{display: 'flex', justifyContent: 'center'}}>
                     <Box>
-                        {post.post.userId?.profilePicture != undefined ?                                     
+                        {post.post.userId?.profilePicture.length != 0 ?                                     
                             (
                                 <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
                             ) :
@@ -159,8 +159,10 @@ function Newsfeed(post) {
                         }
                     </Box>
                     <Box sx={{paddingLeft: 2}}>
-                        <Box>
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: '#rgba(0, 0, 0, 0.87)', fontSize: '0.875rem'}}>{post.post.userId?.name}</Typography>
+                            <Box sx={{paddingX: '8px'}}><Box sx={{width: '3px', height: '3px', background: '#95969c', borderRadius: '50%'}}></Box></Box>
+                            <Typography sx={{color: '#rgba(0, 0, 0, 0.87)', fontSize: '0.875rem', textTransform: 'capitalized'}}>{post.post.userId?.type}</Typography>
                         </Box>
                         <Box>
                             <Typography sx={{color: 'rgba(0, 0, 0, 0.6)', fontSize: '0.875rem'}}>{post.post.createdAt.slice(0, 10)}</Typography>
