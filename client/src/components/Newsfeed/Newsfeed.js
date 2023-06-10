@@ -11,9 +11,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 import Comment from '../../components/Comments/Comments';
-import styles from './Newsfeed.module.css';
-
 import Slider from '../Slider/Slider';
+import PostForm from '../Post/PostForm';
+import styles from './Newsfeed.module.css';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { deletePost, likePost, disLikePost } from '../../features/Post/PostSlice';
@@ -23,7 +23,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '25%',
+    width: '38%',
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -31,36 +31,17 @@ const style = {
 };
 
 function Newsfeed(post) {
+    const baseUrl = 'https://rone.onrender.com/posts/';
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
 
     const [isComment, setIsComment] = useState(false);
     const [isReadMore, setIsReadMore]= useState(true);
+    const [isEdit, setIsEdit] = useState(false);
     const [toggle, setToggle] = useState(null);
+    const [modal, setModal] = useState(false)        
+
     const isToggle = Boolean(toggle);
-
-    const [modal, setModal] = useState(false)
-    const modalCloseHandler = () => setModal(false);
-
-    const baseUrl = 'https://rone.onrender.com/posts/';
-
-    const images = [
-        'https://www.researchgate.net/publication/352855059/figure/fig1/AS:1040501021097984@1625086183640/a-Sample-Image-of-size-64x64.ppm',
-        'https://media1.popsugar-assets.com/files/thumbor/LVytyEgKryOQhGCoQis8Uudzpp0/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/09/23/953/n/1922507/c3018d08a1be257e_pexels-sharon-mccutcheon-3713892/i/Pastel-iPhone-Wallpaper.jpg',
-        'https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80']
-    const [currentImgIndex, setCurrentImgIndex] = useState(0);
-    const nextSlide = () => {
-        setCurrentImgIndex((prevIndex) =>
-          prevIndex === images.length - 1 ? 0 : prevIndex + 1
-        );
-    };
-    
-    const prevSlide = () => {
-        setCurrentImgIndex((prevIndex) =>
-            prevIndex === 0 ? images.length - 1 : prevIndex - 1
-        );
-    };
-
     const showCommentHandler = () => {
         setIsComment(!isComment);
     };
@@ -74,21 +55,27 @@ function Newsfeed(post) {
     };
 
     const hideToggleHandler = (event) => {
-        console.log(event.target)
-        console.log(event.target.name)
-        console.log("current post", post)
         setToggle(null);
         if(event.target.innerText === 'Delete Post'){
             console.log('delete the current post', post.post._id)
             setModal(true);
-            
         }
     };
 
-    const showDeletePostModal = (event) => {
+    const modalHandler = (type) => {
+        console.log(type)
+        if(type === 'edit'){
+            setIsEdit(true);
+            console.log(post.post)
+        }
         setModal(true);
         setToggle(null);
     }
+
+    const modalCloseHandler = () => {
+        setModal(false);
+        setIsEdit(false);
+    };
 
     const deletePostHandler = (event)=> {
         setModal(false);
@@ -148,7 +135,7 @@ function Newsfeed(post) {
                     <Box>
                         {post.post.userId?.profilePicture.length != 0 ?                                     
                             (
-                                <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
+                                <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src={baseUrl + post.post.userId?.profilePicture} />
                             ) :
                             (   <Box sx={{display: 'flex'}}>
                                     <Box sx={{color: '#85868f', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#e6e7ee'}}>
@@ -180,37 +167,19 @@ function Newsfeed(post) {
                         </IconButton>
                 </Box>
             </Box>
-            
-            {/* <CardHeader
-                avatar={
-                    <Avatar 
-                    aria-label="user-avatar"
-                    src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80">                    
-                    </Avatar>
-                }
-                action={
-                    <IconButton 
-                        aria-label="settings" 
-                        onClick={enableToggleHandler}
-                        style={{ display: post.post.userId?._id === user.data._id ? 'flex' : 'none' }}
-                    >
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={post.post.userId?.name}
-                subheader={post.post.createdAt.slice(0, 10)}
-            /> */}
-                <Menu
-                    id="profile-menu"
-                    anchorEl={toggle}
-                    open={isToggle}
-                    onClose={hideToggleHandler}
-                    MenuListProps={{
-                    'aria-labelledby': 'profile-button',
-                    }}
-                >
-                    <MenuItem name="delete_post" onClick={showDeletePostModal} sx={{ width: '250px'}}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Delete Post</MenuItem>
-                </Menu>
+            <Menu
+                id="profile-menu"
+                anchorEl={toggle}
+                open={isToggle}
+                onClose={hideToggleHandler}
+                MenuListProps={{
+                'aria-labelledby': 'profile-button',
+                }}
+            >
+                <MenuItem name="delete_post" onClick={() => modalHandler('delete')} sx={{ width: '250px'}}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Delete Post</MenuItem>
+                {/* <MenuItem name="edit_post" onClick={() => modalHandler('edit')} sx={{ width: '250px'}}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem> */}
+            </Menu>
+                
             {post.post.text && 
                 <CardContent sx={{paddingTop: 0}}>
                     <Box>
@@ -244,53 +213,20 @@ function Newsfeed(post) {
                 </CardContent>
             }
             {post.post.image.length != 0 &&
-
-                
-                
-
                 <>
-                {/* <Box sx={{width: 1, position: 'relative'}}>
-                    <SimpleImageSlider
-                        width="100%"
-                        height={250}
-                        position="relative"
-                        images={images}
-                        showBullets={true}
-                        showNavs={true}
-                    />
-                </Box> */}
-                
-                {renderImageSlider(post.post.image)}
-                {/* <Box className="image-slider" sx={{display: 'flex'}}>
-                    {post.post.image.map((image, index) => (
-                        <Box key={index}>
-                            <CardMedia
-                                component="img"
-                                image={baseUrl + post.post.image[index]}
-                                alt="rone_image"
-                                sx={{height: '250px'}}
-                            />
-                        </Box>
-                    ))}
-                </Box> */}
-                {/* <Box className="image-slider" sx={{display: 'flex'}}>
-                    {post.post.image.map((image, index) => (
-                        <Box key={index}>
-                            <img src={baseUrl + post.post.image[index]} sx={{height: '250px'}}/>
-                        </Box>
-                    ))}
-                </Box> */}
+                    {/* <Box sx={{width: 1, position: 'relative'}}>
+                        <SimpleImageSlider
+                            width="100%"
+                            height={250}
+                            position="relative"
+                            images={images}
+                            showBullets={true}
+                            showNavs={true}
+                        />
+                    </Box> */}
+                    {renderImageSlider(post.post.image)}
                 </>
-            }   
-            
-
-            {/* image slider */}
-            {/* <div className="image-slider">
-                <button onClick={prevSlide}>Previous</button>
-                <img src={images[currentImgIndex]} alt="Slider" />
-                <button onClick={nextSlide}>Next</button>
-            </div> */}
-
+            }
 
             <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, marginBottom: 0, justifyContent: 'space-between' }}>              
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
@@ -333,27 +269,38 @@ function Newsfeed(post) {
             aria-describedby="modal-modal-description"
             className='styles.backdrop_wrap'
         >
-
-            <Box className="modal_wrap" sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, borderRadius: 1}}>
-                <Box sx={{position: 'absolute', right: '10px', top: '10px'}}>
-                    <IconButton aria-label="close" onClick={modalCloseHandler}>
-                        <CloseIcon />
-                    </IconButton>
-                </Box>
-                <Box>
-                    <Box sx={{ borderBottom: 1, borderColor: '#dfdfdf', padding: 2, alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>                        
-                        <Typography variant="h6">Delete Post !</Typography>
+            {!isEdit  ? (
+                <Box className="modal_wrap" sx={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4, borderRadius: 1}}>
+                    <Box sx={{position: 'absolute', right: '10px', top: '10px'}}>
+                        <IconButton aria-label="close" onClick={modalCloseHandler}>
+                            <CloseIcon />
+                        </IconButton>
                     </Box>
-                    <Box sx={{paddingY: 1}}>
-                        <Typography sx={{paddingY: 2}}>Are you sure you want to delete your post?</Typography>
-                        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                            {/* <Button onClick={modalCloseHandler} variant="contained" sx={{ width: 1.9/4, color: 'black', background: 'rgb(0 0 0 / 10%)', boxShadow: 'none'}} className="cancel_btn">No</Button> */}
-                            <Button onClick={modalCloseHandler} type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
-                            <Button onClick={deletePostHandler} variant="contained" color="error" sx={{ width: 1.9/4, boxShadow: 'none' }}>Yes, Delete Post</Button>
+                    <Box>
+                        <Box sx={{ borderBottom: 1, borderColor: '#dfdfdf', padding: 2, alignContent: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>                        
+                            <Typography variant="h6">Delete Post !</Typography>
+                        </Box>
+                        <Box sx={{paddingY: 1}}>
+                            <Typography sx={{paddingY: 2}}>Are you sure you want to delete your post?</Typography>
+                            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                                <Button onClick={modalCloseHandler} type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                                <Button onClick={deletePostHandler} variant="contained" color="error" sx={{ width: 1.9/4, boxShadow: 'none' }}>Yes, Delete Post</Button>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>
-            </Box>
+            ) : (
+                <>
+                    <Box sx={style}>
+                        <Box sx={{position: 'absolute', right: '10px', top: '10px'}}>
+                            <IconButton aria-label="close" onClick={modalCloseHandler}>
+                                <CloseIcon />
+                            </IconButton>
+                        </Box>
+                        <PostForm onModalClose={modalCloseHandler} data={post.post}/>
+                    </Box>
+                </>
+            )}
         </Modal>
         </>
     )

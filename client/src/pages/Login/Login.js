@@ -150,7 +150,7 @@ function Login() {
                                 sx={{width:1}}
                                 className={styles.user_input}
                                 />
-                            {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.email}</Typography>}
+                            {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.email}</Typography>}                            
                         </Box>
                         <Box>
                             <Typography>Password</Typography>
@@ -166,6 +166,7 @@ function Login() {
                                 className={styles.user_input}
                                 />
                             {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.password}</Typography>}
+                            {/* <Typography variant="subtitle2" sx={{fontWeight: 'regular', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>At least 8 characters</Typography> */}
                         </Box>
                             {formError.error && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.error}</Typography>}
                         <Box>

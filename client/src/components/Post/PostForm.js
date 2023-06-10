@@ -28,7 +28,10 @@ export default function PostForm(props) {
     });
     const isEmpty = formData.text.trim().length === 0;
     const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
-    const [previewImages, setPreviewImages] = useState([]);    
+    const [previewImages, setPreviewImages] = useState([]); 
+    // const [currentData, setCurrentData] = useState(data);
+    
+    console.log(props)
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
