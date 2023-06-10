@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import multer from "multer";
 import path from "path";
 import url from "url";
+import fs from "fs-extra";
 import connect from "./utils/connect.mjs";
 import routes from "./routes/routes.mjs";
 import { createPost, updatePost } from "./controller/post.controller.mjs";
@@ -29,9 +30,19 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-app.post("/api/v1/posts/", upload.array("image", 3), createPost);
-app.patch("/api/v1/posts/:id", upload.array("image", 3), updatePost);
+app.post("/api/v1/posts/", upload.array("image", 5), createPost);
+app.patch("/api/v1/posts/:id", upload.array("image", 5), updatePost);
 
+app.delete("/api/v1/storage", async (req, res) => {
+  try {
+    // Clear the storage directory
+    await fs.emptyDir("public/assets/posts");
+    res.json({ success: true, message: "Storage cleared" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to clear storage" });
+  }
+});
 
 const port = process.env.PORT;
 app.listen(port, async () => {

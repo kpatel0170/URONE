@@ -2,9 +2,9 @@ import AuthService from '../service/auth.service.mjs';
 
 export const registerUser = async (req, res) => {
   try {
-    const { email, name, password, passwordConfirmation } = req.body;
+    const { email, name, password, passwordConfirmation, type } = req.body;
 
-    const newUser = await AuthService.registerUser(email, name, password, passwordConfirmation);
+    const newUser = await AuthService.registerUser(email, name, password, passwordConfirmation, type);
 
     res.status(200).json({success: true, data: newUser});
   } catch (error) {

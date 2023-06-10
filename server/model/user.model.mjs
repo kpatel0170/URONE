@@ -10,7 +10,8 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     password: { type: String, required: true },
-    profilePicture: String,
+    type: { type: String, required: true, enum: ["student", "professor", "staff", "other"] },
+    profilePicture: { type: String, default: "" },
     about: String,
     followers: [],
     following: []
@@ -19,6 +20,7 @@ const userSchema = new Schema(
     timestamps: true,
   }
 );
+
 
 userSchema.pre("save", async function (next) {
   let user = this;
