@@ -60,7 +60,7 @@ const Sidebar = props => {
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <PostForm/>
+                    <PostForm onModalClose={modalCloseHandler}/>
                 </Box>
             </Modal>
         </>

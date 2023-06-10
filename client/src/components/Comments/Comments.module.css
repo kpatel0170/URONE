@@ -5,6 +5,31 @@
     max-height: 350px;
     overflow: overlay;
 }
+.comment_container::-webkit-scrollbar { 
+  background: transparent;
+  width: 5px;
+}
+
+.comment_container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, .3);
+}
+
 .comment_items:last-child{
     margin-bottom: 0;
+}
+.send_btn_wrap{
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    min-width: auto !important;
+    border-radius: 50% !important;
+}
+
+.send_btn_wrap:hover{
+    background: #f6f6f6 !important;    
+}
+.readmore{
+    color: #1976d2 !important;
+    cursor: pointer;
 }

@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userRegister, reset } from '../../features/Auth/AuthSlice';
-import { Box, Grid, TextField, Button, Typography } from '@mui/material';
+import { Box, Grid, TextField, Button, Typography, MenuItem } from '@mui/material';
 import styles from "../Login/Login.module.css";
+import Loading from '../../components/Loading/Loading';
 
 function Register() {
   const dispatch = useDispatch();
@@ -19,10 +20,11 @@ function Register() {
     name: '',
     email: '',
     password: '',
-    passwordConfirmation: ''
+    passwordConfirmation: '',
+    type: 'student'
   });
 
-  const {name, email, password, passwordConfirmation} = formData;
+  const {name, email, password, passwordConfirmation, type} = formData;
 
   const [formError, setFormError] = useState({
       input_name: '',
@@ -30,8 +32,26 @@ function Register() {
       input_password: '',
       input_passwordConfirmation: ''
   });
-
   const { input_name, input_email, input_password, input_passwordConfirmation } = formError;
+
+  const userType = [
+    {
+      value: 'student',
+      label: 'student',
+    },
+    {
+      value: 'professor',
+      label: 'professor',
+    },
+    {
+      value: 'staff',
+      label: 'staff',
+    },
+    {
+      value: 'other',
+      label: 'other',
+    }
+  ]
 
   useEffect(() => {
     if(isError){
@@ -131,7 +151,8 @@ function Register() {
           name,
           email,
           password,
-          passwordConfirmation
+          passwordConfirmation,
+          type
         }
 
         console.log(userData)
@@ -139,84 +160,105 @@ function Register() {
       }
   }
     return (
-      <Grid container sx={{justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
-        <Grid item xs={9} sm={6} md={4} lg={4} sx={{mt: 6}}>
-          <Typography sx={{mb: 6, textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>            
-          <form sx={{width: 1}} onSubmit={registerFormHandler}>
-              <Box sx={{mb:2}}>
-                  <Typography sx={{mb: 1}}>Username</Typography>
-                  <TextField 
-                      id="name" 
-                      name="name"
-                      type="text" 
-                      onChange={formInputHandler}
-                      onBlur={formValidateHandler}
-                      value={name}
-                      placeholder="Enter username"
-                      sx={{width:1}}
-                      className={styles.user_input}
-                      />
-                    {formError.name && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.name}</Typography>}                    
-              </Box>
-              <Box sx={{mb:2}}>
-                  <Typography sx={{mb: 1}}>Email</Typography>
-                  <TextField 
-                      id="email" 
-                      name="email"
-                      type="email" 
-                      onChange={formInputHandler}
-                      onBlur={formValidateHandler}
-                      value={email}
-                      placeholder="Enter email"
-                      sx={{width:1}}
-                      className={styles.user_input}
-                      />
-                    {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.email}</Typography>}                    
-              </Box>
-              <Box sx={{mb:2}}>
-                  <Typography sx={{mb: 1}}>Password</Typography>
+      <>
+        {isLoading && <Loading />}      
+        <Grid container sx={{justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+          <Grid item xs={9} sm={6} md={4} lg={4} sx={{mt: 6}}>
+            <Typography sx={{mb: 6, textAlign: 'center', fontWeight: 'bold', fontSize: '48px'}}>rOne</Typography>            
+            <form sx={{width: 1}} onSubmit={registerFormHandler}>
+                <Box sx={{mb:2}}>
+                    <Typography sx={{mb: 1}}>Name</Typography>
+                    <TextField 
+                        id="name" 
+                        name="name"
+                        type="text" 
+                        onChange={formInputHandler}
+                        onBlur={formValidateHandler}
+                        value={name}
+                        placeholder="Enter username"
+                        sx={{width:1}}
+                        className={styles.user_input}
+                        />
+                      {formError.name && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.name}</Typography>}                    
+                </Box>
+                <Box sx={{mb:2}}>
+                    <Typography sx={{mb: 1}}>Email</Typography>
+                    <TextField 
+                        id="email" 
+                        name="email"
+                        type="email" 
+                        onChange={formInputHandler}
+                        onBlur={formValidateHandler}
+                        value={email}
+                        placeholder="Enter email"
+                        sx={{width:1}}
+                        className={styles.user_input}
+                        />
+                      {formError.email && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.email}</Typography>}                    
+                </Box>
+                <Box sx={{mb:2}}>
+                    <Typography sx={{mb: 1}}>Password</Typography>
+                    <TextField
+                        id="password" 
+                        name="password"
+                        type="password" 
+                        onChange={formInputHandler}
+                        onBlur={formValidateHandler}
+                        value={password}
+                        placeholder="********"
+                        sx={{width:1}}
+                        className={styles.user_input}
+                        />
+                      {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.password}</Typography>}
+                </Box>
+                <Box sx={{mb:2}}>
+                    <Typography sx={{mb: 1}}>Confirm Password</Typography>
+                    <TextField
+                        id="passwordConfirmation" 
+                        name="passwordConfirmation"
+                        type="password" 
+                        onChange={formInputHandler}
+                        onBlur={formValidateHandler}
+                        value={passwordConfirmation}
+                        placeholder="********"
+                        sx={{width:1}}
+                        className={styles.user_input}
+                        />
+                    {formError.passwordConfirmation && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.passwordConfirmation}</Typography>}
+                </Box>
+                <Box>
+                  <Typography sx={{mb: 1}}>Type</Typography>
                   <TextField
-                      id="password" 
-                      name="password"
-                      type="password" 
-                      onChange={formInputHandler}
-                      onBlur={formValidateHandler}
-                      value={password}
-                      placeholder="********"
-                      sx={{width:1}}
-                      className={styles.user_input}
-                      />
-                    {formError.password && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.password}</Typography>}
-              </Box>
-              <Box>
-                  <Typography sx={{mb: 1}}>Confirm Password</Typography>
-                  <TextField
-                      id="passwordConfirmation" 
-                      name="passwordConfirmation"
-                      type="password" 
-                      onChange={formInputHandler}
-                      onBlur={formValidateHandler}
-                      value={passwordConfirmation}
-                      placeholder="********"
-                      sx={{width:1}}
-                      className={styles.user_input}
-                      />
-                  {formError.passwordConfirmation && <Typography variant="subtitle1" sx={{ color: "red", fontWeight: 'medium', fontSize: '0.9rem', lineHeight: '1.2', paddingTop: '4px' }}>{formError.passwordConfirmation}</Typography>}
-              </Box>
-              <Box>
-                  <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6',}} type="submit">
-                      Sign Up
-                  </Button>
-              </Box>
-          </form>
-          <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: '#dedede' }}>
-              {/* <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
-                Sign Up with Google
-              </Button> */}
-              <Typography sx={{ textAlign: 'center',  mt: 4,}}>Already have an account? <Link to="/login"><Button>Sign In</Button></Link></Typography>              
-          </Box>
+                    id="type"
+                    name="type"
+                    select
+                    defaultValue="student"
+                    sx={{width: '100%'}}  
+                    size='small'
+                    onChange={formInputHandler}             
+                  >
+                    {userType.map((option) => (
+                      <MenuItem name={option.value} key={option.value} value={option.value} className={styles.user_input}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Box>
+                <Box>
+                    <Button variant="contained" sx={{p:1, borderRadius: '25px', width: 1, mt: 3, bgcolor: '#0e69d6',}} type="submit">
+                        Sign Up
+                    </Button>
+                </Box>
+            </form>
+            <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: '#dedede' }}>
+                {/* <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
+                  Sign Up with Google
+                </Button> */}
+                <Typography sx={{ textAlign: 'center',  mt: 4,}}>Already have an account? <Link to="/login"><Button>Sign In</Button></Link></Typography>              
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
+      </>
     )
 }
 

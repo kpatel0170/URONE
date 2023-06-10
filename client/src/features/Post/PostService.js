@@ -29,10 +29,10 @@ const createPost = async (postData, token) => {
     const config ={
         headers: {
             Authorization: `Bearer ${token}`,
-            Accept: 'application/json',
-            Content_Type: 'multipart/form-data',
+            formData: true
         }
     }    
+    console.log('render from service', postData)
     const response = await axios.post(API , postData, config)
     return response.data.data
 }
@@ -70,7 +70,7 @@ const LikePost = async (postData, token) => {
     const body = {
         "userId": postData.userId
     }
-    const response = await axios.post(API + postData.id  + '/like', body, config)
+    const response = await axios.patch(API + postData.id  + '/like', body, config)
     return response.data.data;
 }
 
@@ -84,7 +84,7 @@ const undoLikePost = async (postData, token) => {
     const body = {
         "userId": postData.userId
     }    
-    const response = await axios.delete(API + postData.id  + '/like', body, config);  
+    const response = await axios.patch(API + postData.id  + '/like', body, config);  
     return response.data.data
 }
 
@@ -98,7 +98,7 @@ const disLikePost = async (postData, token) => {
     const body = {
         "userId": postData.userId
     }
-    const response = await axios.post(API + postData.id  + '/dislike', body, config)
+    const response = await axios.patch(API + postData.id  + '/dislike', body, config)
     return response.data.data;
 }
 

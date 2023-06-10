@@ -9,6 +9,7 @@ const initialState = {
     isError: false,
     isSuccess: false,
     isLoading: false,
+    isCommentLoading: false,
     message: ''
 }
 
@@ -81,10 +82,10 @@ export const likePost = createAsyncThunk('posts/like', async(postData, thunkAPI)
 
 
 // Undo like posts
-export const undoLikePost = createAsyncThunk('posts/undoLike', async(postData, thunkAPI) => {
+export const disLikePost = createAsyncThunk('posts/disLike', async(postData, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user._id;
-        return await postService.undoLikePost(postData, token)
+        return await postService.disLikePost(postData, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -148,7 +149,7 @@ export const postSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(deletePost.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false;
             })
             .addCase(deletePost.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -192,7 +193,7 @@ export const postSlice = createSlice({
                 state.message = action.payload
             })
             .addCase(likePost.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false;
             })
             .addCase(likePost.fulfilled, (state, action) => {
                 state.isLoading = false
@@ -207,27 +208,29 @@ export const postSlice = createSlice({
                 state.isError = true
                 state.message = action.payload
             })
-            .addCase(undoLikePost.pending, (state) => {
-                state.isLoading = true;
+            .addCase(disLikePost.pending, (state) => {
+                state.isLoading = false;
             })
-            .addCase(undoLikePost.fulfilled, (state, action) => {
+            .addCase(disLikePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                const {_id2} = action.payload;
+                const {_id} = action.payload;
                 state.posts = state.posts.map((post) =>
-                    post._id === _id2 ? { ...post, ...action.payload } : post
+                    post._id === _id ? { ...post, ...action.payload } : post
                 );
             })
-            .addCase(undoLikePost.rejected, (state, action) => {
+            .addCase(disLikePost.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
             })
             .addCase(createComment.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = false
+                state.isCommentLoading = true;
             })
             .addCase(createComment.fulfilled, (state, action) => {
                 state.isLoading = false
+                state.isCommentLoading = false
                 state.isSuccess = true
                 const {_id} = action.payload;
                 state.posts = state.posts.map((post) =>
@@ -236,6 +239,7 @@ export const postSlice = createSlice({
             })
             .addCase(createComment.rejected, (state, action) => {
                 state.isLoading = false
+                state.isCommentLoading = false
                 state.isError = true
                 state.message = action.payload
             })

@@ -5,13 +5,14 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ShareIcon from '@mui/icons-material/Share';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { createPost } from '../../features/Post/PostSlice';
 import styles from './PostForm.module.css';
 import '../../App.css';
 
-export default function PostForm() {
+export default function PostForm(props) {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
 
@@ -25,8 +26,12 @@ export default function PostForm() {
         share: false,
         checkAll: false
     });
+    const isEmpty = formData.text.trim().length === 0;
     const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
-    const [previewImages, setPreviewImages] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]); 
+    // const [currentData, setCurrentData] = useState(data);
+    
+    console.log(props)
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -56,6 +61,17 @@ export default function PostForm() {
     };
 
     const filesUploadHandler = (event) => {
+        console.log(event.target.files)
+        // const uploadedImage = Array.prototype.slice.call(event.target.files);
+        const uploadedImage = event.target.files;
+        console.log('...image', formData.image)
+
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: [...prevFormData.image,...uploadedImage], 
+        }));
+
+        console.log('...AFimage', formData.image)
 
         if(event.target.files){
             const files = Array.from(event.target.files).map((file)=> URL.createObjectURL(file))
@@ -65,29 +81,42 @@ export default function PostForm() {
                 (file)=>URL.revokeObjectURL(file)
             )
         }
+    }
 
-
-
-        // const { files } = event.target
-        // for (let i = 0; i < files.length; i++) {
-        //     const file = files[i]; // OR const file = files.item(i);
-        // }
-
-        // const uploadedImage = Array.prototype.slice.call(event.target.files);
-        // setFormData((prevFormData) => ({
-        //     ...prevFormData,
-        //     image: [...uploadedImage]
-        // }));
+    const removeImage = (index) => {
+        console.log(index)
+        const filteredImages = previewImages.filter((_, i) => i !== index);
+        setPreviewImages(filteredImages);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: [...filteredImages]
+        }));
     }
 
     const renderImagePreview = (data) => {
-        return data.map((image, index) => {
+        return data.map((previewImage, index) => {
             return (
-                <Box key={index} sx={{width: 0.5/3, padding: 1, border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>
-                    <img src={image} className={styles.preview_img_wrap} />
+                <Box key={index} sx={{position: 'relative', width: 0.5/2, padding: 1, border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>                       
+                    <IconButton onClick={() => removeImage(index)} sx={{width: '20px', height: '20px', background: '#dfe2eb', position: 'absolute', right: '4px', top: '4px'}}>
+                        <CloseIcon sx={{width: '19px'}} />
+                    </IconButton>
+                    <img src={previewImage} className={styles.preview_img_wrap} />
                 </Box>
             )
         })
+    }
+
+    const clearAllImages = (event) => {
+        setPreviewImages([]);
+        let emptyArray = [];
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: [...emptyArray]
+        }));
+    }
+
+    const modalHandler = (event) => {
+        props.onModalClose(true);
     }
 
     const submitFormHandler = (event) => {
@@ -95,12 +124,10 @@ export default function PostForm() {
         const userId = user.data._id;
         const data = new FormData();
         data.append('text', text)
-        data.append('image', image)
         data.append('userId', userId)
 
-        console.log(data.get('text'))
-        for (let [key, value] of data) {
-            console.log(`${key}: ${value}`);
+        for (let i of image) {
+            data.append('image', i);
         }
 
         const formData = {
@@ -109,7 +136,9 @@ export default function PostForm() {
             userId
         }
 
-        dispatch(createPost(formData))
+        console.log(formData)
+
+        dispatch(createPost(data))
 
         setFormData({
             text: '',
@@ -120,6 +149,7 @@ export default function PostForm() {
             share: false,
             checkAll: false
         })
+        props.onModalClose(true);
     }
 
     return (
@@ -135,7 +165,7 @@ export default function PostForm() {
                     name="text"
                     onChange={formInputHandler}
                     value={text}
-                    label="What's up ..."
+                    label="Share your thought ..."
                     multiline
                     rows={4}
                     sx={{width:1}}
@@ -165,14 +195,14 @@ export default function PostForm() {
                 </Box>
                 {previewImages.length != 0 &&
                     <Box sx={{display: 'flex', flexWrap: 'wrap', marginTop: 2, background: '#f7f7f7', border: '1px dashed #dcdcdc', borderRadius: '10px', padding: 2}} className={styles.preview_container}>
-                        {renderImagePreview(previewImages)}
+                        <Box sx={{width: '100%'}}>
+                            <Button onClick={clearAllImages} variant="outlined" sx={{float: 'right'}}>Clear All</Button>
+                        </Box>
+                        <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%'}}>                        
+                            {renderImagePreview(previewImages)}
+                        </Box>
                     </Box>
                 }
-                
-                
-                {/* <IconButton>
-                    <PhotoLibraryIcon />
-                </IconButton> */}
                 
                 {/* <Box sx={{ borderTop: 1, borderBottom: 1, borderColor: '#dcdcdc', marginTop: 3, marginBottom: 3, paddingBottom: 2, paddingTop: 2}}>
                     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
@@ -218,9 +248,10 @@ export default function PostForm() {
                         </Box>
                     </Box>
                 </Box> */}
+
                 <Box sx={{ marginY: 3, display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingTop: 3}}>
-                    <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
-                    <Button type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Post</Button>
+                    <Button onClick={modalHandler} type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                    <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%', boxShadow: 'none'}}>Post</Button>
                 </Box>
             </form>
         </>
