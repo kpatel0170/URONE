@@ -43,9 +43,10 @@ const Header = props => {
                 <Box className="header_wrap">
                     <Grid container spacing={2} sx={{ alignItems: 'center' }}>
                         <Grid item xs={3}>
-                            <Box onClick={backToHome} sx={{width: '50px', height: '50px', borderRadius: '50%', background: '#1976d2', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                            {/* <Box onClick={backToHome} sx={{width: '50px', height: '50px', borderRadius: '50%', background: '#1976d2', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                 <Typography sx={{color:'white', fontWeight: 'bold'}}>rOne</Typography>
-                            </Box>
+                            </Box> */}
+                            <Typography sx={{color:'#1976d2', fontWeight: 'bold', fontSize: '2.2rem'}}>rOne</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             {/* <Search /> */}
