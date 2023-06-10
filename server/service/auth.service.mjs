@@ -1,7 +1,7 @@
 import UserModel from "../model/user.model.mjs";
 
 const AuthService = {
-  async registerUser(email, name, password, passwordConfirmation) {
+  async registerUser(email, name, password, passwordConfirmation, type) {
     if (password !== passwordConfirmation) {
       throw new Error("Passwords do not match");
     }
@@ -10,6 +10,7 @@ const AuthService = {
       email,
       password,
       name,
+      type,
     });
 
     try {
