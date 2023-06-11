@@ -48,6 +48,17 @@ app.delete("/api/v1/storage", async (req, res) => {
   }
 });
 
+app.get("/api/v1/files", async (req, res) => {
+  try {
+    const dir = "public/assets/posts";
+    const files = await fs.readdir(dir);
+    res.json({ success: true, files });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to retrieve files" });
+  }
+});
+
 const port = process.env.PORT;
 app.listen(port, async () => {
   console.log(`Server listening on port ${port}`);
