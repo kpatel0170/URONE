@@ -138,9 +138,6 @@ const Comment = (comment) => {
                         </Box>
                     ))}
                 </Box>
-                {isCommentLoading && <Box> 
-                    <Typography variant='caption' sx={{color: '#1976d2'}}> loading ... </Typography>
-                </Box>}
                 </>
             ) : (
                 <Typography sx={{marginTop: 2, textAlign: 'center', fontSize: '0.85rem', color: '#635e5e'}}>
@@ -148,6 +145,9 @@ const Comment = (comment) => {
                     be the first person to comment the post ...
                 </Typography>
             )}
+            {isCommentLoading && <Box> 
+                <Typography variant='caption' sx={{color: '#1976d2'}}> loading ... </Typography>
+            </Box>}
             
         </Box>
     )
