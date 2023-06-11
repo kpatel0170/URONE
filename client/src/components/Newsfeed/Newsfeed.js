@@ -34,12 +34,15 @@ function Newsfeed(post) {
     const baseUrl = 'https://rone.onrender.com/posts/';
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
+    const { isLikeLoading } = useSelector((state) => state.post)
 
     const [isComment, setIsComment] = useState(false);
     const [isReadMore, setIsReadMore]= useState(true);
     const [isEdit, setIsEdit] = useState(false);
     const [toggle, setToggle] = useState(null);
-    const [modal, setModal] = useState(false)    
+    const [modal, setModal] = useState(false);
+    const [isLike, setIsLike] = useState(false);
+    const [isdisLike, setIsdisLike] = useState(false);
     
     const gallery = [
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYKqzLsJt9070EqnI1b1eMuPyXNZSTqzTpRg&usqp=CAU',        
@@ -96,7 +99,8 @@ function Newsfeed(post) {
             'id': post.post._id,
             'userId': user.data._id
         }
-        
+        setIsLike(!isLike);
+        setIsdisLike(false);
         dispatch(likePost(data))
     }
 
@@ -105,7 +109,8 @@ function Newsfeed(post) {
             'id': post.post._id,
             'userId': user.data._id
         }
-        
+        setIsdisLike(!isdisLike);
+        setIsLike(false);
         dispatch(disLikePost(data))
     }
 
@@ -256,29 +261,35 @@ function Newsfeed(post) {
             }
 
             <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, marginBottom: 0, justifyContent: 'space-between' }}>              
-                <Box sx={{display: 'flex', alignItems: 'center'}}>
+                <Box sx={{display: 'flex', alignItems: 'center'}}>                    
+                    <IconButton aria-label="up-voting" onClick={likeHandler} style={{ color: (post.post.likes.includes(user.data._id) || isLike) && !isdisLike ? '#1976d2' : '' }}>
+                        <ThumbUpOffAltIcon />
+                    </IconButton>
+                    <Box sx={{width: '50px'}}>
                     {post.post.likes.length != 0 &&
                         <Typography sx={{marginRight: 1}}>{post.post.likes.length}</Typography>
                     }
-                    <IconButton aria-label="up-voting" onClick={likeHandler} style={{ color: post.post.likes.includes(user.data._id) ? '#1976d2' : '' }}>
-                        <ThumbUpOffAltIcon />
-                    </IconButton>
+                    </Box>
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
+                    <IconButton aria-label="down-voting" onClick={dislikeHandler} style={{ color: (post.post.dislikes.includes(user.data._id) || isdisLike) && !isLike ? '#1976d2' : '' }}>
+                        <ThumbDownOffAltIcon />
+                    </IconButton>
+                    <Box sx={{width: '50px'}}>
                     {post.post.dislikes.length != 0 &&
                         <Typography sx={{marginRight: 1}}>{post.post.dislikes.length}</Typography>
                     }
-                    <IconButton aria-label="down-voting" onClick={dislikeHandler} style={{ color: post.post.dislikes.includes(user.data._id) ? '#1976d2' : '' }}>
-                        <ThumbDownOffAltIcon />
-                    </IconButton>
+                    </Box>
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
-                    {post.post.comments.length != 0 &&
-                        <Typography sx={{marginRight: 1}}>{post.post.comments.length}</Typography>
-                    }
                     <IconButton aria-label="comment" onClick={showCommentHandler}>
                         <ChatBubbleOutlineIcon />
                     </IconButton>
+                    <Box sx={{width: '50px'}}>
+                    {post.post.comments.length != 0 &&
+                        <Typography sx={{marginRight: 1}}>{post.post.comments.length}</Typography>
+                    }
+                    </Box>
                 </Box>
             </CardActions>
 
