@@ -159,7 +159,13 @@ const PostService = {
 
       await post.save();
 
-      return post;
+      const populatedPost = await postModel
+        .findById(post._id)
+        .populate("userId", "name type profilePicture")
+        .populate("comments.userId", "name type profilePicture");
+
+      return populatedPost;
+
     } catch (error) {
       throw new Error(error.message);
     }
