@@ -46,7 +46,7 @@ const Header = props => {
                             {/* <Box onClick={backToHome} sx={{width: '50px', height: '50px', borderRadius: '50%', background: '#1976d2', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                 <Typography sx={{color:'white', fontWeight: 'bold'}}>rOne</Typography>
                             </Box> */}
-                            <Typography sx={{color:'#1976d2', fontWeight: 'bold', fontSize: '2.2rem'}}>rOne</Typography>
+                            <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '2.2rem'}}>rOne</Typography>
                         </Grid>
                         <Grid item xs={6}>
                             {/* <Search /> */}
@@ -80,7 +80,7 @@ const Header = props => {
                                 }}
                                 
                             >
-                                <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Profile</MenuItem>
+                                {/* <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Profile</MenuItem> */}
                                 <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Logout</MenuItem>
                             </Menu>
                         </Grid>

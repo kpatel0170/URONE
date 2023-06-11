@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SimpleImageSlider from "react-simple-image-slider";
 
-import { Button, Modal, Box, Typography, Card, CardHeader, CardContent, CardMedia, CardActions, Avatar, IconButton, Collapse, Menu, MenuItem, } from '@mui/material';
+import { ImageListItem, ImageList, Button, Modal, Box, Typography, Card, CardHeader, CardContent, CardMedia, CardActions, Avatar, IconButton, Collapse, Menu, MenuItem, } from '@mui/material';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -39,7 +39,15 @@ function Newsfeed(post) {
     const [isReadMore, setIsReadMore]= useState(true);
     const [isEdit, setIsEdit] = useState(false);
     const [toggle, setToggle] = useState(null);
-    const [modal, setModal] = useState(false)        
+    const [modal, setModal] = useState(false)    
+    
+    const gallery = [
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYKqzLsJt9070EqnI1b1eMuPyXNZSTqzTpRg&usqp=CAU',        
+        'https://cdn.shopify.com/s/files/1/1555/7781/products/Sunflowersdetail_1024x1024.jpg?v=1616990879',
+        'https://t4.ftcdn.net/jpg/05/35/33/39/360_F_535333922_tBGFT4qC3bLUrnKWWQhj8pXHS1cQIuFK.jpg',
+        'https://marketplace.canva.com/EAEthkBVLfQ/1/0/1600w/canva-blush-wave-desktop-wallpaper-drvq3zaYl2E.jpg',
+        'https://marketplace.canva.com/EAFJd1mhO-c/1/0/900w/canva-colorful-watercolor-painting-phone-wallpaper-qq02VzvX2Nc.jpg'
+    ];
 
     const isToggle = Boolean(toggle);
     const showCommentHandler = () => {
@@ -119,9 +127,43 @@ function Newsfeed(post) {
                     })}
                 </Box>
             )
+        }else if(data.length === 2){
+            return (
+                // <Slider media={data} />
+                <Box sx={{marginX: 2}}>
+                <ImageList cols={2} rowHeight={194} sx={{paddingTop: 0}}>
+                    {data.map((item) => (
+                        <ImageListItem key={item}>
+                            <img
+                                src={`${baseUrl+item}?w=164&h=164&fit=crop&auto=format`}
+                                srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                alt={item}
+                                loading="lazy"
+                                className={styles.gallery_img}
+                            />
+                        </ImageListItem>
+                    ))}
+                </ImageList>
+            </Box>
+            )
         }else{
             return (
-                <Slider media={data} />
+                // <Slider media={data} />
+                <Box sx={{marginX: 2}}>
+                <ImageList cols={3} rowHeight={164} sx={{paddingTop: 0}}>
+                    {data.map((item) => (
+                        <ImageListItem key={item}>
+                            <img
+                                src={`${baseUrl+item}?w=164&h=164&fit=crop&auto=format`}
+                                srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                alt={item}
+                                loading="lazy"
+                                className={styles.gallery_img}
+                            />
+                        </ImageListItem>
+                    ))}
+                </ImageList>
+            </Box>
             )
         }
     }
@@ -135,7 +177,7 @@ function Newsfeed(post) {
                     <Box>
                         {post.post.userId?.profilePicture.length != 0 ?                                     
                             (
-                                <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src={baseUrl + post.post.userId?.profilePicture} />
+                                <Avatar alt="profile" src={baseUrl + post.post.userId?.profilePicture} />
                             ) :
                             (   <Box sx={{display: 'flex'}}>
                                     <Box sx={{color: '#85868f', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#e6e7ee'}}>
@@ -151,8 +193,10 @@ function Newsfeed(post) {
                             <Box sx={{paddingX: '8px'}}><Box sx={{width: '3px', height: '3px', background: '#95969c', borderRadius: '50%'}}></Box></Box>
                             <Typography sx={{color: '#rgba(0, 0, 0, 0.87)', fontSize: '0.875rem', textTransform: 'capitalized'}}>{post.post.userId?.type}</Typography>
                         </Box>
-                        <Box>
+                        <Box sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'rgba(0, 0, 0, 0.6)', fontSize: '0.875rem'}}>{post.post.createdAt.slice(0, 10)}</Typography>
+                            <Typography sx={{paddingX: '3px', color: '#1e6ab5', fontWeight: 'bold', fontSize: '0.875rem'}}>:</Typography>
+                            <Typography sx={{color: 'rgba(0, 0, 0, 0.6)', fontSize: '0.875rem'}}>{post.post.createdAt.slice(11, 16)}</Typography>
                         </Box>
                     </Box>
                 </Box>
@@ -223,7 +267,9 @@ function Newsfeed(post) {
                             showBullets={true}
                             showNavs={true}
                         />
-                    </Box> */}
+                    </Box> 
+                    {renderImageSlider(gallery)}                
+                    */}
                     {renderImageSlider(post.post.image)}
                 </>
             }
