@@ -262,7 +262,7 @@ function Newsfeed(post) {
 
             <CardActions disableSpacing sx={{ borderTop: 1, borderColor: '#dcdcdc', m: 2, marginBottom: 0, justifyContent: 'space-between' }}>              
                 <Box sx={{display: 'flex', alignItems: 'center'}}>                    
-                    <IconButton aria-label="up-voting" onClick={likeHandler} style={{ color: (post.post.likes.includes(user.data._id) || isLike) && !isdisLike ? '#1976d2' : '' }}>
+                    <IconButton aria-label="up-voting" onClick={likeHandler} style={{ color: post.post.likes.includes(user.data._id) ? '#1976d2' : '' }}>
                         <ThumbUpOffAltIcon />
                     </IconButton>
                     <Box sx={{width: '50px'}}>
@@ -272,7 +272,7 @@ function Newsfeed(post) {
                     </Box>
                 </Box>
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
-                    <IconButton aria-label="down-voting" onClick={dislikeHandler} style={{ color: (post.post.dislikes.includes(user.data._id) || isdisLike) && !isLike ? '#1976d2' : '' }}>
+                    <IconButton aria-label="down-voting" onClick={dislikeHandler} style={{ color: post.post.dislikes.includes(user.data._id) ? '#1976d2' : '' }}>
                         <ThumbDownOffAltIcon />
                     </IconButton>
                     <Box sx={{width: '50px'}}>
