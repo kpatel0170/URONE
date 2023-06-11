@@ -20,7 +20,7 @@ function Slider(media) {
     return (
         <Box>
             <Box sx={{position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', marginX:2, background: '#e6e7ee'}}> 
-                <IconButton onClick ={previousSlide} sx={{position: 'absolute', left: '1rem', top: '50%', zIndex: 10}}>
+                <IconButton onClick ={previousSlide} sx={{position: 'absolute', left: '1rem', top: '50%', zIndex: 1}}>
                     <ArrowBackIosIcon />
                 </IconButton>
                                
@@ -36,7 +36,7 @@ function Slider(media) {
                     );
                 })}
 
-                <IconButton onClick ={nextSlide} sx={{position: 'absolute', right: '1rem', top: '50%', zIndex: 10}}> 
+                <IconButton onClick ={nextSlide} sx={{position: 'absolute', right: '1rem', top: '50%', zIndex: 1}}> 
                     <ArrowForwardIosIcon />
                 </IconButton>
             </Box>

@@ -10,6 +10,7 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     isCommentLoading: false,
+    isLikeLoading: false,
     message: ''
 }
 
@@ -194,9 +195,11 @@ export const postSlice = createSlice({
             })
             .addCase(likePost.pending, (state) => {
                 state.isLoading = false;
+                state.isLikeLoading = true
             })
             .addCase(likePost.fulfilled, (state, action) => {
                 state.isLoading = false
+                state.isLikeLoading = false
                 state.isSuccess = true
                 const {_id} = action.payload;
                 state.posts = state.posts.map((post) =>
@@ -205,6 +208,7 @@ export const postSlice = createSlice({
             })
             .addCase(likePost.rejected, (state, action) => {
                 state.isLoading = false
+                state.isLikeLoading = false
                 state.isError = true
                 state.message = action.payload
             })
