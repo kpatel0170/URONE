@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createComment } from '../../features/Post/PostSlice';
 
 const Comment = (comment) => {  
+    const baseUrl = 'https://rone.onrender.com/posts/';
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
     const scrollCommentRef = useRef(null);
@@ -107,9 +108,21 @@ const Comment = (comment) => {
                                     src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80"
                                     sx={{ width: 27, height: 27 }}
                                 /> */}
-                                {data.userId?.profilePicture.length != 0 ?                                     
+                                {data.userId?.profilePicture != undefined ?                                     
                                     (
-                                        <Avatar sx={{width: 27, height: 27}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
+                                        <>
+                                            {data.userId?.profilePicture.length != 0 ?                                     
+                                                (
+                                                    <Avatar sx={{width: 27, height: 27}} alt="profile" src={baseUrl + data.userId?.profilePicture} />                                                    
+                                                ) :
+                                                (   <>
+                                                        <Box sx={{background: '#f3f3f3', width: '27px', height: '27px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>
+                                                            <PersonOutlineIcon />
+                                                        </Box>
+                                                    </>
+                                                )
+                                            }
+                                        </>
                                     ) :
                                     (   <>
                                             <Box sx={{background: '#f3f3f3', width: '27px', height: '27px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%'}}>

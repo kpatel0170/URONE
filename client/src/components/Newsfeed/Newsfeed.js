@@ -127,43 +127,24 @@ function Newsfeed(post) {
                     })}
                 </Box>
             )
-        }else if(data.length === 2){
-            return (
-                // <Slider media={data} />
-                <Box sx={{marginX: 2}}>
-                <ImageList cols={2} rowHeight={194} sx={{paddingTop: 0}}>
-                    {data.map((item) => (
-                        <ImageListItem key={item}>
-                            <img
-                                src={`${baseUrl+item}?w=164&h=164&fit=crop&auto=format`}
-                                srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                alt={item}
-                                loading="lazy"
-                                className={styles.gallery_img}
-                            />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
-            </Box>
-            )
         }else{
             return (
-                // <Slider media={data} />
-                <Box sx={{marginX: 2}}>
-                <ImageList cols={3} rowHeight={164} sx={{paddingTop: 0}}>
-                    {data.map((item) => (
-                        <ImageListItem key={item}>
-                            <img
-                                src={`${baseUrl+item}?w=164&h=164&fit=crop&auto=format`}
-                                srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                                alt={item}
-                                loading="lazy"
-                                className={styles.gallery_img}
-                            />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
-            </Box>
+                <Slider media={data} />
+            //     <Box sx={{marginX: 2}}>
+            //     <ImageList cols={3} rowHeight={164} sx={{paddingTop: 0}}>
+            //         {data.map((item) => (
+            //             <ImageListItem key={item}>
+            //                 <img
+            //                     src={`${baseUrl+item}?w=164&h=164&fit=crop&auto=format`}
+            //                     srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+            //                     alt={item}
+            //                     loading="lazy"
+            //                     className={styles.gallery_img}
+            //                 />
+            //             </ImageListItem>
+            //         ))}
+            //     </ImageList>
+            // </Box>
             )
         }
     }
