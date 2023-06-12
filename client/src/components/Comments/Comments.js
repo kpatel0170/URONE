@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createComment } from '../../features/Post/PostSlice';
 
 const Comment = (comment) => {  
-    const baseUrl = 'https://rone.onrender.com/posts/';
+    const baseUrl = 'http://localhost:3001/posts/';
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
     const scrollCommentRef = useRef(null);

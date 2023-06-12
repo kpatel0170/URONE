@@ -5,7 +5,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, IconButton } from '@mui/material';
 
 function Slider(media) {
-    const baseUrl = 'https://rone.onrender.com/posts/';
+    const baseUrl = 'http://localhost:3001/posts/';
     
     const [currentActiveSlide, setCurrentActiveSlide] = useState(0);     
 

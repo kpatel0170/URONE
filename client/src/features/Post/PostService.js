@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const API = 'https://rone.onrender.com/api/v1/posts/'
+// const API = 'https://rone.onrender.com/api/v1/posts/'
+const API = 'http://localhost:3001/api/v1/posts/'
+
 
 // Get all posts
 const getAllPosts = async (token) => {

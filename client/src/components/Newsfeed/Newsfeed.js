@@ -31,7 +31,7 @@ const style = {
 };
 
 function Newsfeed(post) {
-    const baseUrl = 'https://rone.onrender.com/posts/';
+    const baseUrl = 'http://localhost:3001/posts/';
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
     const { isLikeLoading } = useSelector((state) => state.post)

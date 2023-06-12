@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const API = 'https://rone.onrender.com/api/v1/auth/'
+// const API = 'https://rone.onrender.com/api/v1/auth/'
+const API = 'http://localhost:3001/api/v1/auth/'
+
 
 //Register
 const userRegister = async (userData) => {
