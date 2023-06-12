@@ -31,7 +31,7 @@ export default function PostForm(props) {
     const [previewImages, setPreviewImages] = useState([]); 
     // const [currentData, setCurrentData] = useState(data);
     
-    console.log(props)
+    // console.log(props)
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -87,9 +87,12 @@ export default function PostForm(props) {
         console.log(index)
         const filteredImages = previewImages.filter((_, i) => i !== index);
         setPreviewImages(filteredImages);
+
+        const filteredFormImage = formData.image.filter((_, i) => i !== index);
+
         setFormData((prevFormData) => ({
             ...prevFormData,
-            image: [...filteredImages]
+            image: [...filteredFormImage]
         }));
     }
 
@@ -137,6 +140,7 @@ export default function PostForm(props) {
         }
 
         console.log(formData)
+        console.log(image)
 
         dispatch(createPost(data))
 
