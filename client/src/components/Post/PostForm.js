@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createPost } from '../../features/Post/PostSlice';
 import styles from './PostForm.module.css';
 import '../../App.css';
+import { toast } from 'react-toastify';
 
 export default function PostForm(props) {
     const dispatch = useDispatch();
@@ -141,7 +142,7 @@ export default function PostForm(props) {
 
         console.log(formData)
         console.log(image)
-
+        
         dispatch(createPost(data))
 
         setFormData({
@@ -153,6 +154,7 @@ export default function PostForm(props) {
             share: false,
             checkAll: false
         })
+        toast.success('Post created successfully', {position: 'top-center'});
         props.onModalClose(true);
     }
 
