@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import Search from '../Search/Search';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
@@ -28,6 +29,7 @@ const Header = props => {
     const hideToggleHandler = (event) => {
         if(event.target.innerText === 'Logout'){
             console.log('dispatch logout ...')
+            toast.success('Logout successful', {position: 'top-center'});
             dispatch(logOut());
             dispatch(reset())
             navigate('/')

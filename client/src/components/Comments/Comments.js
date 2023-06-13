@@ -6,6 +6,7 @@ import styles from "./Comments.module.css";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { createComment } from '../../features/Post/PostSlice';
+import { toast } from 'react-toastify';
 
 const Comment = (comment) => {  
     const baseUrl = 'http://localhost:3001/posts/';
@@ -39,7 +40,8 @@ const Comment = (comment) => {
             'id': comment.comment._id,
             'userId': user.data._id,
             'commentInput': commentInput
-        }  
+        } 
+        toast.success("Comment added successfully", {position: 'top-center'});
         dispatch(createComment(data))
         setCommentInput("");
         setFirstTimeDisplay(false);
