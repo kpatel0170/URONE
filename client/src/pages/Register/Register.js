@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { userRegister, reset } from '../../features/Auth/AuthSlice';
 import { Box, Grid, TextField, Button, Typography, MenuItem } from '@mui/material';
 import styles from "../Login/Login.module.css";
@@ -55,8 +56,9 @@ function Register() {
 
   useEffect(() => {
     if(isError){
-      console.log(message) 
+      toast.error(message, {position: 'top-center'}) 
       if(message === 'Email is already registered'){
+        toast.error("Email already exists!", {position: 'top-center'})
         setFormError({  
           email: message + ". Please use a unique email to create an account."
         }) 
@@ -64,7 +66,10 @@ function Register() {
     }
 
     if(isSuccess || user){
-      navigate('/')
+      if(isSuccess){
+        toast.success("Welcome to rOne!", {position: 'top-center'})
+      }
+      navigate('/');
     }
 
     dispatch(reset())
@@ -131,18 +136,20 @@ function Register() {
       event.preventDefault();
 
       if(name.trim() === '' || email.trim() === '' || password.length === 0 || passwordConfirmation.length === 0){ 
+        toast.error("Please fill in all fields", {position: 'top-center'})
         setFormError({   
             name: 'Please enter user name',
             email: 'Please enter an email address',   
             password: 'Please enter password',
             passwordConfirmation: 'Please enter confirm password'
         })
-      }else if(password.length < 6){
+      }else if(password.length < 8){
+        toast.error("Incorrect password", {position: 'top-center'})
         setFormError({  
-          password: 'Password must be 6 characters or more'
+          password: 'Password must be 8 characters or more'
         })
-      }else if(password != passwordConfirmation) {
-        console.log("password do not match")
+      }else if(password !== passwordConfirmation) {
+        toast.error("Invalid passwords", {position: 'top-center'})
         setFormError({  
           passwordConfirmation: 'Password do not match'
         })

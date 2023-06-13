@@ -1,7 +1,9 @@
 
 import { Route, Routes } from "react-router-dom";
+import {ToastContainer} from 'react-toastify';
 // import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import './main.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
@@ -11,6 +13,7 @@ import PageNotFound from './pages/PageNotFound/PageNotFound';
 
 function App() {  
   return ( 
+    <>
     <Routes>
       <Route path="/" element={<Main />} />
       <Route path="/register" element={<Register />} />
@@ -18,6 +21,8 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path='*' element={<PageNotFound />}/>
     </Routes>
+    <ToastContainer />
+    </>
   );
 }
 
