@@ -16,20 +16,24 @@ import { toast } from 'react-toastify';
 export default function PostForm(props) {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
+    const baseUrl = "http://localhost:3001/posts/";
 
     // initialize values
+    if(props.data != undefined){
+        console.log('data parsed from other component', props.data)
+    }else{
+        console.log('create new')
+    }
     const [formData, setFormData] = useState({
-        text: '',
-        image: [],
-        likes: false,
-        dislikes: false,
-        comments: false,
-        share: false,
-        checkAll: false
+        text: props.data.text,
+        image: props.data.image,
+        isCreate: props.data.isCreate
     });
+
+    console.log("text", formData.text)
     const isEmpty = formData.text.trim().length === 0;
     const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
-    const [previewImages, setPreviewImages] = useState([]); 
+    const [previewImages, setPreviewImages] = useState(props.data.image); 
     // const [currentData, setCurrentData] = useState(data);
     
     // console.log(props)
@@ -104,7 +108,11 @@ export default function PostForm(props) {
                     <IconButton onClick={() => removeImage(index)} sx={{width: '20px', height: '20px', background: '#dfe2eb', position: 'absolute', right: '4px', top: '4px'}}>
                         <CloseIcon sx={{width: '19px'}} />
                     </IconButton>
-                    <img src={previewImage} className={styles.preview_img_wrap} />
+                    {formData.isCreate != undefined ? (
+                        <img src={previewImage} className={styles.preview_img_wrap} />
+                    ) : (
+                        <img src={baseUrl + previewImage} className={styles.preview_img_wrap} />
+                    )}
                 </Box>
             )
         })

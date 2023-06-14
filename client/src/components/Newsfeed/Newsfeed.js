@@ -29,6 +29,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
 import Comment from "../../components/Comments/Comments";
 import Slider from "../Slider/Slider";
+import Slider2 from "../Slider2/Slider2";
 import PostForm from "../Post/PostForm";
 import styles from "./Newsfeed.module.css";
 
@@ -99,7 +100,7 @@ function Newsfeed(post) {
     console.log(type);
     if (type === "edit") {
       setIsEdit(true);
-      console.log(post.post);
+      console.log(post.post);      
     }
     setModal(true);
     setToggle(null);
@@ -155,11 +156,11 @@ function Newsfeed(post) {
           })}
         </Box>
       );
-    } else {
+    }else if(data.length === 2) {
       return (
-        <Slider media={data} />
-        //     <Box sx={{marginX: 2}}>
-        //     <ImageList cols={3} rowHeight={164} sx={{paddingTop: 0}}>
+        <Slider2 media={data} />
+        //   <Box sx={{marginX: 2}}>
+        //     <ImageList cols={2} rowHeight={164} sx={{paddingTop: 0}}>
         //         {data.map((item) => (
         //             <ImageListItem key={item}>
         //                 <img
@@ -174,6 +175,9 @@ function Newsfeed(post) {
         //     </ImageList>
         // </Box>
       );
+    } else {
+      return (<Slider2 media={data}/>)
+        
     }
   };
 
@@ -295,12 +299,12 @@ function Newsfeed(post) {
             <MenuItem
               name="delete_post"
               onClick={() => modalHandler("delete")}
-              sx={{ width: "250px" }}
+              sx={{ width: "200px" }}
             >
               <DeleteOutlineIcon name="delete_post" sx={{ paddingRight: 1 }} />{" "}
               Delete Post
             </MenuItem>
-            {/* <MenuItem name="edit_post" onClick={() => modalHandler('edit')} sx={{ width: '250px'}}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem> */}
+            <MenuItem name="edit_post" onClick={() => modalHandler('edit')}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem>
           </Menu>
 
           {post.post.text && (

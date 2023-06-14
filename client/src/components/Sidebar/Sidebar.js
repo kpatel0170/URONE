@@ -23,6 +23,7 @@ const Sidebar = props => {
     const [modal, setModal] = useState(false)
     const modalOpenHandler = () => setModal(true);
     const modalCloseHandler = () => setModal(false);   
+    const defaultData = {'text': '', 'image': [], isCreate: true}
 
     return(
         <>
@@ -60,7 +61,7 @@ const Sidebar = props => {
                             <CloseIcon />
                         </IconButton>
                     </Box>
-                    <PostForm onModalClose={modalCloseHandler}/>
+                    <PostForm onModalClose={modalCloseHandler} data={defaultData}/>
                 </Box>
             </Modal>
         </>
