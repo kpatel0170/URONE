@@ -15,8 +15,8 @@ import Header from "../../components/Header/Header";
 const Profile = (props) => {
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState({
-    name: "John Doe",
-    email: "johndoe@example.com",
+    name: "",
+    email: "",
     profilePicture: "",
     bio: "",
     userType: "",

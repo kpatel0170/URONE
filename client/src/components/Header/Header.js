@@ -1,7 +1,6 @@
 import React, { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
@@ -56,7 +55,7 @@ const Header = props => {
                             <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '3rem', lineHeight: 1}}>rOne</Typography>
                             <Box sx={{marginLeft: '3.5rem'}}>
                                 <Button onClick={createPostHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', marginRight: 2, paddingRight: '0.8rem', background: '#f7f7f7'}}><AddIcon sx={{color: '#1a76d2'}} />create</Button>
-                                <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
+                                <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
                             </Box>
                         </Grid>
                         <Grid item xs={5} sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>

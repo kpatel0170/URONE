@@ -1,9 +1,5 @@
-import react, { useState } from 'react';
-import { Button, Typography, Box, TextField, Switch, FormControlLabel, IconButton } from '@mui/material';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ShareIcon from '@mui/icons-material/Share';
+import { useState } from 'react';
+import { Button, Typography, Box, TextField, IconButton } from '@mui/material';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -33,9 +29,8 @@ export default function PostForm(props) {
 
     console.log("text", formData.text)
     const isEmpty = formData.text.trim().length === 0;
-    const {title, text, image, likes, dislikes, comments, share, checkAll} = formData;    
-    const [previewImages, setPreviewImages] = useState(props.data.image); 
-    // const [currentData, setCurrentData] = useState(data);      
+    const {title, text, image} = formData;    
+    const [previewImages, setPreviewImages] = useState(props.data.image);   
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        

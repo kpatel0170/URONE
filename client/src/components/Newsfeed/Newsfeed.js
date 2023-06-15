@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import SimpleImageSlider from "react-simple-image-slider";
 
 import {
-  ImageListItem,
-  ImageList,
   Button,
   Modal,
   Box,
   Typography,
   Card,
-  CardHeader,
   CardContent,
   CardMedia,
   CardActions,
@@ -30,7 +26,6 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 import Comment from "../../components/Comments/Comments";
-import Slider from "../Slider/Slider";
 import Slider2 from "../Slider2/Slider2";
 import PostForm from "../Post/PostForm";
 import styles from "./Newsfeed.module.css";
@@ -68,14 +63,6 @@ function Newsfeed(post) {
   const [modal, setModal] = useState(false);
   const [isLike, setIsLike] = useState(false);
   const [isdisLike, setIsdisLike] = useState(false);
-
-  const gallery = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYKqzLsJt9070EqnI1b1eMuPyXNZSTqzTpRg&usqp=CAU",
-    "https://cdn.shopify.com/s/files/1/1555/7781/products/Sunflowersdetail_1024x1024.jpg?v=1616990879",
-    "https://t4.ftcdn.net/jpg/05/35/33/39/360_F_535333922_tBGFT4qC3bLUrnKWWQhj8pXHS1cQIuFK.jpg",
-    "https://marketplace.canva.com/EAEthkBVLfQ/1/0/1600w/canva-blush-wave-desktop-wallpaper-drvq3zaYl2E.jpg",
-    "https://marketplace.canva.com/EAFJd1mhO-c/1/0/900w/canva-colorful-watercolor-painting-phone-wallpaper-qq02VzvX2Nc.jpg",
-  ];
 
   let typographyColor;
   switch (post.post.userId?.type) {
@@ -265,16 +252,13 @@ function Newsfeed(post) {
                   </Box>
                   <Typography
                     sx={{
-                      color: "#rgba(0, 0, 0, 0.87)",
-                      fontSize: "0.875rem",
                       textTransform: "capitalized",
                       background: typographyColor,
                       borderRadius: '25px',
                       padding: '2px 7px',
                       fontSize: '0.6rem',
                       fontWeight: 'bold',
-                      color: '#fff',
-                      textTransform: 'capitalize'
+                      color: '#fff'
                     }}
                   >
                     {post.post.userId?.type}
