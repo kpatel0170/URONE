@@ -13,7 +13,8 @@ export const createPost = async (req, res) => {
 
 export const getPosts = async (req, res) => {
   try {
-    const posts = await postService.getPosts();
+    const { userId, userType } = req.query;
+    const posts = await postService.getPosts({ userId, userType});
     res.json({ success: true, data: posts });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
