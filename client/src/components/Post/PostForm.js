@@ -25,6 +25,7 @@ export default function PostForm(props) {
         console.log('create new')
     }
     const [formData, setFormData] = useState({
+        title: props.data.title,
         text: props.data.text,
         image: props.data.image,
         isCreate: props.data.isCreate
@@ -32,11 +33,9 @@ export default function PostForm(props) {
 
     console.log("text", formData.text)
     const isEmpty = formData.text.trim().length === 0;
-    const {text, image, likes, dislikes, comments, share, checkAll} = formData;    
+    const {title, text, image, likes, dislikes, comments, share, checkAll} = formData;    
     const [previewImages, setPreviewImages] = useState(props.data.image); 
-    // const [currentData, setCurrentData] = useState(data);
-    
-    // console.log(props)
+    // const [currentData, setCurrentData] = useState(data);      
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -50,6 +49,11 @@ export default function PostForm(props) {
                 comments: checked,
                 share: checked,
                 [event.target.name]: event.target.checked
+            }));
+        } else if(name === 'title'){
+            setFormData((prevState) => ({
+                ...prevState, 
+                [event.target.name]: event.target.value,
             }));
         } else if(name === 'text'){
             setFormData((prevState) => ({
@@ -127,14 +131,20 @@ export default function PostForm(props) {
         }));
     }
 
-    const modalHandler = (event) => {
-        props.onModalClose(true);
+    const drawerHandler = () => {
+        setFormData({
+            title: '',
+            text: '',
+            image: []
+        })
+        props.deactivtateDrawer(false);
     }
 
     const submitFormHandler = (event) => {
         event.preventDefault();
         const userId = user.data._id;
         const data = new FormData();
+        data.append('title', title)
         data.append('text', text)
         data.append('userId', userId)
 
@@ -154,26 +164,34 @@ export default function PostForm(props) {
         dispatch(createPost(data))
 
         setFormData({
+            title: '',
             text: '',
-            image: [],
-            likes: false,
-            dislikes: false,
-            comments: false,
-            share: false,
-            checkAll: false
+            image: []
         })
         toast.success('Post created successfully', {position: 'top-center'});
-        props.onModalClose(true);
+        props.deactivtateDrawer(false);
     }
 
     return (
         <>
             <Box sx={{ borderBottom: 1, borderColor: '#dcdcdc', marginBottom: 3, paddingBottom: 2}}>
-                <Typography id="modal-modal-title" variant="h6" component="h2" sx={{textAlign: 'center'}}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
                     Create Post
                 </Typography>
             </Box>
-            <form onSubmit={submitFormHandler}>                
+            <form onSubmit={submitFormHandler}>   
+                <Box sx={{marginBottom: 4}}>
+                    <Typography sx={{ mb: 1 }}>Title</Typography>
+                    <TextField
+                        id="title"
+                        name="title"
+                        type="text"
+                        onChange={formInputHandler}
+                        value={title}
+                        placeholder="Enter title"
+                        sx={{ width: 1 }}
+                    />
+                </Box>             
                 <TextField
                     id="text"
                     name="text"
@@ -264,7 +282,7 @@ export default function PostForm(props) {
                 </Box> */}
 
                 <Box sx={{ marginY: 3, display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingTop: 3}}>
-                    <Button onClick={modalHandler} type="submit" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                    <Button onClick={drawerHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
                     <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%', boxShadow: 'none'}}>Post</Button>
                 </Box>
             </form>

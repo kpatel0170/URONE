@@ -1,5 +1,4 @@
 import React, { useState} from 'react';
-import Search from '../Search/Search';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -8,6 +7,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import LoopIcon from '@mui/icons-material/Loop';
 
 const Header = props => {  
     const dispatch = useDispatch();
@@ -24,6 +25,15 @@ const Header = props => {
 
     const backToHome = (event) => {
         navigate('/')
+    }
+
+    const renderPosts = (type) => {
+        // dispatch()
+    }
+
+    const createPostHandler = () => {
+        console.log('active the drawer')
+        props.activateDrawer(true)
     }
 
     const hideToggleHandler = (event) => {
@@ -44,16 +54,21 @@ const Header = props => {
             <Box sx={{position: 'fixed', width: '100%', zIndex: '2'}}>
                 <Box className="header_wrap">
                     <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                        <Grid item xs={3}>
-                            {/* <Box onClick={backToHome} sx={{width: '50px', height: '50px', borderRadius: '50%', background: '#1976d2', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                                <Typography sx={{color:'white', fontWeight: 'bold'}}>rOne</Typography>
-                            </Box> */}
-                            <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '2.2rem'}}>rOne</Typography>
+                        <Grid item xs={4} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '3rem', lineHeight: 1}}>rOne</Typography>
+                            <Box sx={{marginLeft: '3.5rem'}}>
+                                <Button onClick={createPostHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', marginRight: 2, paddingRight: '0.8rem', background: '#f7f7f7'}}><AddIcon sx={{color: '#1a76d2'}} />create</Button>
+                                <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
+                            </Box>
                         </Grid>
-                        <Grid item xs={6}>
-                            {/* <Search /> */}
+                        <Grid item xs={5} sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+                            <Box sx={{display: 'flex'}}>
+                                <Button onClick={() => renderPosts('all')} sx={{textTransform: 'capitalize', color: '#4d4d4d', borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>All</Button>
+                                <Button onClick={() => renderPosts('professor')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Academic</Button>
+                                <Button onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
+                            </Box>
                         </Grid>
-                        <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>                            
                             <Button onClick={enableToggleHandler} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
                                 {user?.data.profilePicture.length != 0 ?                                     
                                     (
