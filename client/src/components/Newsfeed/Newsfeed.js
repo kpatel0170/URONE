@@ -137,7 +137,7 @@ function Newsfeed(post) {
 
   const deletePostHandler = (event) => {
     setModal(false);
-    toast.success("Post deleted successfully", { position: "top-center" });
+    toast.success("Post deleted successfully", { position: "bottom-right", hideProgressBar: true });
     dispatch(deletePost(post.post._id));
   };
 
