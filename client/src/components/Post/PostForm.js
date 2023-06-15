@@ -115,7 +115,7 @@ export default function PostForm(props) {
                     {formData.isCreate != undefined ? (
                         <img src={previewImage} className={styles.preview_img_wrap} />
                     ) : (
-                        <img src={baseUrl + previewImage} className={styles.preview_img_wrap} />
+                        <img src={previewImage} className={styles.preview_img_wrap} />
                     )}
                 </Box>
             )

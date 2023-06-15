@@ -11,7 +11,8 @@ const initialState = {
     isLoading: false,
     isCommentLoading: false,
     isLikeLoading: false,
-    message: ''
+    message: '',
+    selectedPost: null
 }
 
 // Create post
@@ -119,7 +120,10 @@ export const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        reset: (state) => initialState,
+        selectPost: (state, action) => {
+            state.selectedPost = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -265,6 +269,6 @@ export const postSlice = createSlice({
     },
 })
 
-export const {reset} = postSlice.actions;
+export const {reset, selectPost} = postSlice.actions;
 
 export default postSlice.reducer;
