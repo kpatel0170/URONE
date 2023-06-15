@@ -137,6 +137,7 @@ export default function PostForm(props) {
             text: '',
             image: []
         })
+        setPreviewImages([])
         props.deactivtateDrawer(false);
     }
 
