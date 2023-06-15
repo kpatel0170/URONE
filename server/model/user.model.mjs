@@ -12,7 +12,7 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     type: { type: String, required: true, enum: ["student", "professor", "staff", "other"] },
     profilePicture: { type: String, default: "" },
-    about: String,
+    about: {type: String, default: ""},
     followers: [],
     following: []
   },
