@@ -33,6 +33,19 @@ export const getPostById = async (req, res) => {
   }
 };
 
+export const getPostsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params; 
+    const posts = await postService.getPostsByUserId(userId);
+    if (!posts || posts.length === 0) {
+      return res.status(404).json({ success: false, error: "No posts found for the user" });
+    }
+    res.json({ success: true, data: posts });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;

@@ -3,6 +3,7 @@ import {
   createPost,
   getPosts,
   getPostById,
+  getPostsByUserId,
   updatePost,
   deletePost,
   likePost,
@@ -15,6 +16,7 @@ const router = express.Router();
 router.post('/', createPost);
 router.get('/', getPosts);
 router.get('/:id', getPostById);
+router.get('/user/:userId', getPostsByUserId);
 router.patch('/:id', updatePost);
 router.delete('/:id', deletePost);
 router.patch('/:id/like', likePost);

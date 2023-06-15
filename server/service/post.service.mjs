@@ -42,6 +42,19 @@ const PostService = {
     }
   },
 
+  async getPostsByUserId(userId) {
+    try {
+      const posts = await postModel
+        .find({ userId: userId })
+        .populate("userId", "name type profilePicture")
+        .populate("comments.userId", "name type profilePicture");
+  
+      return posts;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+
   async updatePost(id, title, text, image) {
     try {
       const updatedPost = await postModel
