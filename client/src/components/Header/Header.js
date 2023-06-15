@@ -38,8 +38,6 @@ const Header = props => {
 
     const hideToggleHandler = (event) => {
         if(event.target.innerText === 'Logout'){
-            console.log('dispatch logout ...')
-            toast.success('Logout successful', {position: 'top-center'});
             dispatch(logOut());
             dispatch(reset())
             navigate('/')
