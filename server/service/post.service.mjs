@@ -1,9 +1,9 @@
 import postModel from "../model/post.model.mjs";
 
 const PostService = {
-  async createPost(text, image, userId) {
+  async createPost(title, text, image, userId) {
     try {
-      const newPost = new postModel({ text, image, userId });
+      const newPost = new postModel({ title, text, image, userId });
 
       await newPost.save();
       const populatedPost = await postModel
@@ -42,10 +42,10 @@ const PostService = {
     }
   },
 
-  async updatePost(id, text, image) {
+  async updatePost(id, title, text, image) {
     try {
       const updatedPost = await postModel
-        .findByIdAndUpdate(id, { text, image }, { new: true })
+        .findByIdAndUpdate(id, { title, text, image }, { new: true })
         .populate("userId", "name type profilePicture")
         .populate("comments.userId", "name type profilePicture");
 
