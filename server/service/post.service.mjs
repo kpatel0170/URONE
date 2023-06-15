@@ -1,9 +1,10 @@
 import postModel from "../model/post.model.mjs";
+import userModel from "../model/user.model.mjs";
 
 const PostService = {
-  async createPost(text, image, userId) {
+  async createPost(title, text, image, userId) {
     try {
-      const newPost = new postModel({ text, image, userId });
+      const newPost = new postModel({ title, text, image, userId });
 
       await newPost.save();
       const populatedPost = await postModel
@@ -16,10 +17,18 @@ const PostService = {
     }
   },
 
-  async getPosts() {
+  async getPosts({ userId, userType }) {
     try {
+      const query = {};
+      let users;
+      if (userType) {
+        users = await userModel.find({ type: userType }, { _id: 1 });
+        query.userId = users;
+      } else if (userId) {
+        query.userId = userId;
+      }
       const posts = await postModel
-        .find()
+        .find(query)
         .populate("userId", "name type profilePicture")
         .populate("comments.userId", "name type profilePicture");
 
@@ -42,10 +51,27 @@ const PostService = {
     }
   },
 
-  async updatePost(id, text, image) {
+  async getPostsByUserId(userId) {
     try {
+      const posts = await postModel
+        .find({ userId: userId })
+        .populate("userId", "name type profilePicture")
+        .populate("comments.userId", "name type profilePicture");
+
+      return posts;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  },
+
+  async updatePost(id, title, text, image) {
+    try {
+      const data = {};
+      title ? (data.title = title) : "";
+      text ? (data.text = text) : "";
+      image && image.length ? (data.image = image) : null;
       const updatedPost = await postModel
-        .findByIdAndUpdate(id, { text, image }, { new: true })
+        .findByIdAndUpdate(id, { $set: data }, { new: true })
         .populate("userId", "name type profilePicture")
         .populate("comments.userId", "name type profilePicture");
 
@@ -165,7 +191,6 @@ const PostService = {
         .populate("comments.userId", "name type profilePicture");
 
       return populatedPost;
-
     } catch (error) {
       throw new Error(error.message);
     }
