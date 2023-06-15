@@ -41,7 +41,7 @@ const Comment = (comment) => {
             'userId': user.data._id,
             'commentInput': commentInput
         } 
-        toast.success("Comment added successfully", {position: 'top-center'});
+        toast.success("Comment added successfully", { position: "bottom-right", hideProgressBar: true });
         dispatch(createComment(data))
         setCommentInput("");
         setFirstTimeDisplay(false);

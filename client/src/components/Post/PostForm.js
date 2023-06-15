@@ -168,7 +168,7 @@ export default function PostForm(props) {
             text: '',
             image: []
         })
-        toast.success('Post created successfully', {position: 'top-center'});
+        toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true });
         props.deactivtateDrawer(false);
     }
 
