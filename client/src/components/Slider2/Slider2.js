@@ -123,7 +123,7 @@ function Slider2(media) {
                             </Box>
                         </Box>
                     ) : (
-                        <ImageList cols={2} rowHeight={164} sx={{paddingTop: 0}}>
+                        <ImageList cols={2} rowHeight={210} sx={{paddingTop: 0}}>
                             {media.media.map((item, index) => (
                                 <ImageListItem key={item} onClick={() => galleryHandler(index)}>
                                     <img

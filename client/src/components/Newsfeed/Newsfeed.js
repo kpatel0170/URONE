@@ -26,6 +26,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 import Comment from "../../components/Comments/Comments";
 import Slider from "../Slider/Slider";
@@ -75,6 +77,24 @@ function Newsfeed(post) {
     "https://marketplace.canva.com/EAFJd1mhO-c/1/0/900w/canva-colorful-watercolor-painting-phone-wallpaper-qq02VzvX2Nc.jpg",
   ];
 
+  let typographyColor;
+  switch (post.post.userId?.type) {
+    case 'student':
+      typographyColor = '#f7c602';
+      break;
+    case 'professor':
+      typographyColor = '#0aade2';
+      break;
+    case 'staff':
+      typographyColor = '#634db7';
+      break;
+    case 'other':
+      typographyColor = 'black';
+      break;
+    default:
+      typographyColor = 'black';
+  }
+
   const isToggle = Boolean(toggle);
   const showCommentHandler = () => {
     setIsComment(!isComment);
@@ -95,6 +115,10 @@ function Newsfeed(post) {
       setModal(true);
     }
   };
+
+  const editPostHandler = () => {
+    console.log()
+  }
 
   const modalHandler = (type) => {
     console.log(type);
@@ -186,7 +210,7 @@ function Newsfeed(post) {
       {user && (
         <Card
           key={post.post._id}
-          sx={{ maxWidth: 540, mt: 3, padding: 2, marginBottom: 2 }}
+          sx={{ maxWidth: 570, mt: 3, padding: 2, marginBottom: 2 }}
           className={styles.card_wrap}
         >
           <Box
@@ -244,6 +268,13 @@ function Newsfeed(post) {
                       color: "#rgba(0, 0, 0, 0.87)",
                       fontSize: "0.875rem",
                       textTransform: "capitalized",
+                      background: typographyColor,
+                      borderRadius: '25px',
+                      padding: '2px 7px',
+                      fontSize: '0.6rem',
+                      fontWeight: 'bold',
+                      color: '#fff',
+                      textTransform: 'capitalize'
                     }}
                   >
                     {post.post.userId?.type}
@@ -304,9 +335,13 @@ function Newsfeed(post) {
               <DeleteOutlineIcon name="delete_post" sx={{ paddingRight: 1 }} />{" "}
               Delete Post
             </MenuItem>
-            <MenuItem name="edit_post" onClick={() => modalHandler('edit')}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem>
+            <MenuItem name="edit_post" onClick={() => editPostHandler()}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem>
           </Menu>
-
+          {post.post.title != undefined && 
+            <Box sx={{paddingX: 2, paddingBottom: 1}} >
+              <Typography sx={{fontSize: '1.25rem'}} className="title_txt">{post.post.title}</Typography>
+            </Box>
+          }
           {post.post.text && (
             <CardContent sx={{ paddingTop: 0 }}>
               <Box>
@@ -386,7 +421,9 @@ function Newsfeed(post) {
                     : "",
                 }}
               >
-                <ThumbUpOffAltIcon />
+                {/* <ThumbUpAltIcon /> */}
+                
+                {post.post.likes.includes(user.data._id)? (<ThumbUpIcon />) : (<ThumbUpOffAltIcon />)}
               </IconButton>
               <Box sx={{ width: "50px" }}>
                 {post.post.likes.length != 0 && (
@@ -406,7 +443,7 @@ function Newsfeed(post) {
                     : "",
                 }}
               >
-                <ThumbDownOffAltIcon />
+                {post.post.dislikes.includes(user.data._id)? (<ThumbDownIcon />) : (<ThumbDownOffAltIcon />)}
               </IconButton>
               <Box sx={{ width: "50px" }}>
                 {post.post.dislikes.length != 0 && (
@@ -516,7 +553,8 @@ function Newsfeed(post) {
                   <CloseIcon />
                 </IconButton>
               </Box>
-              <PostForm onModalClose={modalCloseHandler} data={post.post} />
+              {/* <PostForm onModalClose={modalCloseHandler} data={post.post} /> */}
+              <PostForm activateDrawer={modalCloseHandler} data={post.post} />
             </Box>
           </>
         )}

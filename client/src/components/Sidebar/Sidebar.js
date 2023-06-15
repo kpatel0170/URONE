@@ -27,7 +27,8 @@ const Sidebar = props => {
 
     return(
         <>
-            <Box sx={{ position: 'fixed', width: 1/4, borderLeft: 1, borderColor: '#dedede', height: '100%'}}> 
+            sidebar
+            {/* <Box sx={{ position: 'fixed', width: 1/4, borderLeft: 1, borderColor: '#dedede', height: '100%'}}> 
                 <Box sx={{p: 2}}>             
                     <Button 
                         variant="contained" 
@@ -63,7 +64,7 @@ const Sidebar = props => {
                     </Box>
                     <PostForm onModalClose={modalCloseHandler} data={defaultData}/>
                 </Box>
-            </Modal>
+            </Modal> */}
         </>
     )
 }

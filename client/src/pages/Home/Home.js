@@ -3,14 +3,17 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Box, Grid, Typography} from '@mui/material';
+import { Box, Grid, Typography, Drawer} from '@mui/material';
 
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Newsfeed from '../../components/Newsfeed/Newsfeed';
 import Loading from '../../components/Loading/Loading';
+import PostForm from '../../components/Post/PostForm';
 
 import { getAllPosts, reset } from '../../features/Post/PostSlice';
+
+import styles from "./Home.module.css";
 
 function Home() {
   const navigate = useNavigate();
@@ -21,6 +24,13 @@ function Home() {
   const { posts, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.post
   )
+
+  const [isClicked, setIsClicked] = useState(false);
+  const defaultData = {'text': '', 'image': [], isCreate: true}  
+
+  const handleDrawer = (condition) => {
+    setIsClicked(condition);
+  };
 
   useEffect(() => {
     if (isError) {
@@ -43,10 +53,10 @@ function Home() {
 
   return (
     <>
-      <Header/>
+      <Header activateDrawer={handleDrawer}/>
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
-        <Grid item xs={12} sm={9} sx={{width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>                    
-          <Box>
+        <Grid item xs={12} sm={12} sx={{width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>         
+          <Box className={isClicked ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
             {posts.length != 0 ? (
               <>
                 {isLoading && <Loading />}
@@ -62,9 +72,11 @@ function Home() {
               </>
             )}
           </Box>
-        </Grid>
-        <Grid item xs={0} sm={3} sx={{position: 'relative'}}>
-          <Sidebar />
+          <Box className={styles.drawer_container}>
+            <Box sx={{marginTop: 8}} className={isClicked ? `${styles.drawer_active} ${styles.drawer_wrapper}` : `${styles.drawer_hidden} ${styles.drawer_wrapper}`}>
+              <PostForm deactivtateDrawer={handleDrawer} data={defaultData} />
+            </Box>
+          </Box>
         </Grid>
       </Grid>      
     </>
