@@ -34,12 +34,10 @@ function Login() {
     inputRef.current.focus();
     if (isError) {
       if (message === "Invalid password") {
-        toast.error("Invalid password", { position: "top-center" });
         setFormError({
           password: "Wrong password",
         });
       } else if (message === "User not found") {
-        toast.error("Invalid user", { position: "top-center" });
         setFormError({
           email: "There is no user with this email address.",
           error:
@@ -50,7 +48,7 @@ function Login() {
 
     if (isSuccess || user) {
       if (isSuccess) {
-        toast.success("Login successful", { position: "top-center" });
+        toast.success("Login successful", { position: "bottom-right", hideProgressBar: true });
       }
       navigate("/");
     }
@@ -108,7 +106,6 @@ function Login() {
     event.preventDefault();
 
     if (email.trim() === "" || password.length === 0) {
-      toast.error("Please fill all the fields", { position: "top-center" });
       setFormError({
         email: "Please enter an email address",
         password: "Please enter password",
@@ -116,7 +113,6 @@ function Login() {
     } else {
       console.log("valid");
       if (password.length < 8) {
-        toast.error("Invalid password", { position: "top-center" });
         setFormError({
           password: "Password must be 8 characters or more",
         });

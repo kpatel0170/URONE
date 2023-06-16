@@ -1,3 +1,4 @@
+
 import react, { useState } from 'react';
 import { Button, Typography, Box, TextField, Switch, FormControlLabel, IconButton } from '@mui/material';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
@@ -20,7 +21,8 @@ export default function PostForm(props) {
     
     const isEmpty = formData.text.trim().length === 0;
     const {title, text, image} = formData;    
-    const [previewImages, setPreviewImages] = useState(props.data.image);         
+
+    const [previewImages, setPreviewImages] = useState(props.data.image);   
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -154,7 +156,7 @@ export default function PostForm(props) {
             text: '',
             image: []
         })
-        toast.success('Post created successfully', {position: 'top-center'});
+        toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true });
         props.deactivtateDrawer(false);
     }
 

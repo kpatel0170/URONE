@@ -13,6 +13,7 @@ const Comment = (comment) => {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth)
     const scrollCommentRef = useRef(null);
+    const inputRef = useRef(null);
 
     const { isCommentLoading } = useSelector(
         (state) => state.post
@@ -41,13 +42,14 @@ const Comment = (comment) => {
             'userId': user.data._id,
             'commentInput': commentInput
         } 
-        toast.success("Comment added successfully", {position: 'top-center'});
+        toast.success("Comment added successfully", { position: "bottom-right", hideProgressBar: true });
         dispatch(createComment(data))
         setCommentInput("");
         setFirstTimeDisplay(false);
     }
 
     useEffect(() => {
+        inputRef.current.focus();
         if (!firstTimeDisplay && scrollCommentRef.current) { // Scroll after comment success
             scrollCommentRef.current.scrollTop = scrollCommentRef.current.scrollHeight;
         }
@@ -60,6 +62,7 @@ const Comment = (comment) => {
                     <TextField 
                         id="commentInput" 
                         name="commentInput"
+                        inputRef={inputRef}
                         type="text"
                         value={commentInput} 
                         onChange={commentInputHandler}
