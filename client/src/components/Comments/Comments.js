@@ -133,7 +133,7 @@ const Comment = (comment) => {
                                         </>
                                     )
                                 }
-                                <Typography variant="subtitle1" sx={{fontWeight: '500', pr: 1, pl: 1, color: '#5f6069'}}>{data.userId.name}</Typography>
+                                <Typography variant="subtitle1" sx={{fontWeight: '500', pr: 1, pl: 1, color: '#5f6069'}}>{data.userId?.name}</Typography>
                                 <Box sx={{width: '3px', height: '3px', background: '#95969c', borderRadius: '50%'}}></Box>
                                 <Typography variant="subtitle1" sx={{fontSize: '0.8rem', lineHeight: '2.2', pl: 1}}>{data.at.slice(0, 10)}</Typography>
                             </Box>

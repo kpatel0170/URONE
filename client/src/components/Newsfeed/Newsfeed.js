@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SimpleImageSlider from "react-simple-image-slider";
 
 import {
@@ -17,13 +17,14 @@ import {
   IconButton,
   Collapse,
   Menu,
-  MenuItem,
+  MenuItem, ListItem, ListItemButton, ListItemText, ListItemIcon
 } from "@mui/material";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from "@mui/icons-material/Close";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -40,6 +41,7 @@ import {
   deletePost,
   likePost,
   disLikePost,
+  selectPost
 } from "../../features/Post/PostSlice";
 import { toast } from "react-toastify";
 
@@ -61,6 +63,9 @@ function Newsfeed(post) {
   const { user } = useSelector((state) => state.auth);
   const { isLikeLoading } = useSelector((state) => state.post);
 
+  const [dropdown, setDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
   const [isComment, setIsComment] = useState(false);
   const [isReadMore, setIsReadMore] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
@@ -77,6 +82,7 @@ function Newsfeed(post) {
     "https://marketplace.canva.com/EAFJd1mhO-c/1/0/900w/canva-colorful-watercolor-painting-phone-wallpaper-qq02VzvX2Nc.jpg",
   ];
 
+  // start:: colorscheme for different usertype
   let typographyColor;
   switch (post.post.userId?.type) {
     case 'student':
@@ -95,6 +101,7 @@ function Newsfeed(post) {
       typographyColor = 'black';
   }
 
+  // start:: comment toggler 
   const isToggle = Boolean(toggle);
   const showCommentHandler = () => {
     setIsComment(!isComment);
@@ -116,11 +123,43 @@ function Newsfeed(post) {
     }
   };
 
-  const editPostHandler = () => {
-    console.log()
+  // start:: dropdown menu
+  const toggleDropdown = () =>{
+    setDropdown(!dropdown)
   }
 
-  const modalHandler = (type) => {
+  const handleOutsideClick = (event) => {
+      setDropdown(false);
+      if (dropdownRef.current) {
+          if(dropdown === true){
+              setDropdown(false);
+          }else{
+              dropdownRef.current = null
+              setDropdown(true);
+          }
+      }else{
+          setDropdown(false);
+      }
+  };
+
+  useEffect(() => {
+      const handleClickOutside = (event) => {            
+          handleOutsideClick(event);
+      };
+      
+      document.addEventListener('click', handleClickOutside);
+      return () => {
+          document.removeEventListener('click', handleClickOutside);
+      };
+  }, []);
+
+  // end:: dropdown menu
+
+  const drawerHandler = (data) => {    
+    dispatch(selectPost(data))
+  }
+
+  const modalHandler = (type, data) => {
     console.log(type);
     if (type === "edit") {
       setIsEdit(true);
@@ -210,7 +249,7 @@ function Newsfeed(post) {
       {user && (
         <Card
           key={post.post._id}
-          sx={{ maxWidth: 570, mt: 3, padding: 2, marginBottom: 2 }}
+          sx={{ maxWidth: 570, width: 570, mt: 3, padding: 2, marginBottom: 2 }}
           className={styles.card_wrap}
         >
           <Box
@@ -223,10 +262,22 @@ function Newsfeed(post) {
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <Box>
                 {post.post.userId?.profilePicture.length != 0 ? (
-                  <Avatar
-                    alt="profile"
-                    src={baseUrl + post.post.userId?.profilePicture}
-                  />
+                  <>
+                    <Box
+                      sx={{
+                        color: "#85868f",
+                        width: "40px",
+                        height: "40px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "50%",
+                        background: "#e6e7ee",
+                      }}
+                    >
+                      <img className={styles.user_avatar} src={baseUrl + post.post.userId?.profilePicture} />
+                    </Box>
+                  </>
                 ) : (
                   <Box sx={{ display: "flex" }}>
                     <Box
@@ -308,7 +359,7 @@ function Newsfeed(post) {
             <Box>
               <IconButton
                 aria-label="settings"
-                onClick={enableToggleHandler}
+                onClick={toggleDropdown}
                 style={{
                   display:
                     post.post.userId?._id === user.data._id ? "flex" : "none",
@@ -318,6 +369,28 @@ function Newsfeed(post) {
               </IconButton>
             </Box>
           </Box>
+
+          {dropdown && 
+            <Box ref={dropdownRef} sx={{position: 'absolute', top: '75px', right: '20px', background: 'white', width: '150px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
+              <ListItem disablePadding>
+                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => modalHandler("delete")}>
+                  <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                    <DeleteOutlineIcon sx={{fontSize: '1.3rem'}} />
+                  </ListItemIcon>
+                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Delete" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton sx={{paddingLeft: '8px'}}>
+                  <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                    <EditIcon sx={{fontSize: '1.3rem'}} />
+                  </ListItemIcon>
+                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Edit" />
+                </ListItemButton>
+              </ListItem>
+            </Box>
+          }
+
           <Menu
             id="profile-menu"
             anchorEl={toggle}
@@ -335,11 +408,15 @@ function Newsfeed(post) {
               <DeleteOutlineIcon name="delete_post" sx={{ paddingRight: 1 }} />{" "}
               Delete Post
             </MenuItem>
-            <MenuItem name="edit_post" onClick={() => editPostHandler()}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem>
+            <MenuItem name="edit_post" onClick={() => drawerHandler(post.post)}><EditIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem>
+            <MenuItem name="edit_post" onClick={() => modalHandler('edit', post.post)}> Edit Post</MenuItem>
           </Menu>
+
+
+
           {post.post.title != undefined && 
             <Box sx={{paddingX: 2, paddingBottom: 1}} >
-              <Typography sx={{fontSize: '1.25rem'}} className="title_txt">{post.post.title}</Typography>
+              <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2'}} className="title_txt">{post.post.title}</Typography>
             </Box>
           }
           {post.post.text && (

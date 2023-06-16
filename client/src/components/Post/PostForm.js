@@ -1,9 +1,5 @@
 import react, { useState } from 'react';
 import { Button, Typography, Box, TextField, Switch, FormControlLabel, IconButton } from '@mui/material';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ShareIcon from '@mui/icons-material/Share';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -15,27 +11,16 @@ import { toast } from 'react-toastify';
 
 export default function PostForm(props) {
     const dispatch = useDispatch();
-    const {user} = useSelector((state) => state.auth)
+    const {user} = useSelector((state) => state.auth);
+    const selectedPost = useSelector((state) => state.post.selectedPost);
     const baseUrl = "http://localhost:3001/posts/";
 
-    // initialize values
-    if(props.data != undefined){
-        console.log('data parsed from other component', props.data)
-    }else{
-        console.log('create new')
-    }
-    const [formData, setFormData] = useState({
-        title: props.data.title,
-        text: props.data.text,
-        image: props.data.image,
-        isCreate: props.data.isCreate
-    });
-
-    console.log("text", formData.text)
+    const [formData, setFormData] = useState(selectedPost || { title: '', text: '', image: [] });
+    console.log(selectedPost)
+    
     const isEmpty = formData.text.trim().length === 0;
-    const {title, text, image, likes, dislikes, comments, share, checkAll} = formData;    
-    const [previewImages, setPreviewImages] = useState(props.data.image); 
-    // const [currentData, setCurrentData] = useState(data);      
+    const {title, text, image} = formData;    
+    const [previewImages, setPreviewImages] = useState(props.data.image);         
 
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -115,7 +100,7 @@ export default function PostForm(props) {
                     {formData.isCreate != undefined ? (
                         <img src={previewImage} className={styles.preview_img_wrap} />
                     ) : (
-                        <img src={baseUrl + previewImage} className={styles.preview_img_wrap} />
+                        <img src={previewImage} className={styles.preview_img_wrap} />
                     )}
                 </Box>
             )
@@ -137,6 +122,7 @@ export default function PostForm(props) {
             text: '',
             image: []
         })
+        setPreviewImages([])
         props.deactivtateDrawer(false);
     }
 
@@ -178,6 +164,11 @@ export default function PostForm(props) {
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     Create Post
                 </Typography>
+                <Box sx={{ position: "absolute", right: "20px", top: "20px" }}>
+                    <IconButton aria-label="close" onClick={drawerHandler}>
+                        <CloseIcon />
+                    </IconButton>
+                </Box>
             </Box>
             <form onSubmit={submitFormHandler}>   
                 <Box sx={{marginBottom: 4}}>
@@ -187,7 +178,7 @@ export default function PostForm(props) {
                         name="title"
                         type="text"
                         onChange={formInputHandler}
-                        value={title}
+                        value={formData.title}
                         placeholder="Enter title"
                         sx={{ width: 1 }}
                     />
@@ -196,7 +187,7 @@ export default function PostForm(props) {
                     id="text"
                     name="text"
                     onChange={formInputHandler}
-                    value={text}
+                    value={formData.text}
                     label="Share your thought ..."
                     multiline
                     rows={4}
