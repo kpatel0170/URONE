@@ -6,11 +6,12 @@ import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography, ListItem, ListItemButton, ListItemText} from '@mui/material';
+import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography, ListItem, ListItemButton, ListItemText, ListItemIcon} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LoopIcon from '@mui/icons-material/Loop';
-import { getAllPosts } from '../../features/Post/PostSlice';
+import LogoutIcon from '@mui/icons-material/Logout';
 
+import { getAllPosts } from '../../features/Post/PostSlice';
 
 const Header = props => {  
     const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const Header = props => {
                         <Grid item xs={4} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '3rem', lineHeight: 1}}>rOne</Typography>
                             <Box sx={{marginLeft: '3.5rem'}}>
-                                <Button onClick={createPostHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', marginRight: 2, paddingRight: '0.8rem', background: '#f7f7f7'}}><AddIcon sx={{color: '#1a76d2'}} />create</Button>
+                            <Button onClick={createPostHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', marginRight: 2, paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
                                 <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
                             </Box>
                         </Grid>
@@ -126,6 +127,9 @@ const Header = props => {
                                 <Box ref={dropdownRef} sx={{position: 'absolute', top: '70px', background: 'white', width: '250px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
                                     <ListItem disablePadding>
                                         <ListItemButton>
+                                        <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                                            <LogoutIcon sx={{fontSize: '1.3rem'}} />
+                                        </ListItemIcon>
                                             <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Logout" />
                                         </ListItemButton>
                                     </ListItem>
