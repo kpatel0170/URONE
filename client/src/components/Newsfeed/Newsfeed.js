@@ -24,6 +24,7 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from "@mui/icons-material/Close";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -40,6 +41,7 @@ import {
   deletePost,
   likePost,
   disLikePost,
+  selectPost
 } from "../../features/Post/PostSlice";
 import { toast } from "react-toastify";
 
@@ -116,11 +118,11 @@ function Newsfeed(post) {
     }
   };
 
-  const editPostHandler = () => {
-    console.log()
+  const drawerHandler = (data) => {    
+    dispatch(selectPost(data))
   }
 
-  const modalHandler = (type) => {
+  const modalHandler = (type, data) => {
     console.log(type);
     if (type === "edit") {
       setIsEdit(true);
@@ -335,7 +337,8 @@ function Newsfeed(post) {
               <DeleteOutlineIcon name="delete_post" sx={{ paddingRight: 1 }} />{" "}
               Delete Post
             </MenuItem>
-            <MenuItem name="edit_post" onClick={() => editPostHandler()}><DeleteOutlineIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem>
+            <MenuItem name="edit_post" onClick={() => drawerHandler(post.post)}><EditIcon name="delete_post" sx={{paddingRight: 1}} /> Edit Post</MenuItem>
+            <MenuItem name="edit_post" onClick={() => modalHandler('edit', post.post)}> Edit Post</MenuItem>
           </Menu>
           {post.post.title != undefined && 
             <Box sx={{paddingX: 2, paddingBottom: 1}} >
