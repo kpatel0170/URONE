@@ -38,10 +38,10 @@ export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, t
 })
 
 // Get all posts
-export const getAllPosts = createAsyncThunk('posts/getPosts', async(_, thunkAPI) => {
+export const getAllPosts = createAsyncThunk('posts/getPosts', async(data, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user._id;
-        return await postService.getAllPosts(token)
+        return await postService.getAllPosts(data, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);

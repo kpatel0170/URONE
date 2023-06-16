@@ -14,6 +14,7 @@ html, body{
   height: 100%;
   margin: 0 auto;
   overflow: overlay;
+  background: #f2f2f3;
 }
 
 code {
@@ -67,6 +68,14 @@ label.image_upload_label:hover{
   margin-right: 240px;
 }
 
+/* .overlay{
+  position: fixed; 
+  top: 0; 
+  right: 0; 
+  bottom: 0; 
+  left: 0; 
+  background: rgba(0, 0, 0, 0.01);
+} */
 
 /* smartphones, iPhone, portrait 480x320 phones */
 @media (min-width:320px)  {  

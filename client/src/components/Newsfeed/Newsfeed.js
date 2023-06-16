@@ -212,7 +212,7 @@ function Newsfeed(post) {
       {user && (
         <Card
           key={post.post._id}
-          sx={{ maxWidth: 570, mt: 3, padding: 2, marginBottom: 2 }}
+          sx={{ maxWidth: 570, width: 570, mt: 3, padding: 2, marginBottom: 2 }}
           className={styles.card_wrap}
         >
           <Box
@@ -225,10 +225,26 @@ function Newsfeed(post) {
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <Box>
                 {post.post.userId?.profilePicture.length != 0 ? (
-                  <Avatar
-                    alt="profile"
-                    src={baseUrl + post.post.userId?.profilePicture}
-                  />
+                  // <Avatar
+                  //   alt="profile"
+                  //   src={baseUrl + post.post.userId?.profilePicture}
+                  // />
+                  <>
+                    <Box
+                      sx={{
+                        color: "#85868f",
+                        width: "40px",
+                        height: "40px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "50%",
+                        background: "#e6e7ee",
+                      }}
+                    >
+                      <img className={styles.user_avatar} src={baseUrl + post.post.userId?.profilePicture} />
+                    </Box>
+                  </>
                 ) : (
                   <Box sx={{ display: "flex" }}>
                     <Box
