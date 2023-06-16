@@ -1,13 +1,15 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography } from '@mui/material';
+import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography, ListItem, ListItemButton, ListItemText} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LoopIcon from '@mui/icons-material/Loop';
+import { getAllPosts } from '../../features/Post/PostSlice';
+
 
 const Header = props => {  
     const dispatch = useDispatch();
@@ -15,25 +17,59 @@ const Header = props => {
 
     const {user} = useSelector((state) => state.auth)
 
+    // const [menuVisible, setMenuVisible] = useState(false);
+
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
+    const [dropdown, setDropdown] = useState(false);
+    const dropdownRef = useRef(null);
 
-    const enableToggleHandler = (event) => {
-        setToggle(event.currentTarget);
-    };
+    // const enableToggleHandler = (event) => {
+    //     setToggle(event.currentTarget);
+    // };
 
     const backToHome = (event) => {
         navigate('/')
     }
 
-    const renderPosts = (type) => {
-        // dispatch()
+    const renderPosts = (value) => {
+        let param = {type: 'user', value: value}
+        dispatch(getAllPosts(param))
     }
 
     const createPostHandler = () => {
         console.log('active the drawer')
         props.activateDrawer(true)
     }
+
+    const toggleDropdown = () =>{
+        setDropdown(!dropdown)
+    }
+
+    const handleOutsideClick = (event) => {
+        setDropdown(false);
+        if (dropdownRef.current) {
+            if(dropdown === true){
+                setDropdown(false);
+            }else{
+                dropdownRef.current = null
+                setDropdown(true);
+            }
+        }else{
+            setDropdown(false);
+        }
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {            
+            handleOutsideClick(event);
+        };
+        
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     const hideToggleHandler = (event) => {
         if(event.target.innerText === 'Logout'){
@@ -66,7 +102,7 @@ const Header = props => {
                             </Box>
                         </Grid>
                         <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>                            
-                            <Button onClick={enableToggleHandler} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
+                            <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
                                 {user?.data.profilePicture.length != 0 ?                                     
                                     (
                                         <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
@@ -83,6 +119,15 @@ const Header = props => {
                                     <MoreVertIcon />
                                 </Box>
                             </Button>
+                            {dropdown && 
+                                <Box ref={dropdownRef} sx={{position: 'absolute', top: '70px', background: 'white', width: '250px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
+                                    <ListItem disablePadding>
+                                        <ListItemButton>
+                                            <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Logout" />
+                                        </ListItemButton>
+                                    </ListItem>
+                                </Box>
+                            }
 
                             <Menu
                                 id="profile-menu"
@@ -92,7 +137,7 @@ const Header = props => {
                                 MenuListProps={{
                                 'aria-labelledby': 'profile-button',
                                 }}
-                                
+                                disableScrollLock={true}
                             >
                                 {/* <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Profile</MenuItem> */}
                                 <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Logout</MenuItem>

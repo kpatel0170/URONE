@@ -1,14 +1,20 @@
 .card_wrap{
-    border: 1px solid #dcdcdc;
-    border-radius: 0 !important;
-    box-shadow: none !important;
+    /* border: 1px solid #dcdcdc; */
+    border-radius: 10px !important;
+    box-shadow: 1px 2px 5px 0px rgb(232 232 232 / 91%) !important;
+    position: relative;
 }
 .readmore{
     color: #1976d2 !important;
     cursor: pointer;
 }
 
-.gallery_img{
+.gallery_img,
+.user_avatar{
     width: 100%;
     height: 100% !important;
+}
+.user_avatar{
+    object-fit: cover;
+    border-radius: 50%;
 }

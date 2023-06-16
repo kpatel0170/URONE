@@ -5,13 +5,22 @@ const API = 'http://localhost:3001/api/v1/posts/'
 
 
 // Get all posts
-const getAllPosts = async (token) => {
+const getAllPosts = async (data, token) => {
     const config ={
         headers: {
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.get(API , config)
+    console.log(data)
+    let requestAPI;
+    if(data != undefined){
+        if(data.type === 'user' && (data.value === 'staff' || data.value === 'professor')){
+            requestAPI = API + '?userType=' + data.value
+        }
+    }else{
+        requestAPI = API
+    }
+    const response = await axios.get(requestAPI , config)
     return response.data.data
 }
 

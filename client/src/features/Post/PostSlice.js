@@ -11,7 +11,8 @@ const initialState = {
     isLoading: false,
     isCommentLoading: false,
     isLikeLoading: false,
-    message: ''
+    message: '',
+    selectedPost: null
 }
 
 // Create post
@@ -37,10 +38,10 @@ export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, t
 })
 
 // Get all posts
-export const getAllPosts = createAsyncThunk('posts/getPosts', async(_, thunkAPI) => {
+export const getAllPosts = createAsyncThunk('posts/getPosts', async(data, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.user._id;
-        return await postService.getAllPosts(token)
+        return await postService.getAllPosts(data, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -119,7 +120,10 @@ export const postSlice = createSlice({
     name: 'post',
     initialState,
     reducers: {
-        reset: (state) => initialState
+        reset: (state) => initialState,
+        selectPost: (state, action) => {
+            state.selectedPost = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -265,6 +269,6 @@ export const postSlice = createSlice({
     },
 })
 
-export const {reset} = postSlice.actions;
+export const {reset, selectPost} = postSlice.actions;
 
 export default postSlice.reducer;
