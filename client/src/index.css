@@ -68,6 +68,10 @@ label.image_upload_label:hover{
   margin-right: 240px;
 }
 
+.main_btn:hover{
+  background-color: #0f67bf !important;
+}
+
 /* .overlay{
   position: fixed; 
   top: 0; 

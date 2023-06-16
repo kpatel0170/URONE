@@ -49,14 +49,18 @@ const createPost = async (postData, token) => {
 }
 
 // Update post
-const updatePost = async (id, token) => {
+const updatePost = async (postData, id, token) => {
     const config ={
         headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            formData: true
         }
     }
-    const response = await axios.patch(API + "updatePost/", id, config)
-    return response.data
+    console.log(postData)
+    console.log('id')
+
+    const response = await axios.patch(API + id , postData, config)
+    return response.data.data
 }
 
 // Delete post

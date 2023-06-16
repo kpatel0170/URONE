@@ -11,7 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import LoopIcon from '@mui/icons-material/Loop';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { getAllPosts } from '../../features/Post/PostSlice';
+import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
 
 const Header = props => {  
     const dispatch = useDispatch();
@@ -39,15 +39,17 @@ const Header = props => {
         dispatch(getAllPosts(param))
     }
 
-    const createPostHandler = () => {
+    const drawerHandler = () => {
         console.log('active the drawer')
         props.activateDrawer(true)
+        dispatch(restSelectPost());
     }
 
     const toggleDropdown = () =>{
         setDropdown(!dropdown)
     }
 
+    // start:: click event listerner
     const handleOutsideClick = (event) => {
         setDropdown(false);
         if (dropdownRef.current) {
@@ -72,6 +74,7 @@ const Header = props => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
+    // end:: click event listerner
 
     const hideToggleHandler = (event) => {
         if(event.target.innerText === 'Logout'){
@@ -94,7 +97,7 @@ const Header = props => {
                         <Grid item xs={4} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '3rem', lineHeight: 1}}>rOne</Typography>
                             <Box sx={{marginLeft: '3.5rem'}}>
-                            <Button onClick={createPostHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', marginRight: 2, paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
+                            <Button className='main_btn' onClick={drawerHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', marginRight: 2, paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
                                 <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
                             </Box>
                         </Grid>

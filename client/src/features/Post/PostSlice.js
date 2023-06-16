@@ -18,6 +18,7 @@ const initialState = {
 // Create post
 export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) => {
     try{
+        console.log(postData)
         const token = thunkAPI.getState().auth.user._id;
         return await postService.createPost(postData, token)
     } catch(error) {
@@ -27,10 +28,11 @@ export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) =
 })
 
 // Update post
-export const updateSinglePost = createAsyncThunk('posts/updatePost', async(id, thunkAPI) => {
+export const updateSinglePost = createAsyncThunk('posts/updatePost', async({ postData, postId }, thunkAPI) => {
     try{
+        console.log(postData)
         const token = thunkAPI.getState().auth.user._id;
-        return await postService.updatePost(id, token)
+        return await postService.updatePost(postData, postId, token)
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -124,6 +126,9 @@ export const postSlice = createSlice({
         selectPost: (state, action) => {
             state.selectedPost = action.payload;
         },
+        restSelectPost: (state, action) => {
+            state.selectedPost = null;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -175,6 +180,7 @@ export const postSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 const {_id} = action.payload;
+                console.log(action.payload)
                 state.posts = state.posts.map((post) =>
                     post._id === _id ? { ...post, ...action.payload } : post
                 );
@@ -269,6 +275,6 @@ export const postSlice = createSlice({
     },
 })
 
-export const {reset, selectPost} = postSlice.actions;
+export const {reset, selectPost, restSelectPost} = postSlice.actions;
 
 export default postSlice.reducer;
