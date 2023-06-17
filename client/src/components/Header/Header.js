@@ -12,7 +12,7 @@ import LoopIcon from '@mui/icons-material/Loop';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
-import { toggleDrawer } from '../../features/Home/HomeSlice';
+import { toggleDrawer, openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 
 const Header = props => {  
     const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const Header = props => {
         console.log('active the drawer')
         // props.activateDrawer(true)
         dispatch(restSelectPost());
-        dispatch(toggleDrawer());
+        dispatch(openDrawer());
     }
 
     const toggleDropdown = () =>{
@@ -75,6 +75,7 @@ const Header = props => {
         setDropdown(!dropdown)
         dispatch(logOut());
         dispatch(reset())
+        dispatch(closeDrawer())
         navigate('/')
     };
      

@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { createPost, updateSinglePost, restSelectPost } from '../../features/Post/PostSlice';
-import { toggleDrawer } from '../../features/Home/HomeSlice';
+import { toggleDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 import styles from './PostForm.module.css';
 import '../../App.css';
 import { toast } from 'react-toastify';
@@ -162,6 +162,19 @@ export default function PostForm(props) {
         props.deactivtateDrawer(false);
         dispatch(toggleDrawer());
     }
+
+    const cancelDrawerHandler = () => {
+        setFormData({
+            title: '',
+            text: '',
+            image: []
+        })
+        setPreviewImages([])
+        setBase64Images([]);
+        dispatch(restSelectPost())
+        dispatch(closeDrawer());
+        props.deactivtateDrawer(false);
+    }
     //end:: trigger drawer
 
     //start:: create/edit post form submit 
@@ -215,7 +228,7 @@ export default function PostForm(props) {
                 )}
                 
                 <Box sx={{ position: "absolute", right: "20px", top: "20px" }}>
-                    <IconButton aria-label="close" onClick={drawerHandler} sx={{background: '#f2f2f2'}}>
+                    <IconButton aria-label="close" onClick={cancelDrawerHandler} sx={{background: '#f2f2f2'}}>
                         <CloseIcon />
                     </IconButton>
                 </Box>
@@ -362,7 +375,7 @@ export default function PostForm(props) {
                 </Box> */}
                 <Box sx={{position: 'fixed', bottom: 0, width: '330px', background: 'white'}}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingY: 3}}>
-                        <Button onClick={drawerHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                        <Button onClick={cancelDrawerHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
                         {!selectedPost ? (
                             <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%', boxShadow: 'none'}}>Post</Button>
                         ) : (

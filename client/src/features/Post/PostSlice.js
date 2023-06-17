@@ -127,7 +127,11 @@ export const postSlice = createSlice({
             state.selectedPost = action.payload;
         },
         restSelectPost: (state, action) => {
-            state.selectedPost = null;
+            state.selectedPost = {
+                title: '',
+                text: '',
+                image: []
+            };
         },
     },
     extraReducers: (builder) => {

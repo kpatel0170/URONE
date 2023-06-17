@@ -42,7 +42,7 @@ import {
   selectPost,
   restSelectPost
 } from "../../features/Post/PostSlice";
-import { toggleDrawer } from '../../features/Home/HomeSlice';
+import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 import { toast } from "react-toastify";
 
 const style = {
@@ -163,7 +163,7 @@ function Newsfeed(post) {
       dispatch(selectPost(data))
     }, 100); 
         
-    dispatch(toggleDrawer());
+    dispatch(openDrawer());
   }
 
 
@@ -177,7 +177,7 @@ function Newsfeed(post) {
     setModal(true);
     setToggle(null);
     dispatch(restSelectPost())
-    // dispatch(toggleDrawer());
+    dispatch(closeDrawer());
   };
 
   const modalCloseHandler = () => {

@@ -41,6 +41,8 @@ function Home() {
     console.log('render drawer check from home ... ', isDrawerOpen)
     if(isDrawerOpen === true){
       setIsClicked(!isClicked);
+    }else{
+      setIsClicked(false);
     }
   }, [isDrawerOpen])
 

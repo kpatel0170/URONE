@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-    isDrawer: false
+    isDrawer: false,
 }
 
 export const homeSlice = createSlice({
@@ -13,8 +13,14 @@ export const homeSlice = createSlice({
             state.isDrawer = !state.isDrawer;
             console.log(state.isDrawer)
         },
+        openDrawer: (state) => {
+            state.isDrawer = true
+        },
+        closeDrawer: (state) => {
+            state.isDrawer = false
+        }
     },
 });
 
-export const {reset, toggleDrawer} = homeSlice.actions;
+export const {reset, toggleDrawer, openDrawer, closeDrawer} = homeSlice.actions;
 export default homeSlice.reducer;
