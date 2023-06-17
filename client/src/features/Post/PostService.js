@@ -31,8 +31,8 @@ const getSinglePost = async (id, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.get(API + "getPostById/" + id , config)
-    return response.data
+    const response = await axios.get(API + id , config)
+    return response.data.data
 }
 
 // Create post

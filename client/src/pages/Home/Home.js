@@ -73,12 +73,15 @@ function Home() {
           <Box className={(isClicked || isDrawerOpen) ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
             {posts.length != 0 ? (
               <>
-                {/* {isLoading && <Loading />} */}
-                {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post, index) => (
-                  <Box key={index}>
-                    <Newsfeed post={post}/>
-                  </Box>
-                ))}
+                {isLoading ? <Loading /> : 
+                <>
+                  {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post, index) => (
+                    <Box key={index}>
+                      <Newsfeed post={post}/>
+                    </Box>
+                  ))}
+                  </>
+                }
               </>
             ) : (
               <>

@@ -25,6 +25,7 @@ const Header = props => {
 
     const backToHome = (event) => {
         navigate('/')
+        dispatch(getAllPosts())
     }
 
     const renderPosts = (value) => {

@@ -10,6 +10,7 @@ import Login from './pages/Login/Login';
 import Main from './pages/Home/Home';
 import Profile from './pages/Profile/Profile';
 import PageNotFound from './pages/PageNotFound/PageNotFound';
+import SinglePost from "./pages/Post/SinglePost";
 
 function App() {  
   return ( 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/posts/:id" element={<SinglePost />} />
       <Route path='*' element={<PageNotFound />}/>
     </Routes>
     <ToastContainer />
