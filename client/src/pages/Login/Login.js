@@ -48,7 +48,7 @@ function Login() {
 
     if (isSuccess || user) {
       if (isSuccess) {
-        toast.success("Login successful", { position: "bottom-right", hideProgressBar: true });
+        // toast.success("Login successful", { position: "bottom-right", hideProgressBar: true });
       }
       navigate("/");
     }
