@@ -14,6 +14,7 @@ export default function PostForm(props) {
     const dispatch = useDispatch();
     const {user} = useSelector((state) => state.auth);
     const selectedPost = useSelector((state) => state.post.selectedPost);
+    const formHeading = useSelector((state) => state.post.postStatus);
     const baseUrl = "http://localhost:3001/posts/";
 
     const [formData, setFormData] = useState(selectedPost || { title: '', text: '', image: [] });
@@ -219,7 +220,7 @@ export default function PostForm(props) {
     return (
         <>
             <Box sx={{ borderBottom: 1, borderColor: '#dcdcdc', paddingBottom: 2, paddingTop: '26px', position: 'fixed', width: '330px', zIndex: 1, background: '#fff'}}>
-                {!selectedPost ? (<Typography id="modal-modal-title" variant="h6" component="h2">
+                {!formHeading ? (<Typography id="modal-modal-title" variant="h6" component="h2">
                     Create Post
                 </Typography>) : (
                     <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -376,7 +377,7 @@ export default function PostForm(props) {
                 <Box sx={{position: 'fixed', bottom: 0, width: '330px', background: 'white'}}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingY: 3}}>
                         <Button onClick={cancelDrawerHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
-                        {!selectedPost ? (
+                        {!formHeading ? (
                             <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%', boxShadow: 'none'}}>Post</Button>
                         ) : (
                             <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%', boxShadow: 'none'}}>Edit</Button>
