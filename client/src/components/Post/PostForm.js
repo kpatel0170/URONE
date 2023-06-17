@@ -22,7 +22,7 @@ export default function PostForm(props) {
     const isEmpty = formData.text.trim().length === 0;
     const {title, text, image} = formData;    
     const [previewImages, setPreviewImages] = useState(formData.image);
-    const [base64Images, setBase64Images] = useState(formData.image);         
+    const [base64Images, setBase64Images] = useState(formData.image); 
 
     useEffect(() => {
         if(selectedPost != null){
@@ -210,7 +210,7 @@ export default function PostForm(props) {
             text: '',
             image: []
         })
-        // toast.success('Post created successfully', {position: 'top-center'});
+        toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true });
         props.deactivtateDrawer(false);
         setPreviewImages([]);
         setBase64Images([]);

@@ -64,9 +64,7 @@ function Register() {
   useEffect(() => {
     inputRef.current.focus();
     if (isError) {
-      toast.error(message, { position: "top-center" });
       if (message === "Email is already registered") {
-        toast.error("Email already exists!", { position: "top-center" });
         setFormError({
           email: message + ". Please use a unique email to create an account.",
         });
@@ -75,7 +73,7 @@ function Register() {
 
     if (isSuccess || user) {
       if (isSuccess) {
-        toast.success("Welcome to rOne!", { position: "top-center" });
+        toast.success("Welcome to rOne!", { position: "bottom-right", hideProgressBar: true });
       }
       navigate("/");
     }
@@ -154,7 +152,6 @@ function Register() {
       password.length === 0 ||
       passwordConfirmation.length === 0
     ) {
-      toast.error("Please fill in all fields", { position: "top-center" });
       setFormError({
         name: "Please enter user name",
         email: "Please enter an email address",
@@ -162,12 +159,10 @@ function Register() {
         passwordConfirmation: "Please enter confirm password",
       });
     } else if (password.length < 8) {
-      toast.error("Incorrect password", { position: "top-center" });
       setFormError({
         password: "Password must be 8 characters or more",
       });
     } else if (password !== passwordConfirmation) {
-      toast.error("Invalid passwords", { position: "top-center" });
       setFormError({
         passwordConfirmation: "Password do not match",
       });
@@ -189,22 +184,48 @@ function Register() {
       {isLoading && <Loading />}
       <Grid
         container
-        sx={{ justifyContent: "center", alignItems: "center", height: "100vh" }}
+        sx={{ height: "100vh", alignItems: "center" }}
+        className={styles.grid_wrap}
       >
-        <Grid item xs={9} sm={6} md={4} lg={4} sx={{ mt: 6 }}>
-          <Typography
+        <Grid
+          item
+          xs={0}
+          md={8}
+          lg={8}
+          className={`${styles.login_bg} ${styles.hide_sm}`}
+          sx={{ height: "100%" }}
+        >
+          <Box
             sx={{
-              mb: 6,
-              textAlign: "center",
-              fontWeight: "bold",
-              fontSize: "48px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              height: "100vh",
+              paddingX: 9,
             }}
           >
-            rOne
-          </Typography>
+            <Typography
+              sx={{ fontSize: "11rem", fontWeight: "bold", color: "white" }}
+            >
+              rOne
+            </Typography>
+            <Typography sx={{ color: "white", width: 3 / 4 }}>
+              Be the one to connect through rOne ...
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={7} md={4} lg={4} sx={{ px: 4 }}>
+          <Box sx={{ mb: 5, textAlign: "center" }}>
+            <Typography
+              sx={{ textAlign: "center", fontWeight: "bold", fontSize: "48px" }}
+            >
+              rOne
+            </Typography>
+            <Typography>Create a new account</Typography>
+          </Box>
           <form sx={{ width: 1 }} onSubmit={registerFormHandler}>
             <Box sx={{ mb: 2 }}>
-              <Typography sx={{ mb: 1 }}>Name</Typography>
+              <Typography>Name</Typography>
               <TextField
                 id="name"
                 name="name"
@@ -233,7 +254,7 @@ function Register() {
               )}
             </Box>
             <Box sx={{ mb: 2 }}>
-              <Typography sx={{ mb: 1 }}>Email</Typography>
+              <Typography>Email</Typography>
               <TextField
                 id="email"
                 name="email"
@@ -261,7 +282,7 @@ function Register() {
               )}
             </Box>
             <Box sx={{ mb: 2 }}>
-              <Typography sx={{ mb: 1 }}>Password</Typography>
+              <Typography>Password</Typography>
               <TextField
                 id="password"
                 name="password"
@@ -289,7 +310,7 @@ function Register() {
               )}
             </Box>
             <Box sx={{ mb: 2 }}>
-              <Typography sx={{ mb: 1 }}>Confirm Password</Typography>
+              <Typography>Confirm Password</Typography>
               <TextField
                 id="passwordConfirmation"
                 name="passwordConfirmation"
@@ -348,6 +369,7 @@ function Register() {
                   width: 1,
                   mt: 3,
                   bgcolor: "#0e69d6",
+                  boxShadow: 0,
                 }}
                 type="submit"
               >
@@ -356,9 +378,6 @@ function Register() {
             </Box>
           </form>
           <Box sx={{ borderTop: 1, mt: 4, mb: 4, borderColor: "#dedede" }}>
-            {/* <Button variant="outlined" sx={{ mt: 4, mb: 2, p:1, width: 1, borderRadius: '25px', border: 1, borderColor: '#dedede' }}>
-                  Sign Up with Google
-                </Button> */}
             <Typography sx={{ textAlign: "center", mt: 4 }}>
               Already have an account?{" "}
               <Link to="/login">
