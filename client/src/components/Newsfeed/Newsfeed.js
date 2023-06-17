@@ -59,6 +59,7 @@ function Newsfeed(post) {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { isLikeLoading } = useSelector((state) => state.post);
+  const currentPostID1 = useSelector((state) => state.post.selectedPostId);
 
   const [dropdown, setDropdown] = useState(false);
   const dropdownRef = useRef(null);
@@ -71,6 +72,7 @@ function Newsfeed(post) {
   const [isLike, setIsLike] = useState(false);
   const [isdisLike, setIsdisLike] = useState(false);  
   const isDrawerOpen = useSelector((state) => state.drawer.isDrawer);
+  const [currentPostID, setCurrentPostID] = useState(null); 
 
   let typographyColor;
   switch (post.post.userId?.type) {
@@ -115,6 +117,14 @@ function Newsfeed(post) {
   // start:: dropdown menu
   const toggleDropdown = () =>{
     setDropdown(!dropdown)
+  }
+
+  const toggleEditDropdown = (id) => {
+    setDropdown(!dropdown)
+    setCurrentPostID(null)
+    setTimeout(() => {
+      setCurrentPostID(id)
+    }, 100); 
   }
 
   const handleOutsideClick = (event) => {
@@ -234,7 +244,7 @@ function Newsfeed(post) {
         <Card
           key={post.post._id}
           sx={{ maxWidth: 570, width: 570, mt: 3, padding: 2, marginBottom: 2 }}
-          className={styles.card_wrap}
+          className={(currentPostID1 === currentPostID) ? `${styles.active} ${styles.card_wrap}` : styles.card_wrap}
         >
           <Box
             sx={{
@@ -366,7 +376,7 @@ function Newsfeed(post) {
                   <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
                     <EditIcon sx={{fontSize: '1.3rem'}} />
                   </ListItemIcon>
-                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Edit" />
+                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={() => toggleEditDropdown(post.post._id)} primary="Edit" />
                 </ListItemButton>
               </ListItem>
             </Box>

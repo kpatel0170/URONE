@@ -1,8 +1,15 @@
 .card_wrap{
-    /* border: 1px solid #dcdcdc; */
     border-radius: 10px !important;
     box-shadow: 1px 2px 5px 0px rgb(232 232 232 / 91%) !important;
+    background: #fff;
     position: relative;
+    transition: 0.3s all ease-out;
+    outline: 1px solid transparent;
+}
+.active{
+    outline: 1px solid #668eb7;
+    box-shadow: 1px 2px 5px 0px rgb(146 138 138 / 91%) !important;
+    transition: 0.3s all ease-out;
 }
 .readmore{
     color: #1976d2 !important;

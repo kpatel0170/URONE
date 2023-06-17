@@ -13,7 +13,8 @@ const initialState = {
     isLikeLoading: false,
     message: '',
     selectedPost: null,
-    postStatus: null
+    postStatus: null,
+    selectedPostId: ''
 }
 
 // Create post
@@ -126,15 +127,18 @@ export const postSlice = createSlice({
         reset: (state) => initialState,
         selectPost: (state, action) => {
             state.selectedPost = action.payload;
-            state.postStatus = true
+            state.postStatus = true;
+            state.selectedPostId = action.payload._id
         },
         restSelectPost: (state, action) => {
             state.selectedPost = {
+                id: null,
                 title: '',
                 text: '',
                 image: []
             };
-            state.postStatus = null
+            state.postStatus = null;
+            state.selectedPostId = ''
         },
     },
     extraReducers: (builder) => {

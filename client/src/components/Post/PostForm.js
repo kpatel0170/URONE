@@ -15,8 +15,6 @@ export default function PostForm(props) {
     const {user} = useSelector((state) => state.auth);
     const selectedPost = useSelector((state) => state.post.selectedPost);
     const formHeading = useSelector((state) => state.post.postStatus);
-    const baseUrl = "http://localhost:3001/posts/";
-
     const [formData, setFormData] = useState(selectedPost || { title: '', text: '', image: [] });
     
     const isEmpty = formData.text.trim().length === 0;
