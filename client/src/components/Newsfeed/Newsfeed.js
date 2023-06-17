@@ -162,10 +162,7 @@ function Newsfeed(post) {
     setTimeout(() => {
       dispatch(selectPost(data))
     }, 100); 
-    // if(isDrawerOpen === false){
-    //   dispatch(toggleDrawer());
-    // }
-
+        
     dispatch(toggleDrawer());
   }
 
@@ -180,7 +177,7 @@ function Newsfeed(post) {
     setModal(true);
     setToggle(null);
     dispatch(restSelectPost())
-    dispatch(toggleDrawer());
+    // dispatch(toggleDrawer());
   };
 
   const modalCloseHandler = () => {
@@ -222,12 +219,13 @@ function Newsfeed(post) {
           {data.map((sliderImage, index) => {
             return (
               <Box key={index}>
-                <CardMedia
+                <img src={sliderImage} />
+                {/* <CardMedia
                   component="img"
-                  image={baseUrl + sliderImage}
+                  image={sliderImage[0]}
                   alt="rone_image"
                   sx={{ height: "350px" }}
-                />
+                /> */}
               </Box>
             );
           })}

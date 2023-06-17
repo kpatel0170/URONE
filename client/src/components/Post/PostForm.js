@@ -5,16 +5,10 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { createPost, updateSinglePost, restSelectPost } from '../../features/Post/PostSlice';
+import { toggleDrawer } from '../../features/Home/HomeSlice';
 import styles from './PostForm.module.css';
 import '../../App.css';
 import { toast } from 'react-toastify';
-
-// async function convertImageUrlToFile(imageUrl, fileName, fileType) {
-//     const response = await fetch(imageUrl);
-//     const blob = await response.blob();
-//     const file = new File([blob], fileName, { type: fileType });
-//     return file;
-// }
 
 export default function PostForm(props) {
     const dispatch = useDispatch();
@@ -23,13 +17,18 @@ export default function PostForm(props) {
     const baseUrl = "http://localhost:3001/posts/";
 
     const [formData, setFormData] = useState(selectedPost || { title: '', text: '', image: [] });
-    console.log(selectedPost)
     
     const isEmpty = formData.text.trim().length === 0;
     const {title, text, image} = formData;    
     const [previewImages, setPreviewImages] = useState(formData.image);
-    const [imageFiles, setImageFiles] = useState([]);         
+    const [base64Images, setBase64Images] = useState(formData.image);         
 
+    useEffect(() => {
+        if(selectedPost != null){
+            setFormData(selectedPost)
+        }
+    }, [selectedPost])
+    
     //start:: input form fields
     const formInputHandler = (event) => {
         let {name, checked} = event.target;        
@@ -64,39 +63,42 @@ export default function PostForm(props) {
     };
     //end:: input form fields
 
-
-    //start:: post image edit    
-    // useEffect(() => {
-    //     async function fetchImageFiles() {
-    //         const imageUrls = ['http://localhost:3001/posts/images (4).jpeg'];
-    //         const files = await Promise.all(
-    //         imageUrls.map((imageUrl) => convertImageUrlToFile(imageUrl, 'image.png', 'image/png'))
-    //         );
-    //         setImageFiles(files);
-    //     }
-    
-    //     fetchImageFiles(imageFiles);
-
-    //     console.log()
-    // }, []);
-    
-
     //start:: image upload, preview and remove
+    const base64Handler = (event) => {
+        const files = event.target.files;
+        const filePromises = [];
+
+        for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const filePromise = new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+            resolve(reader.result);
+            };
+            reader.readAsDataURL(file);
+        });
+        filePromises.push(filePromise);
+        }
+
+        Promise.all(filePromises).then((results) => {
+            setBase64Images((prev) => prev.concat(results));
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                image: [...prevFormData.image,...results], 
+            }));
+        });
+    }
+
     const filesUploadHandler = (event) => {
-        console.log(event.target.files)
         const uploadedImage = event.target.files;
-        console.log('...image', formData.image)
 
         setFormData((prevFormData) => ({
             ...prevFormData,
             image: [...prevFormData.image,...uploadedImage], 
         }));
 
-        console.log('...AFimage', formData.image)
-
         if(event.target.files){
             const files = Array.from(event.target.files).map((file)=> URL.createObjectURL(file))
-            console.log(files)
             setPreviewImages((prev) => prev.concat(files));
             Array.from(event.target.files).map(
                 (file)=>URL.revokeObjectURL(file)
@@ -109,6 +111,9 @@ export default function PostForm(props) {
         const filteredImages = previewImages.filter((_, i) => i !== index);
         setPreviewImages(filteredImages);
 
+        const filteredBase64 = base64Images.filter((_, i) => i !== index);
+        setBase64Images(filteredBase64);
+
         const filteredFormImage = formData.image.filter((_, i) => i !== index);
 
         setFormData((prevFormData) => ({
@@ -120,15 +125,11 @@ export default function PostForm(props) {
     const renderImagePreview = (data) => {
         return data.map((previewImage, index) => {
             return (
-                <Box key={index} sx={{position: 'relative', width: 0.5/2, padding: 1, border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>                       
+                <Box key={index} sx={{position: 'relative', width: 0.75/3, padding: '4px', border: 1, borderRadius: 2, borderColor: '#dcdcdc', marginX: 1, marginBottom: 1, background: 'white'}}>                       
                     <IconButton onClick={() => removeImage(index)} sx={{width: '20px', height: '20px', background: '#dfe2eb', position: 'absolute', right: '4px', top: '4px'}}>
                         <CloseIcon sx={{width: '19px'}} />
                     </IconButton>
-                    {formData.isCreate != undefined ? (
-                        <img src={previewImage} className={styles.preview_img_wrap} />
-                    ) : (
-                        <img src={previewImage} className={styles.preview_img_wrap} />
-                    )}
+                    <img src={previewImage} className={styles.preview_img_wrap} />
                 </Box>
             )
         })
@@ -136,22 +137,12 @@ export default function PostForm(props) {
 
     const clearAllImages = (event) => {
         setPreviewImages([]);
+        setBase64Images([]);
         let emptyArray = [];
         setFormData((prevFormData) => ({
             ...prevFormData,
             image: [...emptyArray]
         }));
-    }
-
-    const convertToBase64 = () => {
-        const reader = new FileReader()
-    
-        reader.readAsDataURL(formData.image)
-    
-        reader.onload = () => {
-          console.log('called: ', reader)
-        //   setBase64IMG(reader.result)
-        }
     }
 
     //end:: image upload, preview and remove
@@ -164,13 +155,16 @@ export default function PostForm(props) {
             image: []
         })
         setPreviewImages([])
+        setBase64Images([]);
         dispatch(restSelectPost())
         props.deactivtateDrawer(false);
+        dispatch(toggleDrawer());
     }
     //end:: trigger drawer
 
     //start:: create/edit post form submit 
     const submitFormHandler = (event) => {
+        console.log(base64Images)
         event.preventDefault();
         const userId = user.data._id;
         const data = new FormData();
@@ -183,7 +177,7 @@ export default function PostForm(props) {
         }
         
         if(!selectedPost) {
-            dispatch(createPost(data))
+            // dispatch(createPost(data))
         }else{
             dispatch(updateSinglePost({ postData: data, postId: selectedPost._id }));
             dispatch(restSelectPost())
@@ -239,7 +233,30 @@ export default function PostForm(props) {
                         rows={4}
                         sx={{width:1}}
                         />
+
                     <Box sx={{marginTop: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                        <input 
+                            id="file"
+                            name="file"
+                            type='file'
+                            accept="image/png, image/jpeg"
+                            onChange={base64Handler}
+                            multiple
+                            sx={{display: 'none'}}
+                        />
+                        <Box sx={{minHeight: '37px'}}>
+                            <label htmlFor="file" className="image_upload_label">
+                                <PhotoLibraryIcon /> 
+                                <Typography sx={{paddingLeft: 1}} variant='caption'>Upload Images</Typography>
+                            </label>
+                        </Box>
+                        {base64Images.length != 0 && 
+                            <Box className={styles.image_count}>
+                                <Typography variant='subtitle2'>{base64Images.length}</Typography>
+                            </Box>
+                        }
+                    </Box>
+                    {/* <Box sx={{marginTop: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                         <input 
                             id="file"
                             name="file"
@@ -261,16 +278,27 @@ export default function PostForm(props) {
                                 <Typography variant='subtitle2'>{previewImages.length}</Typography>
                             </Box>
                         }
-                    </Box>
+                    </Box> */}
 
-                    <Button onClick={convertToBase64}>based64</Button>
+                    
                     {previewImages.length != 0 &&
                         <Box sx={{display: 'flex', flexWrap: 'wrap', marginTop: 2, background: '#f7f7f7', border: '1px dashed #dcdcdc', borderRadius: '10px', padding: 2}} className={styles.preview_container}>
-                            <Box sx={{width: '100%'}}>
-                                <Button onClick={clearAllImages} variant="outlined" sx={{float: 'right'}}>Clear All</Button>
+                            <Box sx={{width: '100%', margin: '5px'}}>
+                                <Button onClick={clearAllImages} variant="outlined" sx={{float: 'right', margin: '5px'}}>Clear All</Button>
                             </Box>
                             <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%'}}>                        
                                 {renderImagePreview(previewImages)}
+                            </Box>
+                        </Box>
+                    }
+
+                    {base64Images.length != 0 &&
+                        <Box sx={{display: 'flex', flexWrap: 'wrap', marginTop: 2, background: '#f7f7f7', border: '1px dashed #dcdcdc', borderRadius: '10px'}} className={styles.preview_container}>
+                            <Box sx={{width: '100%', margin: '5px'}}>
+                                <Button onClick={clearAllImages} variant="outlined" sx={{float: 'right'}}>Clear All</Button>
+                            </Box>
+                            <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%'}}>                        
+                                {renderImagePreview(base64Images)}
                             </Box>
                         </Box>
                     }

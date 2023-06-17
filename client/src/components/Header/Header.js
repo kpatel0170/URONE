@@ -12,23 +12,17 @@ import LoopIcon from '@mui/icons-material/Loop';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
+import { toggleDrawer } from '../../features/Home/HomeSlice';
 
 const Header = props => {  
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const {user} = useSelector((state) => state.auth)
-
-    // const [menuVisible, setMenuVisible] = useState(false);
-
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
     const [dropdown, setDropdown] = useState(false);
     const dropdownRef = useRef(null);
-
-    // const enableToggleHandler = (event) => {
-    //     setToggle(event.currentTarget);
-    // };
 
     const backToHome = (event) => {
         navigate('/')
@@ -41,8 +35,9 @@ const Header = props => {
 
     const drawerHandler = () => {
         console.log('active the drawer')
-        props.activateDrawer(true)
+        // props.activateDrawer(true)
         dispatch(restSelectPost());
+        dispatch(toggleDrawer());
     }
 
     const toggleDropdown = () =>{
@@ -76,17 +71,11 @@ const Header = props => {
     }, []);
     // end:: click event listerner
 
-    const hideToggleHandler = (event) => {
-        if(event.target.innerText === 'Logout'){
-            console.log('dispatch logout ...')
-            toast.success('Logout successful', {position: 'top-center'});
-            dispatch(logOut());
-            dispatch(reset())
-            navigate('/')
-        }else if(event.target.innerText === 'Profile'){
-            navigate('/profile')
-        }
-        setToggle(null);
+    const logoutHandler = (event) => {
+        setDropdown(!dropdown)
+        dispatch(logOut());
+        dispatch(reset())
+        navigate('/')
     };
      
     return(
@@ -130,28 +119,14 @@ const Header = props => {
                                 <Box ref={dropdownRef} sx={{position: 'absolute', top: '70px', background: 'white', width: '250px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
                                     <ListItem disablePadding>
                                         <ListItemButton>
-                                        <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
-                                            <LogoutIcon sx={{fontSize: '1.3rem'}} />
-                                        </ListItemIcon>
-                                            <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Logout" />
+                                            <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                                                <LogoutIcon sx={{fontSize: '1.3rem'}} />
+                                            </ListItemIcon>
+                                            <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={logoutHandler} primary="Logout" />
                                         </ListItemButton>
                                     </ListItem>
                                 </Box>
                             }
-
-                            <Menu
-                                id="profile-menu"
-                                anchorEl={toggle}
-                                open={isToggle}
-                                onClose={hideToggleHandler}
-                                MenuListProps={{
-                                'aria-labelledby': 'profile-button',
-                                }}
-                                disableScrollLock={true}
-                            >
-                                {/* <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Profile</MenuItem> */}
-                                <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Logout</MenuItem>
-                            </Menu>
                         </Grid>
                     </Grid>
                 </Box>
