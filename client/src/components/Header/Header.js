@@ -5,28 +5,23 @@ import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography, ListItem, ListItemButton, ListItemText} from '@mui/material';
+import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography, ListItem, ListItemButton, ListItemText, ListItemIcon} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LoopIcon from '@mui/icons-material/Loop';
-import { getAllPosts } from '../../features/Post/PostSlice';
+import LogoutIcon from '@mui/icons-material/Logout';
 
+import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
+import { toggleDrawer, openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 
 const Header = props => {  
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const {user} = useSelector((state) => state.auth)
-
-    // const [menuVisible, setMenuVisible] = useState(false);
-
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
     const [dropdown, setDropdown] = useState(false);
     const dropdownRef = useRef(null);
-
-    // const enableToggleHandler = (event) => {
-    //     setToggle(event.currentTarget);
-    // };
 
     const backToHome = (event) => {
         navigate('/')
@@ -37,15 +32,18 @@ const Header = props => {
         dispatch(getAllPosts(param))
     }
 
-    const createPostHandler = () => {
+    const drawerHandler = () => {
         console.log('active the drawer')
-        props.activateDrawer(true)
+        // props.activateDrawer(true)
+        dispatch(restSelectPost());
+        dispatch(openDrawer());
     }
 
     const toggleDropdown = () =>{
         setDropdown(!dropdown)
     }
 
+    // start:: click event listerner
     const handleOutsideClick = (event) => {
         setDropdown(false);
         if (dropdownRef.current) {
@@ -70,16 +68,14 @@ const Header = props => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
-
-    const hideToggleHandler = (event) => {
-        if(event.target.innerText === 'Logout'){
-            dispatch(logOut());
-            dispatch(reset())
-            navigate('/')
-        }else if(event.target.innerText === 'Profile'){
-            navigate('/profile')
-        }
-        setToggle(null);
+    // end:: click event listerner
+  
+    const logoutHandler = (event) => {
+        setDropdown(!dropdown)
+        dispatch(logOut());
+        dispatch(reset())
+        dispatch(closeDrawer())
+        navigate('/')
     };
      
     return(
@@ -90,8 +86,9 @@ const Header = props => {
                         <Grid item xs={4} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '3rem', lineHeight: 1}}>rOne</Typography>
                             <Box sx={{marginLeft: '3.5rem'}}>
-                                <Button onClick={createPostHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', marginRight: 2, paddingRight: '0.8rem', background: '#f7f7f7'}}><AddIcon sx={{color: '#1a76d2'}} />create</Button>
-                                <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
+
+                            <Button className='main_btn' onClick={drawerHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', marginRight: 2, paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
+                                <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
                             </Box>
                         </Grid>
                         <Grid item xs={5} sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
@@ -123,25 +120,14 @@ const Header = props => {
                                 <Box ref={dropdownRef} sx={{position: 'absolute', top: '70px', background: 'white', width: '250px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
                                     <ListItem disablePadding>
                                         <ListItemButton>
-                                            <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Logout" />
+                                            <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                                                <LogoutIcon sx={{fontSize: '1.3rem'}} />
+                                            </ListItemIcon>
+                                            <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={logoutHandler} primary="Logout" />
                                         </ListItemButton>
                                     </ListItem>
                                 </Box>
                             }
-
-                            <Menu
-                                id="profile-menu"
-                                anchorEl={toggle}
-                                open={isToggle}
-                                onClose={hideToggleHandler}
-                                MenuListProps={{
-                                'aria-labelledby': 'profile-button',
-                                }}
-                                disableScrollLock={true}
-                            >
-                                {/* <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Profile</MenuItem> */}
-                                <MenuItem onClick={hideToggleHandler} sx={{ width: '250px'}}>Logout</MenuItem>
-                            </Menu>
                         </Grid>
                     </Grid>
                 </Box>

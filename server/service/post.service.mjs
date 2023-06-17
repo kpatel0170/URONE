@@ -69,7 +69,8 @@ const PostService = {
       const data = {};
       title ? (data.title = title) : "";
       text ? (data.text = text) : "";
-      image && image.length ? (data.image = image) : null;
+      // image && image.length ? (data.image = image) : [];
+      image ? (data.image = image) : [];
       const updatedPost = await postModel
         .findByIdAndUpdate(id, { $set: data }, { new: true })
         .populate("userId", "name type profilePicture")

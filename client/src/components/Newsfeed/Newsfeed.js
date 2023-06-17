@@ -1,7 +1,5 @@
 
 import React, { useState, useRef, useEffect } from "react";
-import SimpleImageSlider from "react-simple-image-slider";
-
 import {
   Button,
   Modal,
@@ -38,8 +36,10 @@ import {
   deletePost,
   likePost,
   disLikePost,
-  selectPost
+  selectPost,
+  restSelectPost
 } from "../../features/Post/PostSlice";
+import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 import { toast } from "react-toastify";
 
 const style = {
@@ -69,7 +69,8 @@ function Newsfeed(post) {
   const [toggle, setToggle] = useState(null);
   const [modal, setModal] = useState(false);
   const [isLike, setIsLike] = useState(false);
-  const [isdisLike, setIsdisLike] = useState(false);
+  const [isdisLike, setIsdisLike] = useState(false);  
+  const isDrawerOpen = useSelector((state) => state.drawer.isDrawer);
 
   let typographyColor;
   switch (post.post.userId?.type) {
@@ -143,9 +144,17 @@ function Newsfeed(post) {
 
   // end:: dropdown menu
 
-  const drawerHandler = (data) => {    
-    dispatch(selectPost(data))
+  const drawerHandler = (data) => { 
+    console.log("hi", isDrawerOpen)  
+    dispatch(restSelectPost())
+    setTimeout(() => {
+      dispatch(selectPost(data))
+    }, 100); 
+        
+    dispatch(openDrawer());
   }
+
+
 
   const modalHandler = (type, data) => {
     console.log(type);
@@ -155,6 +164,8 @@ function Newsfeed(post) {
     }
     setModal(true);
     setToggle(null);
+    dispatch(restSelectPost())
+    dispatch(closeDrawer());
   };
 
   const modalCloseHandler = () => {
@@ -196,9 +207,10 @@ function Newsfeed(post) {
           {data.map((sliderImage, index) => {
             return (
               <Box key={index}>
+                {/* <img src={sliderImage} /> */}
                 <CardMedia
                   component="img"
-                  image={baseUrl + sliderImage}
+                  image={sliderImage}
                   alt="rone_image"
                   sx={{ height: "350px" }}
                 />
@@ -210,25 +222,9 @@ function Newsfeed(post) {
     }else if(data.length === 2) {
       return (
         <Slider2 media={data} />
-        //   <Box sx={{marginX: 2}}>
-        //     <ImageList cols={2} rowHeight={164} sx={{paddingTop: 0}}>
-        //         {data.map((item) => (
-        //             <ImageListItem key={item}>
-        //                 <img
-        //                     src={`${baseUrl+item}?w=164&h=164&fit=crop&auto=format`}
-        //                     srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-        //                     alt={item}
-        //                     loading="lazy"
-        //                     className={styles.gallery_img}
-        //                 />
-        //             </ImageListItem>
-        //         ))}
-        //     </ImageList>
-        // </Box>
       );
     } else {
       return (<Slider2 media={data}/>)
-        
     }
   };
 
@@ -356,7 +352,7 @@ function Newsfeed(post) {
           </Box>
 
           {dropdown && 
-            <Box ref={dropdownRef} sx={{position: 'absolute', top: '75px', right: '20px', background: 'white', width: '150px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
+            <Box ref={dropdownRef} sx={{position: 'absolute', zIndex: 1, top: '75px', right: '20px', background: 'white', width: '150px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
               <ListItem disablePadding>
                 <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => modalHandler("delete")}>
                   <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
@@ -366,7 +362,7 @@ function Newsfeed(post) {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton sx={{paddingLeft: '8px'}}>
+                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => drawerHandler(post.post)}>
                   <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
                     <EditIcon sx={{fontSize: '1.3rem'}} />
                   </ListItemIcon>
@@ -384,6 +380,7 @@ function Newsfeed(post) {
             MenuListProps={{
               "aria-labelledby": "profile-button",
             }}
+            disableScrollLock={true}
           >
             <MenuItem
               name="delete_post"
@@ -447,18 +444,6 @@ function Newsfeed(post) {
           )}
           {post.post.image.length != 0 && (
             <>
-              {/* <Box sx={{width: 1, position: 'relative'}}>
-                        <SimpleImageSlider
-                            width="100%"
-                            height={250}
-                            position="relative"
-                            images={images}
-                            showBullets={true}
-                            showNavs={true}
-                        />
-                    </Box> 
-                    {renderImageSlider(gallery)}                
-                    */}
               {renderImageSlider(post.post.image)}
             </>
           )}

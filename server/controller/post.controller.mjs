@@ -2,8 +2,8 @@ import postService from "../service/post.service.mjs";
 
 export const createPost = async (req, res) => {
   try {
-    const { title, text, userId } = req.body;
-    const image = req.files.map((file) => file.filename);
+    const { title, text, userId, image } = req.body;
+    // const image = req.files.map((file) => file.filename);    
     const newPost = await postService.createPost(title, text, image, userId);
     res.status(201).json({ success: true, data: newPost });
   } catch (error) {
@@ -50,8 +50,8 @@ export const getPostsByUserId = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, text } = req.body;
-    const image = req.files.map((file) => file.filename);
+    const { title, text, image } = req.body;
+    // const image = req.files.map((file) => file.filename);
     const updatedPost = await postService.updatePost(id, title, text, image);
     if (!updatedPost) {
       return res.status(404).json({ success: false, error: "Post not found" });
