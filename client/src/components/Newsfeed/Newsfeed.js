@@ -503,7 +503,7 @@ function Newsfeed(post) {
                 {post.post.dislikes.includes(user.data._id)? (<ThumbDownIcon />) : (<ThumbDownOffAltIcon />)}
               </IconButton>
               <Box sx={{ width: "50px" }}>
-                {post.post.dislikes.length != 0 && (
+                {(post.post.dislikes.length != 0 && (post.post.userId?._id === user.data._id) ) && (
                   <Typography sx={{ marginRight: 1 }}>
                     {post.post.dislikes.length}
                   </Typography>
