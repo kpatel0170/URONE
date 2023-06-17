@@ -219,13 +219,13 @@ function Newsfeed(post) {
           {data.map((sliderImage, index) => {
             return (
               <Box key={index}>
-                <img src={sliderImage} />
-                {/* <CardMedia
+                {/* <img src={sliderImage} /> */}
+                <CardMedia
                   component="img"
-                  image={sliderImage[0]}
+                  image={sliderImage}
                   alt="rone_image"
                   sx={{ height: "350px" }}
-                /> */}
+                />
               </Box>
             );
           })}

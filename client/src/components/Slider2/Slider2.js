@@ -40,7 +40,7 @@ function Slider2(media) {
                                         <Box key={index} onClick={closeGalleryHandler} className={styles.current_media}>
                                             <CardMedia
                                             component="img"
-                                            image={baseUrl + item}
+                                            image={item}
                                             alt="rone_image"
                                             sx={{ height: "350px" }}
                                             />
@@ -57,7 +57,7 @@ function Slider2(media) {
                                         
                                         <ImageListItem sx={{border: 2, borderColor: 'transparent'}} key={item} onClick={() => galleryHandler(index)} className={index === currentIndex ? `${styles.active} ${styles.gallery_container}` : styles.gallery_container}>
                                             <img
-                                                src={`${baseUrl+item}`}
+                                                src={`${item}`}
                                                 alt={item}
                                                 loading="lazy"
                                                 className={styles.gallery_img}
@@ -73,7 +73,7 @@ function Slider2(media) {
                             {media.media.map((item, index) => (
                                 <ImageListItem key={item} onClick={() => galleryHandler(index)}>
                                     <img
-                                        src={`${baseUrl+item}`}
+                                        src={`${item}`}
                                         alt={item}
                                         loading="lazy"
                                         className={styles.zoom_in_gallery}
@@ -92,13 +92,12 @@ function Slider2(media) {
                                     <Box sx={{position: 'relative'}}>
                                         <Box onClick={() => prevSlide(index-1)} className={styles.prev_btn} style={{display: (galleryLength-index === galleryLength) ? "none": "block"}}></Box>
                                         <Box key={index} onClick={closeGalleryHandler} className={styles.current_media}>
-                                            {/* <CardMedia
+                                            <CardMedia
                                             component="img"
-                                            image={baseUrl + item}
+                                            image={item}
                                             alt="rone_image"
                                             sx={{ height: "350px" }}
-                                            /> */}
-                                            <img src={item} />
+                                            />
                                         </Box>
                                         <Box onClick={() =>nextSlide(index + 1)} className={styles.next_btn} style={{display: (galleryLength-(index+1) === 0) ? "none": "block"}}></Box>
                                     </Box>

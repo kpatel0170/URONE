@@ -26,6 +26,8 @@ export default function PostForm(props) {
     useEffect(() => {
         if(selectedPost != null){
             setFormData(selectedPost)
+            setBase64Images(selectedPost.image)
+            console.log(base64Images)
         }
     }, [selectedPost])
     
@@ -175,11 +177,18 @@ export default function PostForm(props) {
         for (let i of image) {
             data.append('image', i);
         }
+
+        let postData = {
+            'title': title != undefined ? title : '',
+            'text': text,
+            'image': base64Images,
+            'userId': userId
+        }
         
         if(!selectedPost) {
-            // dispatch(createPost(data))
+            dispatch(createPost(postData))
         }else{
-            dispatch(updateSinglePost({ postData: data, postId: selectedPost._id }));
+            dispatch(updateSinglePost({ postData: postData, postId: selectedPost._id }));
             dispatch(restSelectPost())
         }
         setFormData({
@@ -189,6 +198,8 @@ export default function PostForm(props) {
         })
         // toast.success('Post created successfully', {position: 'top-center'});
         props.deactivtateDrawer(false);
+        setPreviewImages([]);
+        setBase64Images([]);
     }
     //end:: create/edit post form submit 
 
