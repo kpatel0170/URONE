@@ -5,6 +5,9 @@ dotenv.config();
 
 const { Schema } = mongoose;
 
+/**
+ * Schema for a User document.
+ */
 const userSchema = new Schema(
   {
     email: { type: String, required: true, unique: true },
@@ -21,7 +24,9 @@ const userSchema = new Schema(
   }
 );
 
-
+/**
+ * Middleware function to hash the user's password before saving.
+ */
 userSchema.pre("save", async function (next) {
   let user = this;
 
@@ -38,12 +43,21 @@ userSchema.pre("save", async function (next) {
   return next();
 });
 
+/**
+ * comparePassword()
+ * Method to compare user passwords.
+ * @param {string} candidatePassword - The password to compare.
+ * @returns {Promise<boolean>} - True if the passwords match, false otherwise.
+ */
 userSchema.methods.comparePassword = async function (candidatePassword) {
   const user = this;
 
   return bcrypt.compare(candidatePassword, user.password).catch((e) => false);
 };
 
+/**
+ * Mongoose model for the User collection.
+ */
 const UserModel = mongoose.model("User", userSchema);
 
 export default UserModel;

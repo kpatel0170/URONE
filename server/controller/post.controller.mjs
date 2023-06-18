@@ -1,5 +1,11 @@
 import postService from "../service/post.service.mjs";
 
+/**
+ * createPost()
+ * Controller function to create a new post.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the created post or an error message.
+ */
 export const createPost = async (req, res) => {
   try {
     const { title, text, userId, image } = req.body;
@@ -11,6 +17,12 @@ export const createPost = async (req, res) => {
   }
 };
 
+/**
+ * getPosts()
+ * Controller function to retrieve all posts.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the retrieved posts or an error message.
+ */
 export const getPosts = async (req, res) => {
   try {
     const { userId, userType } = req.query;
@@ -21,6 +33,12 @@ export const getPosts = async (req, res) => {
   }
 };
 
+/**
+ * getPostById()
+ * Controller function to retrieve a post by its ID.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the retrieved post or an error message.
+ */
 export const getPostById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -34,6 +52,12 @@ export const getPostById = async (req, res) => {
   }
 };
 
+/**
+ * getPostsByUserId()
+ * Controller function to retrieve all posts by a specific user.
+ * @params {req, res} - The request and respose object.
+ * @returns {object} - success state and data of the retrieved posts or an error message.
+ */
 export const getPostsByUserId = async (req, res) => {
   try {
     const { userId } = req.params; 
@@ -47,6 +71,12 @@ export const getPostsByUserId = async (req, res) => {
   }
 };
 
+/**
+ * updatePost()
+ * Controller function to update a post by its ID.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the updated post or an error message.
+ */
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -62,6 +92,12 @@ export const updatePost = async (req, res) => {
   }
 };
 
+/**
+ * deletePost()
+ * Controller function to delete a post by its ID.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the deleted post or an error message.
+ */
 export const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,6 +111,12 @@ export const deletePost = async (req, res) => {
   }
 };
 
+/**
+ * likePost()
+ * Controller function to add a like to a post.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the post with the added like or an error message.
+ */
 export const likePost = async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
@@ -91,6 +133,12 @@ export const likePost = async (req, res) => {
   }
 };
 
+/**
+ * dislikePost()
+ * Controller function to add a dislike to a post.
+ * @params {req,res} - The request and response object.
+ * @returns {object} - success state and data of the post with the added dislike or an error message.
+ */
 export const dislikePost = async (req, res) => {
   const { id } = req.params;
   const { userId } = req.body;
@@ -107,6 +155,12 @@ export const dislikePost = async (req, res) => {
   }
 };
 
+/**
+ * addComment()
+ * Controller function to add a comment to a post.
+ * @params {req,res} - The request and response object 
+ * @returns {object} - success state and data of the post with the added comment or an error message.
+ */
 export const addComment = async (req, res) => {
   const { id } = req.params;
   const { userId, comment } = req.body;

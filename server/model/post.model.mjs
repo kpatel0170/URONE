@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 import userModel from "./user.model.mjs"
 
 const Schema = mongoose.Schema;
+
+/**
+ * Schema for a Post document.
+ */
 const postSchema = new Schema(
   {
     title: {type: String},
@@ -24,6 +28,9 @@ const postSchema = new Schema(
   }
 );
 
+/**
+ * Mongoose model for the Post collection.
+ */
 const postModel = mongoose.model("Post", postSchema);
 
 export default postModel;

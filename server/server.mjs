@@ -10,6 +10,7 @@ import routes from "./routes/routes.mjs";
 import { createPost, updatePost } from "./controller/post.controller.mjs";
 import { updateProfile } from "./controller/user.controller.mjs";
 
+// Get the current directory name
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 global.__basedir = __dirname;
 
@@ -21,7 +22,7 @@ app.use("/posts", express.static(path.join(__dirname, "/public/assets/posts")));
 app.use("/avatar", express.static(path.join(__dirname, "/public/assets/avatar")));
 app.use(cors())
 
-/* FILE STORAGE */
+// Configure storage for post uploads
 const postStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     var dir = "public/assets/posts";
@@ -36,6 +37,7 @@ const postStorage = multer.diskStorage({
 });
 const postUpload = multer({ storage: postStorage });
 
+// Configure storage for avatar uploads
 const avatarStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     var dir = "public/assets/avatar";
@@ -50,13 +52,15 @@ const avatarStorage = multer.diskStorage({
 });
 const avatarUpload = multer({ storage: avatarStorage });
 
+
+// API routes for image upload
 app.post("/api/v1/posts/", postUpload.array("image", 5), createPost);
 app.patch("/api/v1/posts/:id", postUpload.array("image", 5), updatePost);
 app.patch("/api/v1/users/:id", avatarUpload.single("profilePicture"), updateProfile);
 
+// Clear storage directory
 app.delete("/api/v1/storage", async (req, res) => {
   try {
-    // Clear the storage directory
     await fs.emptyDir("public/assets/posts");
     res.json({ success: true, message: "Storage cleared" });
   } catch (error) {
@@ -65,6 +69,7 @@ app.delete("/api/v1/storage", async (req, res) => {
   }
 });
 
+// Get list of files
 app.get("/api/v1/files", async (req, res) => {
   try {
     const postDir = "public/assets/posts";
@@ -87,6 +92,10 @@ const port = process.env.PORT;
 app.listen(port, async () => {
   console.log(`Server listening on port ${port}`);
 
+
+  // Connect to the database
   await connect();
+
+  // Register routes
   routes(app);
 });

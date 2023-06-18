@@ -1,5 +1,11 @@
 import UserService from '../service/user.service.mjs';
 
+/**
+ * getUser()
+ * Controller function to retrieve a user by their ID.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the retrieved user or an error message.
+ */
 export const getUser = async (req, res) => {
   const id = req.params.id;
 
@@ -18,6 +24,12 @@ export const getUser = async (req, res) => {
   }
 };
 
+/**
+ * updateProfile()
+ * Controller function to update a user's profile.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the updated user or an error message.
+ */
 export const updateProfile = async (req, res) => {
   const id = req.params.id;
   const { name, email, about, type } = req.body;
