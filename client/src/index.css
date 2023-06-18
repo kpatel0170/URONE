@@ -72,14 +72,12 @@ label.image_upload_label:hover{
   background-color: #0f67bf !important;
 }
 
-/* .overlay{
-  position: fixed; 
-  top: 0; 
-  right: 0; 
-  bottom: 0; 
-  left: 0; 
-  background: rgba(0, 0, 0, 0.01);
-} */
+.nopost_img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%
+}
 
 /* smartphones, iPhone, portrait 480x320 phones */
 @media (min-width:320px)  {  
