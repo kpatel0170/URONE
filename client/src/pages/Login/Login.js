@@ -4,7 +4,15 @@ import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { userLogin, reset } from "../../features/Auth/AuthSlice";
-import { Box, TextField, Button, Typography, Grid } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Grid,
+  InputAdornment,
+} from "@mui/material";
 import styles from "./Login.module.css";
 import Loading from "../../components/Loading/Loading";
 
@@ -30,6 +38,8 @@ function Login() {
     error: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     inputRef.current.focus();
     if (isError) {
@@ -48,7 +58,10 @@ function Login() {
 
     if (isSuccess || user) {
       if (isSuccess) {
-        // toast.success("Login successful", { position: "bottom-right", hideProgressBar: true });
+        toast.success("Welcome to rOne!", {
+          position: "bottom-right",
+          hideProgressBar: true,
+        });
       }
       navigate("/");
     }
@@ -124,6 +137,11 @@ function Login() {
         dispatch(userLogin(userData));
       }
     }
+  };
+
+  const togglePasswordVisibility = (event) => {
+    event.preventDefault();
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
   return (
@@ -205,13 +223,30 @@ function Login() {
               <TextField
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 onChange={formInputHandler}
                 onBlur={formValidateHandler}
                 value={password}
                 placeholder="********"
                 sx={{ width: 1 }}
                 className={styles.user_input}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {showPassword ? (
+                        <VisibilityOff
+                          onClick={togglePasswordVisibility}
+                          style={{ cursor: "pointer" }}
+                        />
+                      ) : (
+                        <Visibility
+                          onClick={togglePasswordVisibility}
+                          style={{ cursor: "pointer" }}
+                        />
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
               />
               {formError.password && (
                 <Typography

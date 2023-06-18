@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { userRegister, reset } from "../../features/Auth/AuthSlice";
 import {
   Box,
@@ -11,6 +12,7 @@ import {
   Button,
   Typography,
   MenuItem,
+  InputAdornment,
 } from "@mui/material";
 import styles from "../Login/Login.module.css";
 import Loading from "../../components/Loading/Loading";
@@ -61,6 +63,8 @@ function Register() {
     },
   ];
 
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     inputRef.current.focus();
     if (isError) {
@@ -73,7 +77,10 @@ function Register() {
 
     if (isSuccess || user) {
       if (isSuccess) {
-        toast.success("Welcome to rOne!", { position: "bottom-right", hideProgressBar: true });
+        toast.success("You are almost there! Please login..!", {
+          position: "bottom-right",
+          hideProgressBar: true,
+        });
       }
       navigate("/");
     }
@@ -179,6 +186,12 @@ function Register() {
       dispatch(userRegister(userData));
     }
   };
+
+  const togglePasswordVisibility = (event) => {
+    event.preventDefault();
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
     <>
       {isLoading && <Loading />}
@@ -234,7 +247,7 @@ function Register() {
                 onChange={formInputHandler}
                 onBlur={formValidateHandler}
                 value={name}
-                placeholder="Enter username"
+                placeholder="Enter your name"
                 sx={{ width: 1 }}
                 className={styles.user_input}
               />
@@ -286,13 +299,30 @@ function Register() {
               <TextField
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 onChange={formInputHandler}
                 onBlur={formValidateHandler}
                 value={password}
                 placeholder="********"
                 sx={{ width: 1 }}
                 className={styles.user_input}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {showPassword ? (
+                        <VisibilityOff
+                          onClick={togglePasswordVisibility}
+                          style={{ cursor: "pointer" }}
+                        />
+                      ) : (
+                        <Visibility
+                          onClick={togglePasswordVisibility}
+                          style={{ cursor: "pointer" }}
+                        />
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
               />
               {formError.password && (
                 <Typography
@@ -314,13 +344,30 @@ function Register() {
               <TextField
                 id="passwordConfirmation"
                 name="passwordConfirmation"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 onChange={formInputHandler}
                 onBlur={formValidateHandler}
                 value={passwordConfirmation}
                 placeholder="********"
                 sx={{ width: 1 }}
                 className={styles.user_input}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {showPassword ? (
+                        <VisibilityOff
+                          onClick={togglePasswordVisibility}
+                          style={{ cursor: "pointer" }}
+                        />
+                      ) : (
+                        <Visibility
+                          onClick={togglePasswordVisibility}
+                          style={{ cursor: "pointer" }}
+                        />
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
               />
               {formError.passwordConfirmation && (
                 <Typography
