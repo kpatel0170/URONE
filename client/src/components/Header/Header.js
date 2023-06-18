@@ -33,6 +33,9 @@ const Header = props => {
     const renderPosts = (value) => {
         let param = {type: 'usertype', value: value}
         dispatch(getAllPosts(param))
+        if(value === 'all'){
+            navigate('/')
+        }
     }
 
     const drawerHandler = () => {
