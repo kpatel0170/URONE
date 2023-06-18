@@ -14,8 +14,10 @@ const getAllPosts = async (data, token) => {
     console.log(data)
     let requestAPI;
     if(data != undefined){
-        if(data.type === 'user' && (data.value === 'staff' || data.value === 'professor')){
+        if(data.type === 'usertype' && (data.value === 'staff' || data.value === 'professor')){
             requestAPI = API + '?userType=' + data.value
+        }else if(data.type === 'userId'){
+            requestAPI = API + '?userId=' + data.value
         }
     }else{
         requestAPI = API

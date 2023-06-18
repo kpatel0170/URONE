@@ -8,25 +8,32 @@ import { createPost, updateSinglePost, restSelectPost } from '../../features/Pos
 import { toggleDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 import styles from './PostForm.module.css';
 import '../../App.css';
-import { toast } from 'react-toastify';
+import { toast, Slide } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function PostForm(props) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {user} = useSelector((state) => state.auth);
     const selectedPost = useSelector((state) => state.post.selectedPost);
     const formHeading = useSelector((state) => state.post.postStatus);
     const [formData, setFormData] = useState(selectedPost || { title: '', text: '', image: [] });
     
+    const { id } = useParams();
     const isEmpty = formData.text.trim().length === 0;
     const {title, text, image} = formData;    
     const [previewImages, setPreviewImages] = useState(formData.image);
     const [base64Images, setBase64Images] = useState(formData.image); 
 
     useEffect(() => {
-        if(selectedPost != null){
+        console.log(formHeading)
+        if(formHeading !== null){
             setFormData(selectedPost)
             setBase64Images(selectedPost.image)
             console.log(base64Images)
+        }else{
+            setFormData({ title: '', text: '', image: [] })
         }
     }, [selectedPost])
     
@@ -197,7 +204,7 @@ export default function PostForm(props) {
             'userId': userId
         }
         
-        if(!selectedPost) {
+        if(!formHeading) {
             dispatch(createPost(postData))
         }else{
             dispatch(updateSinglePost({ postData: postData, postId: selectedPost._id }));
@@ -208,10 +215,14 @@ export default function PostForm(props) {
             text: '',
             image: []
         })
-        toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true });
+        toast.success('Post created successfully', { position: "bottom-left", hideProgressBar: true, autoClose: 1200, transition:Slide});
         props.deactivtateDrawer(false);
         setPreviewImages([]);
         setBase64Images([]);
+        dispatch(closeDrawer())
+        if(id != undefined){
+            navigate('/')
+        }
     }
     //end:: create/edit post form submit 
 

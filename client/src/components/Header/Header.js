@@ -26,11 +26,16 @@ const Header = props => {
     const backToHome = (event) => {
         navigate('/')
         dispatch(getAllPosts())
+        dispatch(restSelectPost());
+        dispatch(closeDrawer());
     }
 
     const renderPosts = (value) => {
-        let param = {type: 'user', value: value}
+        let param = {type: 'usertype', value: value}
         dispatch(getAllPosts(param))
+        if(value === 'all'){
+            navigate('/')
+        }
     }
 
     const drawerHandler = () => {
@@ -78,35 +83,39 @@ const Header = props => {
         dispatch(closeDrawer())
         navigate('/')
     };
+
+    const goToProfile = (event) => {
+        dispatch(closeDrawer())
+        navigate('/profile')
+    }
      
     return(
         <React.Fragment>
             <Box sx={{position: 'fixed', width: '100%', zIndex: '2'}}>
                 <Box className="header_wrap">
                     <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                        <Grid item xs={4} sx={{display: 'flex', alignItems: 'center'}}>
-                            <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '3rem', lineHeight: 1}}>rOne</Typography>
-                            <Box sx={{marginLeft: '3.5rem'}}>
-
-                            <Button className='main_btn' onClick={drawerHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', marginRight: 2, paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
-                                <Button sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
-                            </Box>
+                        <Grid item xs={3} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography onClick={backToHome} sx={{cursor: 'pointer', color:'#1976d2', fontWeight: 'bold', fontSize: '3rem', lineHeight: 1}}>rOne</Typography>                            
                         </Grid>
-                        <Grid item xs={5} sx={{display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
+                        <Grid item xs={6} sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                             <Box sx={{display: 'flex'}}>
                                 <Button onClick={() => renderPosts('all')} sx={{textTransform: 'capitalize', color: '#4d4d4d', borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>All</Button>
                                 <Button onClick={() => renderPosts('professor')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Academic</Button>
                                 <Button onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
+                            </Box>
+                            <Box sx={{marginLeft: '3.5rem'}}>
+                                <Button sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
+                                <Button className='main_btn' onClick={drawerHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
                             </Box>
                         </Grid>
                         <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>                            
                             <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
                                 {user?.data.profilePicture.length != 0 ?                                     
                                     (
-                                        <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
+                                        <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={user?.data.profilePicture} />
                                     ) :
                                     (   <>
-                                            <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: 2, borderColor: '#1473E6', background: '#e6e7ee'}}>
+                                            <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
                                                 <PersonOutlineIcon />
                                             </Box>
                                         </>
@@ -119,6 +128,14 @@ const Header = props => {
                             </Button>
                             {dropdown && 
                                 <Box ref={dropdownRef} sx={{position: 'absolute', top: '70px', background: 'white', width: '250px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
+                                    <ListItem disablePadding>
+                                        <ListItemButton>
+                                            <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                                                <PersonOutlineIcon sx={{fontSize: '1.3rem'}} />
+                                            </ListItemIcon>
+                                            <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={goToProfile} primary="Profile" />
+                                        </ListItemButton>
+                                    </ListItem>
                                     <ListItem disablePadding>
                                         <ListItemButton>
                                             <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>

@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
@@ -25,12 +24,14 @@ import CloseIcon from "@mui/icons-material/Close";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { useNavigate } from 'react-router-dom';
 
 import Comment from "../../components/Comments/Comments";
 import Slider2 from "../Slider2/Slider2";
 import PostForm from "../Post/PostForm";
 import styles from "./Newsfeed.module.css";
 
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import {
   deletePost,
@@ -40,7 +41,8 @@ import {
   restSelectPost
 } from "../../features/Post/PostSlice";
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
-import { toast } from "react-toastify";
+import { reset, setUser } from '../../features/User/UserSlice';
+import { toast, Slide } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -54,8 +56,9 @@ const style = {
   borderRadius: 1,
 };
 
-function Newsfeed(post) {
-  const baseUrl = "http://localhost:3001/posts/";
+function Newsfeed(post) {  
+  const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { isLikeLoading } = useSelector((state) => state.post);
@@ -92,6 +95,8 @@ function Newsfeed(post) {
       typographyColor = 'black';
   }
 
+  console.log(id)
+
   // start:: comment toggler 
   const isToggle = Boolean(toggle);
   const showCommentHandler = () => {
@@ -119,12 +124,19 @@ function Newsfeed(post) {
     setDropdown(!dropdown)
   }
 
-  const toggleEditDropdown = (id) => {
-    setDropdown(!dropdown)
+  const toggleEditDropdown = (data) => {
+    console.log(data)
+    // setDropdown(!dropdown)
+    dispatch(openDrawer());
     setCurrentPostID(null)
     setTimeout(() => {
-      setCurrentPostID(id)
+      setCurrentPostID(data.post._id)
     }, 100); 
+
+    dispatch(restSelectPost())
+    setTimeout(() => {
+      dispatch(selectPost(data.post))
+    }, 100);
   }
 
   const handleOutsideClick = (event) => {
@@ -164,8 +176,6 @@ function Newsfeed(post) {
     dispatch(openDrawer());
   }
 
-
-
   const modalHandler = (type, data) => {
     console.log(type);
     if (type === "edit") {
@@ -174,8 +184,8 @@ function Newsfeed(post) {
     }
     setModal(true);
     setToggle(null);
-    dispatch(restSelectPost())
-    dispatch(closeDrawer());
+    // dispatch(restSelectPost())
+    // dispatch(closeDrawer());
   };
 
   const modalCloseHandler = () => {
@@ -185,8 +195,10 @@ function Newsfeed(post) {
 
   const deletePostHandler = (event) => {
     setModal(false);
-    toast.success("Post deleted successfully", { position: "bottom-right", hideProgressBar: true });
+    dispatch(restSelectPost())
+    dispatch(closeDrawer());
     dispatch(deletePost(post.post._id));
+    toast.success("Post deleted successfully", { position: "bottom-left", hideProgressBar: true, autoClose: 1200, transition:Slide});    
   };
 
   const likeHandler = (event) => {
@@ -238,6 +250,18 @@ function Newsfeed(post) {
     }
   };
 
+  const goToUserPage = (userData) =>{
+    console.log('go to user account')
+    console.log(userData)
+    dispatch(setUser(userData))
+    navigate(`/${userData.name}`)
+  }
+
+  const goToPostDetail = (postId) => {
+    console.log('go to post detail')
+    navigate(`/posts/${postId}`)
+  }
+
   return (
     <>
       {user && (
@@ -266,10 +290,13 @@ function Newsfeed(post) {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background: "#e6e7ee",
+                        background: "#282424",
+                        cursor: "pointer"
                       }}
+                      onClick={() => goToUserPage(post.post.userId)}
+                      className="context_hover"
                     >
-                      <img className={styles.user_avatar} src={baseUrl + post.post.userId?.profilePicture} />
+                      <img className={styles.user_avatar} src={post.post.userId?.profilePicture} />
                     </Box>
                   </>
                 ) : (
@@ -283,8 +310,10 @@ function Newsfeed(post) {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background: "#e6e7ee",
+                        background: "#282424",
+                        cursor: "pointer"
                       }}
+                      onClick={() => goToUserPage(post.post.userId)}
                     >
                       <PersonOutlineIcon />
                     </Box>
@@ -294,7 +323,9 @@ function Newsfeed(post) {
               <Box sx={{ paddingLeft: 2 }}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Typography
-                    sx={{ color: "#rgba(0, 0, 0, 0.87)", fontSize: "0.875rem" }}
+                    onClick={() => goToUserPage(post.post.userId)}
+                    className="context_hover"
+                    sx={{ color: "#rgba(0, 0, 0, 0.87)", fontSize: "0.875rem", cursor: 'pointer' }}
                   >
                     {post.post.userId?.name}
                   </Typography>
@@ -343,6 +374,19 @@ function Newsfeed(post) {
                   >
                     {post.post.createdAt.slice(11, 16)}
                   </Typography>
+                  {id === undefined ? <>
+                    <Box sx={{ paddingX: "8px" }}>
+                    <Box
+                      sx={{
+                        width: "3px",
+                        height: "3px",
+                        background: "#95969c",
+                        borderRadius: "50%",
+                      }}
+                    ></Box>
+                    </Box>
+                    <Typography onClick={() => goToPostDetail(post.post._id)} className="context_link" sx={{ color: "rgba(0, 0, 0, 0.6)", fontSize: "0.875rem", cursor: 'pointer' }}>Detail</Typography>
+                  </> : <></>}
                 </Box>
               </Box>
             </Box>
@@ -362,21 +406,21 @@ function Newsfeed(post) {
           </Box>
 
           {dropdown && 
-            <Box ref={dropdownRef} sx={{position: 'absolute', zIndex: 1, top: '75px', right: '20px', background: 'white', width: '150px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
+            <Box ref={dropdownRef} sx={{position: 'absolute', zIndex: 1, top: '75px', right: '20px', background: 'white', width: '150px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                                  
+              <ListItem disablePadding>
+                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => toggleEditDropdown(post)}>
+                  <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                    <EditIcon sx={{fontSize: '1.3rem'}} />
+                  </ListItemIcon>
+                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} primary="Edit" />
+                </ListItemButton>
+              </ListItem>
               <ListItem disablePadding>
                 <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => modalHandler("delete")}>
                   <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
                     <DeleteOutlineIcon sx={{fontSize: '1.3rem'}} />
                   </ListItemIcon>
                   <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Delete" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => drawerHandler(post.post)}>
-                  <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
-                    <EditIcon sx={{fontSize: '1.3rem'}} />
-                  </ListItemIcon>
-                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={() => toggleEditDropdown(post.post._id)} primary="Edit" />
                 </ListItemButton>
               </ListItem>
             </Box>
@@ -407,49 +451,55 @@ function Newsfeed(post) {
 
 
           {post.post.title != undefined && 
-            <Box sx={{paddingX: 2, paddingBottom: 1}} >
-              <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2'}} className="title_txt">{post.post.title}</Typography>
+            <Box onClick={() => goToPostDetail(post.post._id)} sx={{paddingX: 2, paddingBottom: 1}} >
+              <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', cursor: 'pointer'}} className="title_txt context_link">{post.post.title}</Typography>
             </Box>
           }
           {post.post.text && (
             <CardContent sx={{ paddingTop: 0 }}>
-              <Box>
-                {post.post.text.length > 250 ? (
-                  <>
-                    {isReadMore ? (
-                      <>
-                        <Typography variant="body2" color="text.secondary">
-                          {post.post.text.slice(0, 250) + `...`}
-                          <span
-                            onClick={readMoreHandler}
-                            className={styles.readmore}
-                          >
-                            {" "}
-                            read more
-                          </span>
-                        </Typography>
-                      </>
-                    ) : (
-                      <>
-                        <Typography variant="body2" color="text.secondary">
-                          {post.post.text}
-                          <span
-                            onClick={readMoreHandler}
-                            className={styles.readmore}
-                          >
-                            {" "}
-                            read less
-                          </span>
-                        </Typography>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    {post.post.text}
-                  </Typography>
-                )}
-              </Box>
+              {id != undefined ? (
+                <Typography variant="body2" color="text.secondary">
+                  {post.post.text}
+                </Typography>
+              ) : (
+                <Box>
+                  {post.post.text.length > 250 ? (
+                    <>
+                      {isReadMore ? (
+                        <>
+                          <Typography variant="body2" color="text.secondary">
+                            {post.post.text.slice(0, 250) + `...`}
+                            <span
+                              onClick={readMoreHandler}
+                              className={styles.readmore}
+                            >
+                              {" "}
+                              read more
+                            </span>
+                          </Typography>
+                        </>
+                      ) : (
+                        <>
+                          <Typography variant="body2" color="text.secondary">
+                            {post.post.text}
+                            <span
+                              onClick={readMoreHandler}
+                              className={styles.readmore}
+                            >
+                              {" "}
+                              read less
+                            </span>
+                          </Typography>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      {post.post.text}
+                    </Typography>
+                  )}
+                </Box>
+              )}
             </CardContent>
           )}
           {post.post.image.length != 0 && (

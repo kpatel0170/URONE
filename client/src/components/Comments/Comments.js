@@ -69,6 +69,7 @@ const Comment = (comment) => {
                         placeholder="Write your comment ..."
                         sx={{width:1}}
                         className={styles.form_wrap}
+                        autoComplete='off'
                         />
                     <Button disabled={isEmpty} type="submit" sx={{position: 'absolute', right: '10px', top: '10px'}} className={styles.send_btn_wrap}>                        
                         <SendIcon />
