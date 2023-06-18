@@ -31,6 +31,7 @@ import Slider2 from "../Slider2/Slider2";
 import PostForm from "../Post/PostForm";
 import styles from "./Newsfeed.module.css";
 
+import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import {
   deletePost,
@@ -40,7 +41,7 @@ import {
   restSelectPost
 } from "../../features/Post/PostSlice";
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
-import { toast } from "react-toastify";
+import { toast, Slide } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -56,6 +57,7 @@ const style = {
 
 function Newsfeed(post) {
   const baseUrl = "http://localhost:3001/posts/";
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { isLikeLoading } = useSelector((state) => state.post);
@@ -91,6 +93,8 @@ function Newsfeed(post) {
     default:
       typographyColor = 'black';
   }
+
+  console.log(id)
 
   // start:: comment toggler 
   const isToggle = Boolean(toggle);
@@ -192,8 +196,8 @@ function Newsfeed(post) {
 
   const deletePostHandler = (event) => {
     setModal(false);
-    toast.success("Post deleted successfully", { position: "bottom-right", hideProgressBar: true });
     dispatch(deletePost(post.post._id));
+    toast.success("Post deleted successfully", { position: "bottom-left", hideProgressBar: true, autoClose: 1200, transition:Slide});    
   };
 
   const likeHandler = (event) => {
@@ -422,43 +426,49 @@ function Newsfeed(post) {
           }
           {post.post.text && (
             <CardContent sx={{ paddingTop: 0 }}>
-              <Box>
-                {post.post.text.length > 250 ? (
-                  <>
-                    {isReadMore ? (
-                      <>
-                        <Typography variant="body2" color="text.secondary">
-                          {post.post.text.slice(0, 250) + `...`}
-                          <span
-                            onClick={readMoreHandler}
-                            className={styles.readmore}
-                          >
-                            {" "}
-                            read more
-                          </span>
-                        </Typography>
-                      </>
-                    ) : (
-                      <>
-                        <Typography variant="body2" color="text.secondary">
-                          {post.post.text}
-                          <span
-                            onClick={readMoreHandler}
-                            className={styles.readmore}
-                          >
-                            {" "}
-                            read less
-                          </span>
-                        </Typography>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    {post.post.text}
-                  </Typography>
-                )}
-              </Box>
+              {id != undefined ? (
+                <Typography variant="body2" color="text.secondary">
+                  {post.post.text}
+                </Typography>
+              ) : (
+                <Box>
+                  {post.post.text.length > 250 ? (
+                    <>
+                      {isReadMore ? (
+                        <>
+                          <Typography variant="body2" color="text.secondary">
+                            {post.post.text.slice(0, 250) + `...`}
+                            <span
+                              onClick={readMoreHandler}
+                              className={styles.readmore}
+                            >
+                              {" "}
+                              read more
+                            </span>
+                          </Typography>
+                        </>
+                      ) : (
+                        <>
+                          <Typography variant="body2" color="text.secondary">
+                            {post.post.text}
+                            <span
+                              onClick={readMoreHandler}
+                              className={styles.readmore}
+                            >
+                              {" "}
+                              read less
+                            </span>
+                          </Typography>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      {post.post.text}
+                    </Typography>
+                  )}
+                </Box>
+              )}
             </CardContent>
           )}
           {post.post.image.length != 0 && (

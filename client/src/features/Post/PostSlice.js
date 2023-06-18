@@ -14,7 +14,8 @@ const initialState = {
     message: '',
     selectedPost: null,
     postStatus: null,
-    selectedPostId: ''
+    selectedPostId: '',
+    postDetailId: undefined
 }
 
 // Create post
@@ -140,6 +141,9 @@ export const postSlice = createSlice({
             state.postStatus = null;
             state.selectedPostId = ''
         },
+        setPostDetailId: (state, action) => {
+            state.postDetailId = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -222,10 +226,15 @@ export const postSlice = createSlice({
                 state.isLoading = false
                 state.isLikeLoading = false
                 state.isSuccess = true
-                const {_id} = action.payload;
-                state.posts = state.posts.map((post) =>
-                    post._id === _id ? { ...post, ...action.payload } : post
-                );
+
+                if(state.postDetailId != undefined){
+                    state.posts = action.payload;
+                }else{
+                    const {_id} = action.payload;
+                    state.posts = state.posts.map((post) =>
+                        post._id === _id ? { ...post, ...action.payload } : post
+                    );
+                }
             })
             .addCase(likePost.rejected, (state, action) => {
                 state.isLoading = false
@@ -239,10 +248,14 @@ export const postSlice = createSlice({
             .addCase(disLikePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                const {_id} = action.payload;
-                state.posts = state.posts.map((post) =>
-                    post._id === _id ? { ...post, ...action.payload } : post
-                );
+                if(state.postDetailId != undefined){
+                    state.posts = action.payload;
+                }else{
+                    const {_id} = action.payload;
+                    state.posts = state.posts.map((post) =>
+                        post._id === _id ? { ...post, ...action.payload } : post
+                    );
+                }
             })
             .addCase(disLikePost.rejected, (state, action) => {
                 state.isLoading = false
@@ -257,10 +270,14 @@ export const postSlice = createSlice({
                 state.isLoading = false
                 state.isCommentLoading = false
                 state.isSuccess = true
-                const {_id} = action.payload;
-                state.posts = state.posts.map((post) =>
-                    post._id === _id ? { ...post, ...action.payload } : post
-                );
+                if(state.postDetailId != undefined){
+                    state.posts = action.payload;
+                }else{
+                    const {_id} = action.payload;
+                    state.posts = state.posts.map((post) =>
+                        post._id === _id ? { ...post, ...action.payload } : post
+                    );
+                }
             })
             .addCase(createComment.rejected, (state, action) => {
                 state.isLoading = false
@@ -286,6 +303,6 @@ export const postSlice = createSlice({
     },
 })
 
-export const {reset, selectPost, restSelectPost} = postSlice.actions;
+export const {reset, selectPost, restSelectPost, setPostDetailId} = postSlice.actions;
 
 export default postSlice.reducer;
