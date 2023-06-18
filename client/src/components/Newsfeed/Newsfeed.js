@@ -119,12 +119,19 @@ function Newsfeed(post) {
     setDropdown(!dropdown)
   }
 
-  const toggleEditDropdown = (id) => {
-    setDropdown(!dropdown)
+  const toggleEditDropdown = (data) => {
+    console.log(data)
+    // setDropdown(!dropdown)
+    dispatch(openDrawer());
     setCurrentPostID(null)
     setTimeout(() => {
-      setCurrentPostID(id)
+      setCurrentPostID(data.post._id)
     }, 100); 
+
+    dispatch(restSelectPost())
+    setTimeout(() => {
+      dispatch(selectPost(data.post))
+    }, 100);
   }
 
   const handleOutsideClick = (event) => {
@@ -372,11 +379,13 @@ function Newsfeed(post) {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
-                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => drawerHandler(post.post)}>
+              {/* onClick={() => toggleEditDropdown(post.post._id)} */}
+                {/* <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => drawerHandler(post.post)}> */}
+                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => toggleEditDropdown(post)}>
                   <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
                     <EditIcon sx={{fontSize: '1.3rem'}} />
                   </ListItemIcon>
-                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={() => toggleEditDropdown(post.post._id)} primary="Edit" />
+                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} primary="Edit" />
                 </ListItemButton>
               </ListItem>
             </Box>

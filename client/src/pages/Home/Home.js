@@ -37,10 +37,12 @@ function Home() {
     setIsClicked(condition);
   };
 
+  console.log('... H ... ', isDrawerOpen)
+
   useEffect(() => {
     console.log('render drawer check from home ... ', isDrawerOpen)
     if(isDrawerOpen === true){
-      setIsClicked(!isClicked);
+      setIsClicked(true);
     }else{
       setIsClicked(false);
     }
