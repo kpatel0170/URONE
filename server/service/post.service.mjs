@@ -2,6 +2,14 @@ import postModel from "../model/post.model.mjs";
 import userModel from "../model/user.model.mjs";
 
 const PostService = {
+
+   /**
+   * createPost()
+   * Creates a new post with the provided information.
+   * @param {title, text, image, userId} - The Post info.
+   * @return {Promise<PostModel>} - A promise that resolves to the newly created post.
+   * @throw {Error} - If an error occurs while creating the post.
+   */
   async createPost(title, text, image, userId) {
     try {
       const newPost = new postModel({ title, text, image, userId });
@@ -17,6 +25,13 @@ const PostService = {
     }
   },
 
+  /**
+   * getPosts()
+   * Retrieves posts based on the provided filters.
+   * @param {userId, userType} - Filters for retrieving posts.
+   * @return {Promise<PostModel[]>} - A promise that resolves to an array of posts.
+   * @throw {Error} - If an error occurs while retrieving the posts.
+   */
   async getPosts({ userId, userType }) {
     try {
       const query = {};
@@ -38,6 +53,13 @@ const PostService = {
     }
   },
 
+  /**
+   * getPostById()
+   * Retrieves a post by its ID.
+   * @param {id} - Post ID
+   * @return {Promise<PostModel>} - A promise that resolves to the retrieved post.
+   * @throw {Error} - If an error occurs while retrieving the post.
+   */
   async getPostById(id) {
     try {
       const post = await postModel
@@ -51,6 +73,13 @@ const PostService = {
     }
   },
 
+  /**
+   * getPostsByUserId()
+   * Retrieves posts by the user ID.
+   * @param {userId} - User ID
+   * @return {Promise<PostModel[]>} - A promise that resolves to an array of posts.
+   * @throw {Error} - If an error occurs while retrieving the posts.
+   */
   async getPostsByUserId(userId) {
     try {
       const posts = await postModel
@@ -64,6 +93,13 @@ const PostService = {
     }
   },
 
+  /**
+   * updatePost()
+   * Updates a post with the provided information.
+   * @param {id, title, text, image} - The Post info.
+   * @return {Promise<PostModel>} - A promise that resolves to the updated post.
+   * @throw {Error} - If an error occurs while updating the post.
+   */
   async updatePost(id, title, text, image) {
     try {
       const data = {};
@@ -82,6 +118,13 @@ const PostService = {
     }
   },
 
+  /**
+   * deletePost()
+   * Deletes a post by its ID.
+   * @param {id} - Post ID to delete.
+   * @return {Promise<PostModel>} - A promise that resolves to the deleted post.
+   * @throw {Error} - If an error occurs while deleting the post.
+   */
   async deletePost(id) {
     try {
       const deletedPost = await postModel.findByIdAndDelete(id);
@@ -91,6 +134,13 @@ const PostService = {
     }
   },
 
+  /**
+   * addLike()
+   * Adds a like to the specified post by the user.
+   * @param {postId, userId} - Post ID and user ID.
+   * @return {Promise<PostModel>} - A promise that resolves to the updated post.
+   * @throw {Error} - If the post is not found or an error occurs while adding the like.
+   */
   async addLike(postId, userId) {
     try {
       const post = await postModel
@@ -129,6 +179,13 @@ const PostService = {
     }
   },
 
+  /**
+   * addDislike()
+   * Adds a dislike to the specified post by the user.
+   * @param {postId, userId} - Post ID and User ID.
+   * @return {Promise<PostModel>} - A promise that resolves to the updated post.
+   * @throw {Error} - If the post is not found or an error occurs while adding the dislike.
+   */
   async addDislike(postId, userId) {
     try {
       const post = await postModel
@@ -167,6 +224,13 @@ const PostService = {
     }
   },
 
+  /**
+   * addComment()
+   * Adds a comment to the specified post by the user.
+   * @param {postId, userId, comment} - Post ID, User ID and comment text to add a comment.
+   * @return {Promise<PostModel>} - A promise that resolves to the updated post.
+   * @throw {Error} - If the post is not found or an error occurs while adding the comment.
+   */
   async addComment(postId, userId, comment) {
     try {
       const post = await postModel
