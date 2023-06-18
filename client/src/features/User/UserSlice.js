@@ -5,9 +5,10 @@ const initialState = {
     users: [],
     singleUser: {},
     selectedUserId: undefined,
-    isError: false,
-    isSuccess: false,
-    isLoading: false,
+    isUserError: false,
+    isUserSuccess: false,
+    isUserLoading: false,
+    isUserUpdate: false
 }
 
 //@desc Get single user
@@ -47,29 +48,30 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getSingleUser.pending, (state) => {
-                state.isLoading = true;
+                state.isUserLoading = true;
             })
             .addCase(getSingleUser.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
+                state.isUserLoading = false
+                state.isUserSuccess = true
                 state.singleUser = action.payload
             })
             .addCase(getSingleUser.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
+                state.isUserLoading = false
+                state.isUserError = true
                 state.message = action.payload
             })
             .addCase(updateSingleUser.pending, (state) => {
-                state.isLoading = true;
+                state.isUserLoading = true;
             })
             .addCase(updateSingleUser.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
+                state.isUserLoading = false
+                state.isUserSuccess = true
                 state.singleUser = action.payload
+                state.isUserUpdate = true
             })
             .addCase(updateSingleUser.rejected, (state, action) => {
-                state.isLoading = false
-                state.isError = true
+                state.isUserLoading = false
+                state.isUserError = true
                 state.message = action.payload
             })
         },

@@ -109,7 +109,7 @@ const Header = props => {
                             <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
                                 {user?.data.profilePicture.length != 0 ?                                     
                                     (
-                                        <Avatar alt="profile" src={user?.data.profilePicture} />
+                                        <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={user?.data.profilePicture} />
                                     ) :
                                     (   <>
                                             <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>

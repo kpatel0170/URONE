@@ -15,7 +15,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
-import { updateSingleUser, updateSingleUser1 } from "../../features/User/UserSlice";
+import { updateSingleUser } from "../../features/User/UserSlice";
 
 import Header from "../../components/Header/Header";
 
@@ -24,6 +24,7 @@ const Profile = (props) => {
   const dispatch = useDispatch();
 
   const {user} = useSelector((state) => state.auth);
+  const { isUserLoading, isUserSuccess } = useSelector((state) => state.users)
   const [isEdit, setIsEdit] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -33,8 +34,7 @@ const Profile = (props) => {
     userType: "",
   });
   const { name, email, profilePicture, bio, userType } = formData;
-  
-  
+  const [base64Images, setBase64Images] = useState(formData.profilePicture); 
 
   const formInputHandler = (event) => {
     setFormData((prevState) => ({
@@ -65,6 +65,19 @@ const Profile = (props) => {
     reader.readAsDataURL(file);
   };
 
+  const base64Handler = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result;
+        setBase64Images(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+
   useEffect(() => {
     if (!user) {
       navigate('/login')
@@ -77,6 +90,8 @@ const Profile = (props) => {
         bio: user.data.about,
         userType: user.data.type,
       })
+
+      setBase64Images(user.data.profilePicture)
     }
     
     return () => {
@@ -91,11 +106,12 @@ const Profile = (props) => {
     const data = {
       name: formData.name,
       email: formData.email,
-      profilePicture: formData.profilePicture,
+      profilePicture: base64Images,
       bio: formData.about,
       userType: formData.type,
       id: user.data._id
     }
+    console.log(data)
     dispatch(updateSingleUser(data))
   }
 
@@ -133,10 +149,10 @@ const Profile = (props) => {
                           <PersonOutlineIcon sx={{fontSize: '2.5rem', opacity: '0.7'}} />
                       </Box>
                     ) : (
-                      <img className="nopost_img" src={user.data.profilePicture} alt="Profile" />
+                      // <img className="profile_img" src={formData.profilePicture} alt="Profile" />
+                      <img className="profile_img" src={base64Images} alt="Profile" />
                     )}
                   </Box>
-                  
                   <Box sx={{ marginTop: 2 }}>
                     <label htmlFor="upload-button">
                       <Button
@@ -153,7 +169,7 @@ const Profile = (props) => {
                       accept="image/*"
                       style={{ display: "none" }}
                       id="upload-button"
-                      onChange={handleProfilePictureChange}
+                      onChange={base64Handler}
                     />
                   </Box>
                   
