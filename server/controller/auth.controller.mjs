@@ -1,5 +1,12 @@
 import AuthService from '../service/auth.service.mjs';
 
+
+/**
+ * registerUser()
+ * Controller function to register a new user.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the new user.
+ */
 export const registerUser = async (req, res) => {
   try {
     const { email, name, password, passwordConfirmation, type } = req.body;
@@ -12,6 +19,12 @@ export const registerUser = async (req, res) => {
   }
 };
 
+/**
+ * loginUser()
+ * Controller function to log in a user.
+ * @params {req, res} - The request and response object.
+ * @returns {object} - success state and data of the logged-in user or an error message.
+ */
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
