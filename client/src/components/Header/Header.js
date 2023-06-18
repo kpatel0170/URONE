@@ -26,6 +26,8 @@ const Header = props => {
     const backToHome = (event) => {
         navigate('/')
         dispatch(getAllPosts())
+        dispatch(restSelectPost());
+        dispatch(closeDrawer());
     }
 
     const renderPosts = (value) => {
@@ -78,6 +80,11 @@ const Header = props => {
         dispatch(closeDrawer())
         navigate('/')
     };
+
+    const goToProfile = (event) => {
+        dispatch(closeDrawer())
+        navigate('/profile')
+    }
      
     return(
         <React.Fragment>
@@ -118,6 +125,14 @@ const Header = props => {
                             </Button>
                             {dropdown && 
                                 <Box ref={dropdownRef} sx={{position: 'absolute', top: '70px', background: 'white', width: '250px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
+                                    <ListItem disablePadding>
+                                        <ListItemButton>
+                                            <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                                                <PersonOutlineIcon sx={{fontSize: '1.3rem'}} />
+                                            </ListItemIcon>
+                                            <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={goToProfile} primary="Profile" />
+                                        </ListItemButton>
+                                    </ListItem>
                                     <ListItem disablePadding>
                                         <ListItemButton>
                                             <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>

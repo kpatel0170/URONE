@@ -86,7 +86,7 @@ label.image_upload_label:hover{
   transition: 0.3s all ease-out;
 }
 .context_link:hover{
-  color: #1a76d2;
+  color: #1a76d2 !important;
   transition: 0.3s all ease-out;
 }
 

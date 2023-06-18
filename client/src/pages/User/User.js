@@ -16,6 +16,7 @@ import styles from "../Home/Home.module.css";
 import { getAllPosts, reset } from '../../features/Post/PostSlice';
 import { getSingleUser } from '../../features/User/UserSlice';
 import Loading from '../../components/Loading/Loading';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 
 function User() {
     const navigate = useNavigate();
@@ -95,6 +96,10 @@ function User() {
         }
     }, [user])
 
+    const goToProfile = () => {
+        navigate('/profile')
+    }
+
     return (
         <>
             <Header activateDrawer={handleDrawer}/>
@@ -104,26 +109,36 @@ function User() {
                         {isLoading ? <Loading /> : <>
                             {showPost && <>
                                 <Box sx={{marginY: 4}}>
-                                    <Box sx={{display: 'flex'}}>
-                                        <Box>
-                                            {currentUser.profilePicture.length === 0 ? (
-                                                <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center' ,marginBottom: 3, width: '150px', height: '150px', background: '#282424', borderRadius: '50%', border: '6px solid #fff'}}>
-                                                    <Box sx={{color: "#85868f", boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',}}>
-                                                        <PersonOutlineIcon sx={{fontSize: '2.5rem', opacity: '0.7'}} />
-                                                    </Box>
-                                                </Box>
-                                            ) : (
-                                                <Box sx={{boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)', marginBottom: 3, width: '150px', height: '150px', background: 'whitesmoke', borderRadius: '50%', border: '6px solid #fff'}}>
-                                                    <img src={currentUser.profilePicture} className='nopost_img' />
-                                                </Box>
-                                            )}
-                                        </Box>
-                                        <Box sx={{marginLeft: 5, marginTop: 3}}>
+                                    <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                                        <Box sx={{display: 'flex'}}>
                                             <Box>
-                                                <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', color: '#333'}} className="title_txt">{currentUser.name}</Typography>
+                                                {currentUser.profilePicture.length === 0 ? (
+                                                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center' ,marginBottom: 3, width: '150px', height: '150px', background: '#282424', borderRadius: '50%', border: '6px solid #fff'}}>
+                                                        <Box sx={{color: "#85868f", boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',}}>
+                                                            <PersonOutlineIcon sx={{fontSize: '2.5rem', opacity: '0.7'}} />
+                                                        </Box>
+                                                    </Box>
+                                                ) : (
+                                                    <Box sx={{boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)', marginBottom: 3, width: '150px', height: '150px', background: 'whitesmoke', borderRadius: '50%', border: '6px solid #fff'}}>
+                                                        <img src={currentUser.profilePicture} className='nopost_img' />
+                                                    </Box>
+                                                )}
                                             </Box>
-                                            <Box sx={{marginBottom: 3, marginTop: 1}}><Typography sx={{background: typographyColor, fontSize: '0.8rem', color: '#fff', display: 'table', borderRadius: '25px', padding: '2px 7px'}}>{currentUser.type}</Typography></Box>
-                                            <>{(!isLoading && currentUser._id !== undefined) && <Box sx={{display: 'flex', alignItems: 'center'}}> <Typography sx={{paddingRight: 1, color: '#939393'}}>Posts:</Typography> <Typography sx={{color: '#333'}}>{posts.length}</Typography></Box>}</>
+                                            <Box sx={{marginLeft: 5, marginTop: 3}}>
+                                                <Box>
+                                                    <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', color: '#333'}} className="title_txt">{currentUser.name}</Typography>
+                                                </Box>
+                                                <Box sx={{marginBottom: 3, marginTop: 1}}><Typography sx={{background: typographyColor, fontSize: '0.8rem', color: '#fff', display: 'table', borderRadius: '25px', padding: '2px 7px'}}>{currentUser.type}</Typography></Box>
+                                                <>{(!isLoading && currentUser._id !== undefined) && <Box sx={{display: 'flex', alignItems: 'center'}}> <Typography sx={{paddingRight: 1, color: '#939393'}}>Posts:</Typography> <Typography sx={{color: '#333'}}>{posts.length}</Typography></Box>}</>
+                                            </Box>
+                                        </Box>
+                                        <Box>
+                                            {currentUser._id === user.data._id && 
+                                            <Box onClick={goToProfile} sx={{boxShadow: '1px 2px 5px 0px rgb(232 232 232 / 91%)', display: 'flex', alignItems: 'center', cursor: 'pointer', padding: '10px', background: '#fff', borderRadius: '25px'}} className="context_link">
+                                                <ModeEditOutlineIcon sx={{fontSize: "1rem", paddingRight: 1}} />
+                                                <Typography className="context_link" sx={{fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.6)'}}>Edit Profile</Typography>
+                                            </Box>
+                                            }
                                         </Box>
                                     </Box>
                                 </Box>

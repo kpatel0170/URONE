@@ -14,8 +14,34 @@ const getSingleUser = async (id, token) => {
     return response.data.data
 }
 
+//@desc Update single user
+//@route PATCH /API_URL/users/:id
+
+const editSingleUser = async (data, token) => {
+    const config ={
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    console.log(data)
+    const userData = {
+        "name": data.name,
+        "email": data.email,
+        "profilePicture": data.profilePicture,
+        "bio": data.about,
+        "userType": data.type
+    }
+    const response = await axios.patch(API_URL + 'users/' + data.id , userData, config)
+
+    if(response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data))
+    }
+    return response.data
+}
+
 const userService = {
-    getSingleUser
+    getSingleUser, 
+    editSingleUser
 }
 
 export default userService;
