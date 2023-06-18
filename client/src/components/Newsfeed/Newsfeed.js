@@ -184,8 +184,8 @@ function Newsfeed(post) {
     }
     setModal(true);
     setToggle(null);
-    dispatch(restSelectPost())
-    dispatch(closeDrawer());
+    // dispatch(restSelectPost())
+    // dispatch(closeDrawer());
   };
 
   const modalCloseHandler = () => {
@@ -195,6 +195,8 @@ function Newsfeed(post) {
 
   const deletePostHandler = (event) => {
     setModal(false);
+    dispatch(restSelectPost())
+    dispatch(closeDrawer());
     dispatch(deletePost(post.post._id));
     toast.success("Post deleted successfully", { position: "bottom-left", hideProgressBar: true, autoClose: 1200, transition:Slide});    
   };
@@ -253,6 +255,11 @@ function Newsfeed(post) {
     console.log(userData)
     dispatch(setUser(userData))
     navigate(`/${userData.name}`)
+  }
+
+  const goToPostDetail = (postId) => {
+    console.log('go to post detail')
+    navigate(`/posts/${postId}`)
   }
 
   return (
@@ -367,6 +374,19 @@ function Newsfeed(post) {
                   >
                     {post.post.createdAt.slice(11, 16)}
                   </Typography>
+                  {id === undefined ? <>
+                    <Box sx={{ paddingX: "8px" }}>
+                    <Box
+                      sx={{
+                        width: "3px",
+                        height: "3px",
+                        background: "#95969c",
+                        borderRadius: "50%",
+                      }}
+                    ></Box>
+                    </Box>
+                    <Typography onClick={() => goToPostDetail(post.post._id)} className="context_link" sx={{ color: "rgba(0, 0, 0, 0.6)", fontSize: "0.875rem", cursor: 'pointer' }}>Detail</Typography>
+                  </> : <></>}
                 </Box>
               </Box>
             </Box>
@@ -386,23 +406,21 @@ function Newsfeed(post) {
           </Box>
 
           {dropdown && 
-            <Box ref={dropdownRef} sx={{position: 'absolute', zIndex: 1, top: '75px', right: '20px', background: 'white', width: '150px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
+            <Box ref={dropdownRef} sx={{position: 'absolute', zIndex: 1, top: '75px', right: '20px', background: 'white', width: '150px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                                  
+              <ListItem disablePadding>
+                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => toggleEditDropdown(post)}>
+                  <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
+                    <EditIcon sx={{fontSize: '1.3rem'}} />
+                  </ListItemIcon>
+                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} primary="Edit" />
+                </ListItemButton>
+              </ListItem>
               <ListItem disablePadding>
                 <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => modalHandler("delete")}>
                   <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
                     <DeleteOutlineIcon sx={{fontSize: '1.3rem'}} />
                   </ListItemIcon>
                   <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} onClick={toggleDropdown} primary="Delete" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-              {/* onClick={() => toggleEditDropdown(post.post._id)} */}
-                {/* <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => drawerHandler(post.post)}> */}
-                <ListItemButton sx={{paddingLeft: '8px'}} onClick={() => toggleEditDropdown(post)}>
-                  <ListItemIcon sx={{minWidth: 'auto', paddingRight: '8px'}}>
-                    <EditIcon sx={{fontSize: '1.3rem'}} />
-                  </ListItemIcon>
-                  <ListItemText sx={{fontSize: '16px', color: 'rgba(117, 117, 117, 1)'}} primary="Edit" />
                 </ListItemButton>
               </ListItem>
             </Box>
@@ -433,8 +451,8 @@ function Newsfeed(post) {
 
 
           {post.post.title != undefined && 
-            <Box sx={{paddingX: 2, paddingBottom: 1}} >
-              <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2'}} className="title_txt">{post.post.title}</Typography>
+            <Box onClick={() => goToPostDetail(post.post._id)} sx={{paddingX: 2, paddingBottom: 1}} >
+              <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', cursor: 'pointer'}} className="title_txt context_link">{post.post.title}</Typography>
             </Box>
           }
           {post.post.text && (

@@ -27,10 +27,13 @@ export default function PostForm(props) {
     const [base64Images, setBase64Images] = useState(formData.image); 
 
     useEffect(() => {
-        if(formHeading){
+        console.log(formHeading)
+        if(formHeading !== null){
             setFormData(selectedPost)
             setBase64Images(selectedPost.image)
             console.log(base64Images)
+        }else{
+            setFormData({ title: '', text: '', image: [] })
         }
     }, [selectedPost])
     

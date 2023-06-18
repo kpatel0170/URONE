@@ -82,6 +82,13 @@ label.image_upload_label:hover{
 .context_hover:hover{
   color: #444;
 }
+.context_link{
+  transition: 0.3s all ease-out;
+}
+.context_link:hover{
+  color: #1a76d2;
+  transition: 0.3s all ease-out;
+}
 
 /* smartphones, iPhone, portrait 480x320 phones */
 @media (min-width:320px)  {  

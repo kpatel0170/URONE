@@ -20,10 +20,11 @@ function SinglePost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [showPost, setShowPost] = useState(false);
   const isDrawerOpen = useSelector((state) => state.drawer.isDrawer);
   const [isClicked, setIsClicked] = useState(false);
   const {user} = useSelector((state) => state.auth)
-  const { posts, isLoading, isError, isSuccess, message } = useSelector(
+  const { posts, singlePost, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.post
   )
   const { id } = useParams();
@@ -60,11 +61,17 @@ function SinglePost() {
         dispatch(setPostDetailId(id));
       }
     }
+
+    const timer = setTimeout(() => {
+      setShowPost(true);
+    }, 100);
     
     return () => {
       dispatch(reset())
+      clearTimeout(timer);
     }
   }, [user])
+
 
   return (
     <>
@@ -73,18 +80,20 @@ function SinglePost() {
         <Grid item xs={12} sm={12} sx={{width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>
           <Box className={isClicked ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
             {isLoading ? <Loading /> : <>
-              {posts.length != 0 ? (
-                <>
-                  <Newsfeed post={posts} />
-                </>
-              ) : (
-                <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', flexDirection: 'column'}}>
-                  <Box sx={{marginBottom: 3, width: '250px', height: '250px', background: 'whitesmoke', borderRadius: '50%', border: '4px solid #fff'}}>
-                    <img className='nopost_img' src={process.env.PUBLIC_URL + '/nopost_icon.png'} alt="rOne" />
+              {showPost && <>
+                {posts.length != 0 ? (
+                  <>
+                    <Newsfeed post={posts} />
+                  </>
+                ) : (
+                  <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', flexDirection: 'column'}}>
+                    <Box sx={{marginBottom: 3, width: '250px', height: '250px', background: 'whitesmoke', borderRadius: '50%', border: '4px solid #fff'}}>
+                      <img className='nopost_img' src={process.env.PUBLIC_URL + '/nopost_icon.png'} alt="rOne" />
+                    </Box>
+                    <Typography sx={{color: '#565252'}} className='title_txt'>The post you are finding does not exist</Typography>
                   </Box>
-                  <Typography sx={{color: '#565252'}} className='title_txt'>The post you are finding does not exist</Typography>
-                </Box>
-              )}
+                )}
+              </>}
             </>}
           </Box>
           <>
