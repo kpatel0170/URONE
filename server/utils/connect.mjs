@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+
+// Connects to the MongoDB database
 const connect = async () => {
   const dbUri = process.env.DB_URI;
   try {
