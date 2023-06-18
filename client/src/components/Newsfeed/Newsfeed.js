@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
@@ -25,6 +24,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import { useNavigate } from 'react-router-dom';
 
 import Comment from "../../components/Comments/Comments";
 import Slider2 from "../Slider2/Slider2";
@@ -41,6 +41,7 @@ import {
   restSelectPost
 } from "../../features/Post/PostSlice";
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
+import { reset, setUser } from '../../features/User/UserSlice';
 import { toast, Slide } from "react-toastify";
 
 const style = {
@@ -55,9 +56,9 @@ const style = {
   borderRadius: 1,
 };
 
-function Newsfeed(post) {
-  const baseUrl = "http://localhost:3001/posts/";
+function Newsfeed(post) {  
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { isLikeLoading } = useSelector((state) => state.post);
@@ -175,8 +176,6 @@ function Newsfeed(post) {
     dispatch(openDrawer());
   }
 
-
-
   const modalHandler = (type, data) => {
     console.log(type);
     if (type === "edit") {
@@ -249,6 +248,13 @@ function Newsfeed(post) {
     }
   };
 
+  const goToUserPage = (userData) =>{
+    console.log('go to user account')
+    console.log(userData)
+    dispatch(setUser(userData))
+    navigate(`/${userData.name}`)
+  }
+
   return (
     <>
       {user && (
@@ -277,10 +283,13 @@ function Newsfeed(post) {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background: "#e6e7ee",
+                        background: "#282424",
+                        cursor: "pointer"
                       }}
+                      onClick={() => goToUserPage(post.post.userId)}
+                      className="context_hover"
                     >
-                      <img className={styles.user_avatar} src={baseUrl + post.post.userId?.profilePicture} />
+                      <img className={styles.user_avatar} src={post.post.userId?.profilePicture} />
                     </Box>
                   </>
                 ) : (
@@ -294,8 +303,10 @@ function Newsfeed(post) {
                         alignItems: "center",
                         justifyContent: "center",
                         borderRadius: "50%",
-                        background: "#e6e7ee",
+                        background: "#282424",
+                        cursor: "pointer"
                       }}
+                      onClick={() => goToUserPage(post.post.userId)}
                     >
                       <PersonOutlineIcon />
                     </Box>
@@ -305,7 +316,9 @@ function Newsfeed(post) {
               <Box sx={{ paddingLeft: 2 }}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Typography
-                    sx={{ color: "#rgba(0, 0, 0, 0.87)", fontSize: "0.875rem" }}
+                    onClick={() => goToUserPage(post.post.userId)}
+                    className="context_hover"
+                    sx={{ color: "#rgba(0, 0, 0, 0.87)", fontSize: "0.875rem", cursor: 'pointer' }}
                   >
                     {post.post.userId?.name}
                   </Typography>

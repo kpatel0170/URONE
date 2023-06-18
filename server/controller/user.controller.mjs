@@ -20,8 +20,8 @@ export const getUser = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   const id = req.params.id;
-  const { name, email, about, type } = req.body;
-  const profilePicture = req.file.filename;
+  const { name, email, about, type, profilePicture } = req.body;
+  // const profilePicture = req.file.filename;
 
   try {
     const updatedUser = await UserService.updateProfile(id, name, email, about, type, profilePicture);

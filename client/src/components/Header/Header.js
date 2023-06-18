@@ -29,7 +29,7 @@ const Header = props => {
     }
 
     const renderPosts = (value) => {
-        let param = {type: 'user', value: value}
+        let param = {type: 'usertype', value: value}
         dispatch(getAllPosts(param))
     }
 
@@ -103,10 +103,10 @@ const Header = props => {
                             <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
                                 {user?.data.profilePicture.length != 0 ?                                     
                                     (
-                                        <Avatar sx={{border: 2, borderColor: '#1473E6'}} alt="profile" src="https://images.unsplash.com/photo-1554629947-334ff61d85dc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1024&h=1280&q=80" />
+                                        <Avatar alt="profile" src={user?.data.profilePicture} />
                                     ) :
                                     (   <>
-                                            <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: 2, borderColor: '#1473E6', background: '#e6e7ee'}}>
+                                            <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
                                                 <PersonOutlineIcon />
                                             </Box>
                                         </>

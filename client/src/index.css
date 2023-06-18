@@ -79,6 +79,10 @@ label.image_upload_label:hover{
   border-radius: 50%
 }
 
+.context_hover:hover{
+  color: #444;
+}
+
 /* smartphones, iPhone, portrait 480x320 phones */
 @media (min-width:320px)  {  
   .modal_wrap{
