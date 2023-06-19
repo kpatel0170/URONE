@@ -150,6 +150,7 @@ const Profile = (props) => {
     }}
     dispatch(updateUserData(data1))
     toast.success('Profile updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
+    navigate('/')
   }
 
   const goToUserAccount = () => {
