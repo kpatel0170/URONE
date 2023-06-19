@@ -17,6 +17,8 @@ import { getAllPosts, reset } from '../../features/Post/PostSlice';
 import { getSingleUser } from '../../features/User/UserSlice';
 import Loading from '../../components/Loading/Loading';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import { current } from '@reduxjs/toolkit';
 
 function User() {
     const navigate = useNavigate();
@@ -27,11 +29,10 @@ function User() {
     const [isClicked, setIsClicked] = useState(false);
     const currentUser = useSelector((state) => state.users.singleUser);
     const {user} = useSelector((state) => state.auth)
-    const { posts, isLoading, isError, isSuccess, message } = useSelector(
+    const { posts, isLoading, isError, message } = useSelector(
         (state) => state.post
     )
-    const {singleUser} = useSelector((state) => state.users)
-    
+    // const {singleUser} = useSelector((state) => state.users)    
     const [defaultData, setDefaultData] = useState({
         title: '',
         text: '', 
@@ -63,10 +64,12 @@ function User() {
     useEffect(() => {
         console.log('render drawer check from home ... ', isDrawerOpen)
         if(isDrawerOpen === true){
-        setIsClicked(true);
+            setIsClicked(true);
         }else{
-        setIsClicked(false);
+            setIsClicked(false);
         }
+
+        
     }, [isDrawerOpen])
 
     useEffect(() => {
@@ -81,13 +84,15 @@ function User() {
             if(!isError){
                 console.log(currentUser)
                 let param = {type: 'userId', value: currentUser._id}
-                dispatch(getAllPosts(param))
-                dispatch(getSingleUser(currentUser._id))
+                setTimeout(() => {
+                    dispatch(getAllPosts(param))
+                    dispatch(getSingleUser(currentUser._id))
+                }, 100);
                 console.log(typographyColor)
             }
         }
 
-        const timer = setTimeout(() => {
+        setTimeout(() => {
             setShowPost(true);
           }, 100);
         
@@ -95,6 +100,12 @@ function User() {
             dispatch(reset())
         }
     }, [user])
+
+    // useEffect(() => {
+    //     console.log('render drawer check from home ... ', currentUser)
+
+        
+    // }, [currentUser])
 
     const goToProfile = () => {
         navigate('/profile')
@@ -110,7 +121,7 @@ function User() {
                             {showPost && <>
                                 <Box sx={{marginY: 4}}>
                                     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                                        <Box sx={{display: 'flex'}}>
+                                        <Box sx={{display: 'flex', width: '100%'}}>
                                             <Box>
                                                 {currentUser.profilePicture.length === 0 ? (
                                                     <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center' ,marginBottom: 3, width: '150px', height: '150px', background: '#282424', borderRadius: '50%', border: '6px solid #fff'}}>
@@ -125,20 +136,34 @@ function User() {
                                                 )}
                                             </Box>
                                             <Box sx={{marginLeft: 5, marginTop: 3}}>
-                                                <Box>
-                                                    <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', color: '#333'}} className="title_txt">{currentUser.name}</Typography>
+                                                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                                                    <Box sx={{width: '230px'}}>
+                                                        <Box>
+                                                            <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', color: '#333'}} className="title_txt">{currentUser.name}</Typography>
+                                                        </Box>
+                                                        <Box sx={{marginBottom: 3, marginTop: 1}}>
+                                                            <Typography sx={{background: typographyColor, fontSize: '0.8rem', color: '#fff', display: 'table', borderRadius: '25px', padding: '2px 7px'}}>{currentUser.type}</Typography>
+                                                        </Box>
+                                                    </Box>
+                                                    <>
+                                                        {currentUser._id === user.data._id && 
+                                                        <Box>
+                                                            <Box onClick={goToProfile} sx={{boxShadow: '1px 2px 5px 0px rgb(232 232 232 / 91%)', display: 'flex', alignItems: 'center', cursor: 'pointer', padding: '10px', background: '#fff', borderRadius: '25px'}} className="context_link">
+                                                                <ModeEditOutlineIcon sx={{fontSize: "1rem", paddingRight: 1}} />
+                                                                <Typography className="context_link" sx={{fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.6)'}}>Edit Profile</Typography>
+                                                            </Box>
+                                                        </Box>
+                                                        }
+                                                    </>
                                                 </Box>
-                                                <Box sx={{marginBottom: 3, marginTop: 1}}><Typography sx={{background: typographyColor, fontSize: '0.8rem', color: '#fff', display: 'table', borderRadius: '25px', padding: '2px 7px'}}>{currentUser.type}</Typography></Box>
+                                                {currentUser.about.length !== 0 &&
+                                                <Box sx={{display: 'flex', marginBottom: 2}}>
+                                                    <HistoryEduIcon />
+                                                    <Typography sx={{paddingLeft: 1, fontSize: '0.875rem', lineHeight: '1.3', color: 'rgba(0, 0, 0, 0.6)'}}>{currentUser.about}</Typography>
+                                                </Box>
+                                                }
                                                 <>{(!isLoading && currentUser._id !== undefined) && <Box sx={{display: 'flex', alignItems: 'center'}}> <Typography sx={{paddingRight: 1, color: '#939393'}}>Posts:</Typography> <Typography sx={{color: '#333'}}>{posts.length}</Typography></Box>}</>
                                             </Box>
-                                        </Box>
-                                        <Box>
-                                            {currentUser._id === user.data._id && 
-                                            <Box onClick={goToProfile} sx={{boxShadow: '1px 2px 5px 0px rgb(232 232 232 / 91%)', display: 'flex', alignItems: 'center', cursor: 'pointer', padding: '10px', background: '#fff', borderRadius: '25px'}} className="context_link">
-                                                <ModeEditOutlineIcon sx={{fontSize: "1rem", paddingRight: 1}} />
-                                                <Typography className="context_link" sx={{fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.6)'}}>Edit Profile</Typography>
-                                            </Box>
-                                            }
                                         </Box>
                                     </Box>
                                 </Box>

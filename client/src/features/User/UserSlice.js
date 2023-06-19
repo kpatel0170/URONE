@@ -59,7 +59,7 @@ export const userSlice = createSlice({
                 state.singleUser = action.payload
             })
             .addCase(getSingleUser.rejected, (state, action) => {
-                state.isUserLoading = false
+                state.isUserLoading = true
                 state.isUserError = true
                 state.message = action.payload
             })
@@ -74,7 +74,7 @@ export const userSlice = createSlice({
                 state.isUserUpdate = true
             })
             .addCase(updateSingleUser.rejected, (state, action) => {
-                state.isUserLoading = false
+                state.isUserLoading = true
                 state.isUserError = true
                 state.message = action.payload
             })

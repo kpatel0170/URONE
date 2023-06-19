@@ -40,6 +40,8 @@ export default function PostForm(props) {
         }else{
             setFormData({ title: '', text: '', image: [] })
         }
+
+        
     }, [selectedPost])
     
     //start:: input form fields

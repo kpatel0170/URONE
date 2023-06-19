@@ -12,7 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
-import { selectNavigation, setCurrentPage } from '../../features/Nav/NavSlice';
+import { selectNavigation, resetNavigation } from '../../features/Nav/NavSlice';
 import { useLocation } from 'react-router-dom';
 
 const Header = props => {  
@@ -20,7 +20,7 @@ const Header = props => {
     const navigate = useNavigate();
 
     const selectedNav = useSelector((state) => state.nav.selectedNav);
-    const userData = useSelector((state) => state.nav.lsuser);
+    // const userData = useSelector((state) => state.nav.lsuser);
     const {user} = useSelector((state) => state.auth)
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
@@ -31,7 +31,7 @@ const Header = props => {
     const location = useLocation();
     const currentURL = location.pathname;
 
-    console.log('', userData)
+    console.log('....')
 
     const backToHome = (event) => {
         navigate('/')
@@ -89,13 +89,12 @@ const Header = props => {
     }, []);
     // end:: click event listerner
 
-    useEffect(() => {
-        console.log(selectedNav)
-        console.log(userData)
-        // return () => {
-        //     dispatch(resetNavigation())
-        // }
-    }, [selectedNav]);
+    // useEffect(() => {
+    //     console.log(selectedNav)
+    //     return () => {
+    //         dispatch(resetNavigation())
+    //     }
+    // }, [selectedNav]);
   
     const logoutHandler = (event) => {
         setDropdown(!dropdown)

@@ -15,11 +15,14 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
-import { updateSingleUser } from "../../features/User/UserSlice";
+import { updateSingleUser, reset } from "../../features/User/UserSlice";
 import Header from "../../components/Header/Header";
 import PostForm from '../../components/Post/PostForm';
 import Loading from '../../components/Loading/Loading';
 import styles from "../Home/Home.module.css";
+import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
+import { selectNavigation } from '../../features/Nav/NavSlice';
+import { setUser } from '../../features/User/UserSlice';
 
 const Profile = (props) => {
   const navigate = useNavigate();
@@ -34,10 +37,10 @@ const Profile = (props) => {
     name: "",
     email: "",
     profilePicture: "",
-    bio: "",
+    about: "",
     userType: "",
   });
-  const { name, email, profilePicture, bio, userType } = formData;
+  const { name, email, profilePicture, about, userType } = formData;
   const [base64Images, setBase64Images] = useState(formData.profilePicture); 
   const [defaultData, setDefaultData] = useState({
       title: '',
@@ -100,7 +103,7 @@ const Profile = (props) => {
         name: user.data.name,
         email: user.data.email,
         profilePicture: user.data.profilePicture,
-        bio: user.data.about,
+        about: user.data.about,
         userType: user.data.type,
       })
 
@@ -108,7 +111,7 @@ const Profile = (props) => {
     }
     
     return () => {
-      // dispatch(reset())
+      dispatch(reset())
     }
   }, [user, navigate])
 
@@ -129,12 +132,19 @@ const Profile = (props) => {
       name: formData.name,
       email: formData.email,
       profilePicture: base64Images,
-      bio: formData.about,
+      about: formData.about,
       userType: formData.type,
       id: user.data._id
     }
     console.log(data)
     dispatch(updateSingleUser(data))
+  }
+
+  const goToUserAccount = () => {
+    dispatch(setUser(user.data))
+    navigate(`/${name}`)
+    dispatch(selectNavigation(''));
+    dispatch(closeDrawer())
   }
 
   return (
@@ -143,8 +153,11 @@ const Profile = (props) => {
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={12} sm={12} sx={{width: '100%', padding: 2, paddingY: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
           <Grid sx={{ width: '65%', background: '#fff', borderRadius: '25px', paddingX: 5, paddingY: 5}} className={isClicked ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
+            <Box onClick={goToUserAccount} sx={{display: 'flex'}}>
+              <ChevronLeftIcon className="context_link" /> 
+              <Typography className="context_link" sx={{fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.6)', cursor: 'pointer'}}>Account</Typography>
+            </Box>
             <Typography sx={{ marginBottom: 4}} className="title_txt">Profile Setting</Typography>
-
             {isUserLoading ? <Loading /> : <> 
               <Box sx={{paddingX: 5}}>
                 <Grid item xs={12} sx={{display: 'flex'}}>
@@ -234,11 +247,11 @@ const Profile = (props) => {
                           </Typography>
                           
                             <TextField
-                              id="bio"
-                              name="bio"
+                              id="about"
+                              name="about"
                               type="text"
                               onChange={formInputHandler}
-                              value={bio}
+                              value={about}
                               placeholder="Enter bio"
                               fullWidth
                               multiline

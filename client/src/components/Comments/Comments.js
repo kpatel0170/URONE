@@ -6,7 +6,7 @@ import styles from "./Comments.module.css";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { createComment } from '../../features/Post/PostSlice';
-import { toast } from 'react-toastify';
+import { toast, Slide } from 'react-toastify';
 
 const Comment = (comment) => {  
     const dispatch = useDispatch();
@@ -41,7 +41,7 @@ const Comment = (comment) => {
             'userId': user.data._id,
             'commentInput': commentInput
         } 
-        toast.success("Comment added successfully", { position: "bottom-right", hideProgressBar: true });
+        toast.success("Comment added successfully", { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
         dispatch(createComment(data))
         setCommentInput("");
         setFirstTimeDisplay(false);
@@ -131,7 +131,7 @@ const Comment = (comment) => {
                                         </>
                                     )
                                 }
-                                <Typography variant="subtitle1" sx={{fontWeight: '500', pr: 1, pl: 1, color: '#5f6069'}}>{data.userId?.name}</Typography>
+                                <Typography variant="subtitle1" sx={{fontSize: '0.8rem', fontWeight: '500', paddingRight: 1, paddingLeft: '5px', color: '#5f6069'}}>{data.userId?.name}</Typography>
                                 <Box sx={{width: '3px', height: '3px', background: '#95969c', borderRadius: '50%'}}></Box>
                                 <Typography variant="subtitle1" sx={{fontSize: '0.8rem', lineHeight: '2.2', pl: 1}}>{data.at.slice(0, 10)}</Typography>
                             </Box>
