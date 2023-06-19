@@ -11,17 +11,27 @@ import LoopIcon from '@mui/icons-material/Loop';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
-import { toggleDrawer, openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
+import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
+import { selectNavigation, resetNavigation } from '../../features/Nav/NavSlice';
+import { useLocation } from 'react-router-dom';
 
 const Header = props => {  
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const selectedNav = useSelector((state) => state.nav.selectedNav);
+    const userData = useSelector((state) => state.users.singleUser);
     const {user} = useSelector((state) => state.auth)
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
     const [dropdown, setDropdown] = useState(false);
     const dropdownRef = useRef(null);
+    const [activeNav, setActiveNav] = useState("");
+
+    const location = useLocation();
+    const currentURL = location.pathname;
+
+    console.log('....')
 
     const backToHome = (event) => {
         navigate('/')
@@ -33,9 +43,12 @@ const Header = props => {
     const renderPosts = (value) => {
         let param = {type: 'usertype', value: value}
         dispatch(getAllPosts(param))
-        if(value === 'all'){
+        if(currentURL !== '/'){
             navigate('/')
         }
+        dispatch(selectNavigation(value));
+        // dispatch(restSelectPost());
+        // dispatch(closeDrawer());
     }
 
     const drawerHandler = () => {
@@ -75,6 +88,10 @@ const Header = props => {
         };
     }, []);
     // end:: click event listerner
+
+    useEffect(() => {
+        console.log(userData)
+    }, [userData]);
   
     const logoutHandler = (event) => {
         setDropdown(!dropdown)
@@ -82,11 +99,13 @@ const Header = props => {
         dispatch(reset())
         dispatch(closeDrawer())
         navigate('/')
+        dispatch(selectNavigation('all'));
     };
 
     const goToProfile = (event) => {
         dispatch(closeDrawer())
         navigate('/profile')
+        dispatch(selectNavigation(''));
     }
      
     return(
@@ -99,29 +118,49 @@ const Header = props => {
                         </Grid>
                         <Grid item xs={6} sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                             <Box sx={{display: 'flex'}}>
-                                <Button onClick={() => renderPosts('all')} sx={{textTransform: 'capitalize', color: '#4d4d4d', borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>All</Button>
-                                <Button onClick={() => renderPosts('professor')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Academic</Button>
-                                <Button onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
+                                <Button style={{borderBottom: selectedNav === "all" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('all')} sx={{textTransform: 'capitalize', color: '#4d4d4d', borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>All</Button>
+                                <Button style={{borderBottom: selectedNav === "professor" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('professor')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Academic</Button>
+                                <Button style={{borderBottom: selectedNav === "staff" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
                             </Box>
                             <Box sx={{marginLeft: '3.5rem'}}>
-                                <Button sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
+                                <Button onClick={backToHome} sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
                                 <Button className='main_btn' onClick={drawerHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
                             </Box>
                         </Grid>
                         <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>                            
                             <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
-                                {user?.data.profilePicture.length != 0 ?                                     
-                                    (
-                                        <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={user?.data.profilePicture} />
-                                    ) :
-                                    (   <>
-                                            <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
-                                                <PersonOutlineIcon />
-                                            </Box>
-                                        </>
-                                    )
+                                {userData.profilePicture !== undefined ? 
+                                    <>
+                                    {userData.profilePicture.length != 0 ?                                     
+                                        (
+                                            <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={userData.profilePicture} />
+                                        ) :
+                                        (   <>
+                                                <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
+                                                    <PersonOutlineIcon />
+                                                </Box>
+                                            </>
+                                        )
+                                    }
+                                    </> :
+                                    <>
+                                    {user?.data.profilePicture.length != 0 ?                                     
+                                        (
+                                            <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={user?.data.profilePicture} />
+                                        ) :
+                                        (   <>
+                                                <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
+                                                    <PersonOutlineIcon />
+                                                </Box>
+                                            </>
+                                        )
+                                    }
+                                    </>
                                 }
-                                <Typography sx={{paddingX: 1}}>{user?.data.name}</Typography>
+                                
+                                {userData.name !== undefined ? 
+                                    <Typography sx={{paddingX: 1}}>{userData.name}</Typography> : 
+                                    <Typography sx={{paddingX: 1}}>{user?.data.name}</Typography>}
                                 <Box>
                                     <MoreVertIcon />
                                 </Box>

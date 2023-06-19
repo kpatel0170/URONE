@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import userService from './UserService';
 
+const user = JSON.parse(localStorage.getItem('user'));
+console.log(user)
 const initialState = {
     users: [],
     singleUser: {},
@@ -8,7 +10,8 @@ const initialState = {
     isUserError: false,
     isUserSuccess: false,
     isUserLoading: false,
-    isUserUpdate: false
+    isUserUpdate: false,
+    lsuser: user ? user : null,
 }
 
 //@desc Get single user
@@ -37,7 +40,7 @@ export const updateSingleUser = createAsyncThunk('users/updateUser', async(userD
 })
 
 export const userSlice = createSlice({
-    name: 'comment',
+    name: 'user',
     initialState,
     reducers: {
         reset: (state) => initialState,
@@ -56,7 +59,7 @@ export const userSlice = createSlice({
                 state.singleUser = action.payload
             })
             .addCase(getSingleUser.rejected, (state, action) => {
-                state.isUserLoading = false
+                state.isUserLoading = true
                 state.isUserError = true
                 state.message = action.payload
             })
@@ -66,11 +69,11 @@ export const userSlice = createSlice({
             .addCase(updateSingleUser.fulfilled, (state, action) => {
                 state.isUserLoading = false
                 state.isUserSuccess = true
-                state.singleUser = action.payload
+                state.lsuser = action.payload
                 state.isUserUpdate = true
             })
             .addCase(updateSingleUser.rejected, (state, action) => {
-                state.isUserLoading = false
+                state.isUserLoading = true
                 state.isUserError = true
                 state.message = action.payload
             })

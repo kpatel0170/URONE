@@ -28,7 +28,7 @@ const editSingleUser = async (data, token) => {
         "name": data.name,
         "email": data.email,
         "profilePicture": data.profilePicture,
-        "bio": data.about,
+        "about": data.about,
         "userType": data.type
     }
     const response = await axios.patch(API_URL + 'users/' + data.id , userData, config)

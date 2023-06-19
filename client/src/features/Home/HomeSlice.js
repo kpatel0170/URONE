@@ -5,7 +5,7 @@ const initialState = {
 }
 
 export const homeSlice = createSlice({
-    name: 'comment',
+    name: 'home',
     initialState,
     reducers: {
         reset: (state) => initialState,

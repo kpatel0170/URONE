@@ -149,7 +149,7 @@ function Login() {
       {isLoading && <Loading />}
       <Grid
         container
-        sx={{ height: "100vh", alignItems: "center" }}
+        sx={{ height: "100vh", alignItems: "center", background: '#fff' }}
         className={styles.grid_wrap}
       >
         <Grid
@@ -179,7 +179,7 @@ function Login() {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={7} md={4} lg={4} sx={{ px: 4 }}>
+        <Grid item xs={12} sm={7} md={4} lg={4} sx={{ px: 4, background: '#fff' }}>
           <Box sx={{ mb: 5, textAlign: "center" }}>
             <Typography
               sx={{ textAlign: "center", fontWeight: "bold", fontSize: "48px" }}

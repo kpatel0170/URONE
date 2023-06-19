@@ -11,6 +11,9 @@ import '../../App.css';
 import { toast, Slide } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { selectNavigation, setCurrentPage } from '../../features/Nav/NavSlice';
+import { useLocation } from 'react-router-dom';
+
 
 export default function PostForm(props) {
     const dispatch = useDispatch();
@@ -19,6 +22,9 @@ export default function PostForm(props) {
     const selectedPost = useSelector((state) => state.post.selectedPost);
     const formHeading = useSelector((state) => state.post.postStatus);
     const [formData, setFormData] = useState(selectedPost || { title: '', text: '', image: [] });
+
+    const location = useLocation();
+    const currentURL = location.pathname;
     
     const { id } = useParams();
     const isEmpty = formData.text.trim().length === 0;
@@ -31,10 +37,11 @@ export default function PostForm(props) {
         if(formHeading !== null){
             setFormData(selectedPost)
             setBase64Images(selectedPost.image)
-            console.log(base64Images)
         }else{
             setFormData({ title: '', text: '', image: [] })
         }
+
+        
     }, [selectedPost])
     
     //start:: input form fields
@@ -42,7 +49,6 @@ export default function PostForm(props) {
         let {name, checked} = event.target;        
 
         if (name === 'checkAll') {
-            console.log('in the if')
             setFormData((prevState) => ({
                 ...prevState,
                 likes: checked,
@@ -183,6 +189,12 @@ export default function PostForm(props) {
     }
     //end:: trigger drawer
 
+    //start:: reset
+    const resetHandler = () => {
+        setFormData(selectedPost)
+        setBase64Images(selectedPost.image)
+    }
+
     //start:: create/edit post form submit 
     const submitFormHandler = (event) => {
         console.log(base64Images)
@@ -206,22 +218,35 @@ export default function PostForm(props) {
         
         if(!formHeading) {
             dispatch(createPost(postData))
+            toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
         }else{
             dispatch(updateSinglePost({ postData: postData, postId: selectedPost._id }));
             dispatch(restSelectPost())
+            toast.success('Post updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
         }
         setFormData({
             title: '',
             text: '',
             image: []
         })
-        toast.success('Post created successfully', { position: "bottom-left", hideProgressBar: true, autoClose: 1200, transition:Slide});
+        
         props.deactivtateDrawer(false);
         setPreviewImages([]);
         setBase64Images([]);
         dispatch(closeDrawer())
         if(id != undefined){
+            console.log('redirect to home page')
             navigate('/')
+            dispatch(selectNavigation("all"));
+        }else{
+            console.log('in the else', id)
+            console.log(currentURL)
+            if(currentURL === '/profile'){
+                navigate('/')
+                dispatch(selectNavigation("all"));
+            }else if(currentURL === '/'){
+                dispatch(selectNavigation("all"));
+            }
         }
     }
     //end:: create/edit post form submit 
@@ -385,7 +410,8 @@ export default function PostForm(props) {
                 </Box> */}
                 <Box sx={{position: 'fixed', bottom: 0, width: '330px', background: 'white'}}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingY: 3}}>
-                        <Button onClick={cancelDrawerHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                        <Button onClick={cancelDrawerHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede', marginRight: 1}}>Cancel</Button>
+                        <Button onClick={resetHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede', marginRight: 1}}>Reset</Button>
                         {!formHeading ? (
                             <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%', boxShadow: 'none'}}>Post</Button>
                         ) : (

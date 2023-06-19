@@ -33,6 +33,7 @@ import styles from "./Newsfeed.module.css";
 
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
+import { selectNavigation, setCurrentPage } from '../../features/Nav/NavSlice';
 import {
   deletePost,
   likePost,
@@ -94,8 +95,6 @@ function Newsfeed(post) {
     default:
       typographyColor = 'black';
   }
-
-  console.log(id)
 
   // start:: comment toggler 
   const isToggle = Boolean(toggle);
@@ -198,7 +197,7 @@ function Newsfeed(post) {
     dispatch(restSelectPost())
     dispatch(closeDrawer());
     dispatch(deletePost(post.post._id));
-    toast.success("Post deleted successfully", { position: "bottom-left", hideProgressBar: true, autoClose: 1200, transition:Slide});    
+    toast.success("Post deleted successfully", { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});    
   };
 
   const likeHandler = (event) => {
@@ -255,11 +254,15 @@ function Newsfeed(post) {
     console.log(userData)
     dispatch(setUser(userData))
     navigate(`/${userData.name}`)
+    dispatch(selectNavigation(''));
+    dispatch(closeDrawer())
   }
 
   const goToPostDetail = (postId) => {
     console.log('go to post detail')
     navigate(`/posts/${postId}`)
+    dispatch(selectNavigation(''));
+    dispatch(closeDrawer())
   }
 
   return (
@@ -451,9 +454,17 @@ function Newsfeed(post) {
 
 
           {post.post.title != undefined && 
-            <Box onClick={() => goToPostDetail(post.post._id)} sx={{paddingX: 2, paddingBottom: 1}} >
-              <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', cursor: 'pointer'}} className="title_txt context_link">{post.post.title}</Typography>
-            </Box>
+            <>
+              {id === undefined ? (
+                <Box onClick={() => goToPostDetail(post.post._id)} sx={{paddingX: 2, paddingBottom: 1}} >
+                  <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2', cursor: 'pointer'}} className="title_txt context_link">{post.post.title}</Typography>
+                </Box>
+              ) : (
+                <Box sx={{paddingX: 2, paddingBottom: 1}} >
+                  <Typography sx={{fontSize: '1.25rem', lineHeight: '1.2'}} className="title_txt">{post.post.title}</Typography>
+                </Box>
+              )}
+            </>
           }
           {post.post.text && (
             <CardContent sx={{ paddingTop: 0 }}>
