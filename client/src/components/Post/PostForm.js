@@ -197,7 +197,8 @@ export default function PostForm(props) {
 
     //start:: create/edit post form submit 
     const submitFormHandler = (event) => {
-        console.log(base64Images)
+        console.log('auth user', user)
+        console.log('auth user id:', user.data._id)
         event.preventDefault();
         const userId = user.data._id;
         const data = new FormData();
@@ -213,41 +214,43 @@ export default function PostForm(props) {
             'title': title != undefined ? title : '',
             'text': text,
             'image': base64Images,
-            'userId': userId
+            'userId': user.data._id
         }
+
+        console.log(postData)
         
-        if(!formHeading) {
-            dispatch(createPost(postData))
-            toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
-        }else{
-            dispatch(updateSinglePost({ postData: postData, postId: selectedPost._id }));
-            dispatch(restSelectPost())
-            toast.success('Post updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
-        }
-        setFormData({
-            title: '',
-            text: '',
-            image: []
-        })
+        // if(!formHeading) {
+        //     dispatch(createPost(postData))
+        //     toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
+        // }else{
+        //     dispatch(updateSinglePost({ postData: postData, postId: selectedPost._id }));
+        //     dispatch(restSelectPost())
+        //     toast.success('Post updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
+        // }
+        // setFormData({
+        //     title: '',
+        //     text: '',
+        //     image: []
+        // })
         
-        props.deactivtateDrawer(false);
-        setPreviewImages([]);
-        setBase64Images([]);
-        dispatch(closeDrawer())
-        if(id != undefined){
-            console.log('redirect to home page')
-            navigate('/')
-            dispatch(selectNavigation("all"));
-        }else{
-            console.log('in the else', id)
-            console.log(currentURL)
-            if(currentURL === '/profile'){
-                navigate('/')
-                dispatch(selectNavigation("all"));
-            }else if(currentURL === '/'){
-                dispatch(selectNavigation("all"));
-            }
-        }
+        // props.deactivtateDrawer(false);
+        // setPreviewImages([]);
+        // setBase64Images([]);
+        // dispatch(closeDrawer())
+        // if(id != undefined){
+        //     console.log('redirect to home page')
+        //     navigate('/')
+        //     dispatch(selectNavigation("all"));
+        // }else{
+        //     console.log('in the else', id)
+        //     console.log(currentURL)
+        //     if(currentURL === '/profile'){
+        //         navigate('/')
+        //         dispatch(selectNavigation("all"));
+        //     }else if(currentURL === '/'){
+        //         dispatch(selectNavigation("all"));
+        //     }
+        // }
     }
     //end:: create/edit post form submit 
 
@@ -361,57 +364,11 @@ export default function PostForm(props) {
                             </Box>
                         </Box>
                     }
-                </Box>   
-
-
-                {/* <Box sx={{ borderTop: 1, borderBottom: 1, borderColor: '#dcdcdc', marginTop: 3, marginBottom: 3, paddingBottom: 2, paddingTop: 2}}>
-                    <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                        <Typography sx={{fontWeight: 'bold', marginBottom: 2}}>Manage Post</Typography>                        
-                        <FormControlLabel
-                            control={
-                                <Switch checked={formData.checkAll} onChange={formInputHandler} name="checkAll" />
-                            }
-                        />
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingRight: 2, paddingLeft: 2}}>
-                        <Box>
-                            <FormControlLabel
-                                control={
-                                    <Switch checked={formData.likes} onChange={formInputHandler} name="up" />
-                                }
-                            />
-                            <ThumbUpOffAltIcon />
-                        </Box>
-                        <Box>
-                            <FormControlLabel
-                                control={
-                                    <Switch checked={formData.dislikes} onChange={formInputHandler} name="down" />
-                                }
-                            />
-                            <ThumbDownOffAltIcon />
-                        </Box>
-                        <Box>
-                            <FormControlLabel
-                                control={
-                                    <Switch checked={formData.comments} onChange={formInputHandler} name="comment" />
-                                }
-                            />
-                            <ChatBubbleOutlineIcon />
-                        </Box>
-                        <Box>
-                            <FormControlLabel
-                                control={
-                                    <Switch checked={formData.share} onChange={formInputHandler} name="share" />
-                                }
-                            />
-                            <ShareIcon />
-                        </Box>
-                    </Box>
-                </Box> */}
+                </Box> 
                 <Box sx={{position: 'fixed', bottom: 0, width: '330px', background: 'white'}}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: 1, borderColor: '#dedede', paddingY: 3}}>
                         <Button onClick={cancelDrawerHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede', marginRight: 1}}>Cancel</Button>
-                        <Button onClick={resetHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede', marginRight: 1}}>Reset</Button>
+                        {/* <Button onClick={resetHandler} variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede', marginRight: 1}}>Reset</Button> */}
                         {!formHeading ? (
                             <Button disabled={isEmpty && formData.image.length === 0} type="submit" variant="contained" sx={{p:1, width: '48%', boxShadow: 'none'}}>Post</Button>
                         ) : (

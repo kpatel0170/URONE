@@ -17,7 +17,7 @@ const getSingleUser = async (id, token) => {
 //@desc Update single user
 //@route PATCH /API_URL/users/:id
 
-const editSingleUser = async (data, token) => {
+const editSingleUser = async (data, id, token) => {
     const config ={
         headers: {
             Authorization: `Bearer ${token}`

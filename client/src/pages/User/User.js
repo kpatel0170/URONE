@@ -86,9 +86,9 @@ function User() {
                 console.log(user)
                 
                 setTimeout(() => {
-                    let param = {type: 'userId', value: user.data._id}
+                    let param = {type: 'userId', value: currentUser._id}
                     dispatch(getAllPosts(param))
-                    dispatch(getSingleUser(user.data._id))
+                    dispatch(getSingleUser(currentUser._id))
                 }, 100);
                 console.log(typographyColor)
             }
