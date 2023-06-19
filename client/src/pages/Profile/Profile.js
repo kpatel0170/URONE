@@ -15,14 +15,14 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
-import { updateSingleUser, reset, setUser } from "../../features/User/UserSlice";
+import { updateSingleUser, reset } from "../../features/User/UserSlice";
 import Header from "../../components/Header/Header";
 import PostForm from '../../components/Post/PostForm';
 import Loading from '../../components/Loading/Loading';
 import styles from "../Home/Home.module.css";
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 import { selectNavigation } from '../../features/Nav/NavSlice';
-import {updateUserData} from '../../features/Auth/AuthSlice';
+// import {updateUserData} from '../../features/Auth/AuthSlice';
 import { toast, Slide } from 'react-toastify';
 
 const Profile = (props) => {
@@ -138,7 +138,7 @@ const Profile = (props) => {
       id: user.data._id
     }
     console.log(data)
-    dispatch(setUser(data))
+    
     dispatch(updateSingleUser(data))
     const data1 = {data: {
       "name": formData.name,
@@ -148,12 +148,11 @@ const Profile = (props) => {
       "userType": formData.type,
       "id": user.data._id
     }}
-    dispatch(updateUserData(data1))
+    
     toast.success('Profile updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
   }
 
-  const goToUserAccount = () => {
-    dispatch(setUser(user.data))
+  const goToUserAccount = () => {    
     navigate(`/${name}`)
     dispatch(selectNavigation(''));
     dispatch(closeDrawer())

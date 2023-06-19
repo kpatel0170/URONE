@@ -5,13 +5,10 @@ const user = JSON.parse(localStorage.getItem('user'));
 console.log(user)
 const initialState = {
     users: [],
-    singleUser: {},
-    selectedUserId: undefined,
+    singleUser: {},    
     isUserError: false,
     isUserSuccess: false,
-    isUserLoading: false,
-    isUserUpdate: false,
-    lsuser: user ? user : null,
+    isUserLoading: false,        
 }
 
 //@desc Get single user
@@ -69,8 +66,7 @@ export const userSlice = createSlice({
             .addCase(updateSingleUser.fulfilled, (state, action) => {
                 state.isUserLoading = false
                 state.isUserSuccess = true
-                state.lsuser = action.payload
-                state.isUserUpdate = true
+                state.singleUser = action.payload
             })
             .addCase(updateSingleUser.rejected, (state, action) => {
                 state.isUserLoading = true

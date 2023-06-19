@@ -19,8 +19,7 @@ const Header = props => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const selectedNav = useSelector((state) => state.nav.selectedNav);
-    const userData = useSelector((state) => state.users.singleUser);
+    const selectedNav = useSelector((state) => state.nav.selectedNav);    
     const {user} = useSelector((state) => state.auth)
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
@@ -88,10 +87,6 @@ const Header = props => {
         };
     }, []);
     // end:: click event listerner
-
-    useEffect(() => {
-        console.log(userData)
-    }, [userData]);
   
     const logoutHandler = (event) => {
         setDropdown(!dropdown)
@@ -128,7 +123,26 @@ const Header = props => {
                             </Box>
                         </Grid>
                         <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>                            
-                            <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
+                        <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>                                
+                                    <>
+                                        {user?.data.profilePicture.length != 0 ?                                     
+                                            (
+                                                <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={user?.data.profilePicture} />
+                                            ) :
+                                            (   <>
+                                                    <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
+                                                        <PersonOutlineIcon />
+                                                    </Box>
+                                                </>
+                                            )
+                                        }
+                                    </>
+                                    <Typography sx={{paddingX: 1}}>{user?.data.name}</Typography>
+                                <Box>
+                                    <MoreVertIcon />
+                                </Box>
+                            </Button>
+                            {/* <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
                                 {userData.profilePicture !== undefined ? 
                                     <>
                                     {userData.profilePicture.length != 0 ?                                     
@@ -164,7 +178,7 @@ const Header = props => {
                                 <Box>
                                     <MoreVertIcon />
                                 </Box>
-                            </Button>
+                            </Button> */}
                             {dropdown && 
                                 <Box ref={dropdownRef} sx={{position: 'absolute', top: '70px', background: 'white', width: '250px', border: 1, borderColor: 'rgb(230, 230, 230)', borderRadius: '5px', padding: '5px', boxShadow: 'rgb(230, 230, 230) 0px 1px 4px'}}>                                    
                                     <ListItem disablePadding>
