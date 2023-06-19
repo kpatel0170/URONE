@@ -83,10 +83,12 @@ function User() {
         }else{
             if(!isError){
                 console.log(currentUser)
-                let param = {type: 'userId', value: currentUser._id}
+                console.log(user)
+                
                 setTimeout(() => {
+                    let param = {type: 'userId', value: user.data._id}
                     dispatch(getAllPosts(param))
-                    dispatch(getSingleUser(currentUser._id))
+                    dispatch(getSingleUser(user.data._id))
                 }, 100);
                 console.log(typographyColor)
             }
@@ -119,6 +121,7 @@ function User() {
                     <Box sx={{width: '570px'}} className={isClicked ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
                         {isLoading ? <Loading /> : <>
                             {showPost && <>
+                                {currentUser.profilePicture != undefined && 
                                 <Box sx={{marginY: 4}}>
                                     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                                         <Box sx={{display: 'flex', width: '100%'}}>
@@ -167,7 +170,7 @@ function User() {
                                         </Box>
                                     </Box>
                                 </Box>
-                                
+                                }
                                 {posts.length != 0 ? (
                                     <>
                                         {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post, index) => (

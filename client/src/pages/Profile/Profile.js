@@ -15,14 +15,15 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 
-import { updateSingleUser, reset } from "../../features/User/UserSlice";
+import { updateSingleUser, reset, setUser } from "../../features/User/UserSlice";
 import Header from "../../components/Header/Header";
 import PostForm from '../../components/Post/PostForm';
 import Loading from '../../components/Loading/Loading';
 import styles from "../Home/Home.module.css";
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
 import { selectNavigation } from '../../features/Nav/NavSlice';
-import { setUser } from '../../features/User/UserSlice';
+import {updateUserData} from '../../features/Auth/AuthSlice';
+import { toast, Slide } from 'react-toastify';
 
 const Profile = (props) => {
   const navigate = useNavigate();
@@ -137,7 +138,18 @@ const Profile = (props) => {
       id: user.data._id
     }
     console.log(data)
+    dispatch(setUser(data))
     dispatch(updateSingleUser(data))
+    const data1 = {data: {
+      "name": formData.name,
+      "email": formData.email,
+      "profilePicture": base64Images,
+      "about": formData.about,
+      "userType": formData.type,
+      "id": user.data._id
+    }}
+    dispatch(updateUserData(data1))
+    toast.success('Profile updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
   }
 
   const goToUserAccount = () => {
@@ -153,10 +165,10 @@ const Profile = (props) => {
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={12} sm={12} sx={{width: '100%', padding: 2, paddingY: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
           <Grid sx={{ width: '65%', background: '#fff', borderRadius: '25px', paddingX: 5, paddingY: 5}} className={isClicked ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
-            <Box onClick={goToUserAccount} sx={{display: 'flex'}}>
+            {/* <Box onClick={goToUserAccount} sx={{display: 'flex'}}>
               <ChevronLeftIcon className="context_link" /> 
               <Typography className="context_link" sx={{fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.6)', cursor: 'pointer'}}>Account</Typography>
-            </Box>
+            </Box> */}
             <Typography sx={{ marginBottom: 4}} className="title_txt">Profile Setting</Typography>
             {isUserLoading ? <Loading /> : <> 
               <Box sx={{paddingX: 5}}>

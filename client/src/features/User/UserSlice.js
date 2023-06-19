@@ -11,7 +11,7 @@ const initialState = {
     isUserSuccess: false,
     isUserLoading: false,
     isUserUpdate: false,
-    lsuser: user.data,
+    lsuser: user ? user : null,
 }
 
 //@desc Get single user
@@ -69,7 +69,6 @@ export const userSlice = createSlice({
             .addCase(updateSingleUser.fulfilled, (state, action) => {
                 state.isUserLoading = false
                 state.isUserSuccess = true
-                state.singleUser = action.payload
                 state.lsuser = action.payload
                 state.isUserUpdate = true
             })

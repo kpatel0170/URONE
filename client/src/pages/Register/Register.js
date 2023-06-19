@@ -197,7 +197,7 @@ function Register() {
       {isLoading && <Loading />}
       <Grid
         container
-        sx={{ height: "100vh", alignItems: "center" }}
+        sx={{ height: "100vh", alignItems: "center", background: '#fff' }}
         className={styles.grid_wrap}
       >
         <Grid
