@@ -5,7 +5,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Box, IconButton } from '@mui/material';
 
 function Slider(media) {
-    const baseUrl = 'http://localhost:3001/posts/';
     
     const [currentActiveSlide, setCurrentActiveSlide] = useState(0);     
 
@@ -31,7 +30,7 @@ function Slider(media) {
                             key={index}
                             sx={{height: '350px',}}
                         >
-                            {index === currentActiveSlide && <img src={baseUrl + currentSlide} className={styles.media_image} />}
+                            {index === currentActiveSlide && <img src={currentSlide} className={styles.media_image} />}
                         </Box>
                     );
                 })}

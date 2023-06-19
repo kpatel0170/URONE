@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import userService from './UserService';
 
+const user = JSON.parse(localStorage.getItem('user'));
+console.log(user)
 const initialState = {
     users: [],
     singleUser: {},
@@ -8,7 +10,8 @@ const initialState = {
     isUserError: false,
     isUserSuccess: false,
     isUserLoading: false,
-    isUserUpdate: false
+    isUserUpdate: false,
+    lsuser: user.data,
 }
 
 //@desc Get single user
@@ -67,6 +70,7 @@ export const userSlice = createSlice({
                 state.isUserLoading = false
                 state.isUserSuccess = true
                 state.singleUser = action.payload
+                state.lsuser = action.payload
                 state.isUserUpdate = true
             })
             .addCase(updateSingleUser.rejected, (state, action) => {

@@ -3,7 +3,6 @@ import { Box, ImageListItem, ImageList, CardMedia} from "@mui/material";
 import styles from "./Slider2.module.css";
 
 function Slider2(media) {
-    const baseUrl = "http://localhost:3001/posts/";
     const [gallery, setGallery] = useState(false);
     const [currentIndex, setCurrentIndex] = useState();
     const [galleryLength, setGalleryLength] = useState(media.media.length);

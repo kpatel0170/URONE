@@ -20,6 +20,7 @@ const Header = props => {
     const navigate = useNavigate();
 
     const selectedNav = useSelector((state) => state.nav.selectedNav);
+    const userData = useSelector((state) => state.nav.lsuser);
     const {user} = useSelector((state) => state.auth)
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
@@ -29,6 +30,8 @@ const Header = props => {
 
     const location = useLocation();
     const currentURL = location.pathname;
+
+    console.log('', userData)
 
     const backToHome = (event) => {
         navigate('/')
@@ -44,6 +47,8 @@ const Header = props => {
             navigate('/')
         }
         dispatch(selectNavigation(value));
+        // dispatch(restSelectPost());
+        // dispatch(closeDrawer());
     }
 
     const drawerHandler = () => {
@@ -86,7 +91,7 @@ const Header = props => {
 
     useEffect(() => {
         console.log(selectedNav)
-        console.log(currentURL)
+        console.log(userData)
         // return () => {
         //     dispatch(resetNavigation())
         // }
@@ -103,6 +108,7 @@ const Header = props => {
     const goToProfile = (event) => {
         dispatch(closeDrawer())
         navigate('/profile')
+        dispatch(selectNavigation(''));
     }
      
     return(
@@ -120,7 +126,7 @@ const Header = props => {
                                 <Button style={{borderBottom: selectedNav === "staff" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
                             </Box>
                             <Box sx={{marginLeft: '3.5rem'}}>
-                                <Button sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
+                                <Button onClick={backToHome} sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
                                 <Button className='main_btn' onClick={drawerHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
                             </Box>
                         </Grid>
