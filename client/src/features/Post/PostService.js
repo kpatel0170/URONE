@@ -1,7 +1,7 @@
 import axios from 'axios'
+import { API_URL } from '../../utils/env';
 
-// const API = 'https://rone.onrender.com/api/v1/posts/'
-const API = 'http://localhost:3001/api/v1/posts/'
+const API = API_URL + 'posts/';
 
 
 // Get all posts
@@ -11,7 +11,6 @@ const getAllPosts = async (data, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-    console.log(data)
     let requestAPI;
     if(data != undefined){
         if(data.type === 'usertype' && (data.value === 'staff' || data.value === 'professor')){
@@ -45,7 +44,6 @@ const createPost = async (postData, token) => {
             formData: true
         }
     }    
-    console.log('render from service', postData)
     const response = await axios.post(API , postData, config)
     return response.data.data
 }
@@ -58,8 +56,6 @@ const updatePost = async (postData, id, token) => {
             formData: true
         }
     }
-    console.log(postData)
-    console.log('id')
 
     const response = await axios.patch(API + id , postData, config)
     return response.data.data
@@ -72,7 +68,6 @@ const deletePost = async (id, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-    console.log("post service ... ", id)
     const response = await axios.delete(API + id , config)
     return response.data
 }

@@ -11,17 +11,24 @@ import LoopIcon from '@mui/icons-material/Loop';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
-import { toggleDrawer, openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
+import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
+import { selectNavigation, setCurrentPage } from '../../features/Nav/NavSlice';
+import { useLocation } from 'react-router-dom';
 
 const Header = props => {  
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const selectedNav = useSelector((state) => state.nav.selectedNav);
     const {user} = useSelector((state) => state.auth)
     const [toggle, setToggle] = useState(null);
     const isToggle = Boolean(toggle);
     const [dropdown, setDropdown] = useState(false);
     const dropdownRef = useRef(null);
+    const [activeNav, setActiveNav] = useState("");
+
+    const location = useLocation();
+    const currentURL = location.pathname;
 
     const backToHome = (event) => {
         navigate('/')
@@ -33,9 +40,10 @@ const Header = props => {
     const renderPosts = (value) => {
         let param = {type: 'usertype', value: value}
         dispatch(getAllPosts(param))
-        if(value === 'all'){
+        if(currentURL !== '/'){
             navigate('/')
         }
+        dispatch(selectNavigation(value));
     }
 
     const drawerHandler = () => {
@@ -75,6 +83,14 @@ const Header = props => {
         };
     }, []);
     // end:: click event listerner
+
+    useEffect(() => {
+        console.log(selectedNav)
+        console.log(currentURL)
+        // return () => {
+        //     dispatch(resetNavigation())
+        // }
+    }, [selectedNav]);
   
     const logoutHandler = (event) => {
         setDropdown(!dropdown)
@@ -99,9 +115,9 @@ const Header = props => {
                         </Grid>
                         <Grid item xs={6} sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                             <Box sx={{display: 'flex'}}>
-                                <Button onClick={() => renderPosts('all')} sx={{textTransform: 'capitalize', color: '#4d4d4d', borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>All</Button>
-                                <Button onClick={() => renderPosts('professor')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Academic</Button>
-                                <Button onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
+                                <Button style={{borderBottom: selectedNav === "all" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('all')} sx={{textTransform: 'capitalize', color: '#4d4d4d', borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>All</Button>
+                                <Button style={{borderBottom: selectedNav === "professor" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('professor')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Academic</Button>
+                                <Button style={{borderBottom: selectedNav === "staff" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
                             </Box>
                             <Box sx={{marginLeft: '3.5rem'}}>
                                 <Button sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>

@@ -25,6 +25,7 @@ function Home() {
   )
   const isDrawerOpen = useSelector((state) => state.drawer.isDrawer);
   const selectedPost = useSelector((state) => state.post.selectedPost);
+  const selectedNav = useSelector((state) => state.nav.selectedNav);
   const [isClicked, setIsClicked] = useState(false);
   const defaultData1 = {'title': '','text': '', 'image': []}; 
   const [defaultData, setDefaultData] = useState({
@@ -37,10 +38,7 @@ function Home() {
     setIsClicked(condition);
   };
 
-  console.log('... H ... ', isDrawerOpen)
-
   useEffect(() => {
-    console.log('render drawer check from home ... ', isDrawerOpen)
     if(isDrawerOpen === true){
       setIsClicked(true);
     }else{
@@ -57,8 +55,25 @@ function Home() {
       navigate('/login')
     }else{
       if(!isError){
-        dispatch(getAllPosts())
-        console.log(posts)
+        console.log(selectedNav)
+        switch (selectedNav) {
+          case 'all':
+            dispatch(getAllPosts())
+            break;
+          case 'professor':
+            console.log('...')
+            let param = {type: 'usertype', value: selectedNav}
+            dispatch(getAllPosts(param))
+            break;
+          case 'staff':
+            console.log('@@@')
+            let param1 = {type: 'usertype', value: selectedNav}
+            dispatch(getAllPosts(param1))
+            break;
+          default:
+            dispatch(getAllPosts())
+        }
+        
       }
     }
     

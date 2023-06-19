@@ -33,6 +33,7 @@ import styles from "./Newsfeed.module.css";
 
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
+import { selectNavigation, setCurrentPage } from '../../features/Nav/NavSlice';
 import {
   deletePost,
   likePost,
@@ -94,8 +95,6 @@ function Newsfeed(post) {
     default:
       typographyColor = 'black';
   }
-
-  console.log(id)
 
   // start:: comment toggler 
   const isToggle = Boolean(toggle);
@@ -255,11 +254,13 @@ function Newsfeed(post) {
     console.log(userData)
     dispatch(setUser(userData))
     navigate(`/${userData.name}`)
+    dispatch(selectNavigation(''));
   }
 
   const goToPostDetail = (postId) => {
     console.log('go to post detail')
     navigate(`/posts/${postId}`)
+    dispatch(selectNavigation(''));
   }
 
   return (

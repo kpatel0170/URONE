@@ -31,7 +31,6 @@ export default function PostForm(props) {
         if(formHeading !== null){
             setFormData(selectedPost)
             setBase64Images(selectedPost.image)
-            console.log(base64Images)
         }else{
             setFormData({ title: '', text: '', image: [] })
         }
@@ -42,7 +41,6 @@ export default function PostForm(props) {
         let {name, checked} = event.target;        
 
         if (name === 'checkAll') {
-            console.log('in the if')
             setFormData((prevState) => ({
                 ...prevState,
                 likes: checked,

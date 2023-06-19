@@ -4,6 +4,7 @@ import postReducer from '../features/Post/PostSlice';
 import commentReducer from '../features/Comment/CommentSlice';
 import drawerReducer from '../features/Home/HomeSlice';
 import userReducer from '../features/User/UserSlice';
+import navReducer from '../features/Nav/NavSlice';
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
         post: postReducer,
         comments: commentReducer,
         drawer: drawerReducer,
-        users: userReducer
+        users: userReducer,
+        nav: navReducer
     }
 })

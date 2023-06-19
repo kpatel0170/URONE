@@ -37,7 +37,7 @@ export const updateSingleUser = createAsyncThunk('users/updateUser', async(userD
 })
 
 export const userSlice = createSlice({
-    name: 'comment',
+    name: 'user',
     initialState,
     reducers: {
         reset: (state) => initialState,
