@@ -179,6 +179,7 @@ export const postSlice = createSlice({
             .addCase(deletePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
+                console.log(state.posts)
                 state.posts = state.posts.filter(
                     (post) => post._id !== action.payload.data._id
                 )
@@ -211,7 +212,7 @@ export const postSlice = createSlice({
             .addCase(getSinglePost.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.posts = action.payload
+                state.posts = [action.payload]
             })
             .addCase(getSinglePost.rejected, (state, action) => {
                 state.isLoading = false

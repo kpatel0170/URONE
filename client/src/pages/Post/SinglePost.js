@@ -64,6 +64,7 @@ function SinglePost() {
 
     const timer = setTimeout(() => {
       setShowPost(true);
+      console.log(posts)
     }, 100);
     
     return () => {
@@ -83,7 +84,7 @@ function SinglePost() {
               {showPost && <>
                 {posts.length != 0 ? (
                   <>
-                    <Newsfeed post={posts} />
+                    <Newsfeed post={posts[0]} />
                   </>
                 ) : (
                   <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', flexDirection: 'column'}}>

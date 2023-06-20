@@ -143,10 +143,8 @@ const Profile = (props) => {
     }
     console.log(data)
         
-    dispatch(updateSingleUser({ userData: data, userId: user.data._id }));
-    
-    
-    // toast.success('Profile updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
+    dispatch(updateSingleUser({ userData: data, userId: user.data._id }));      
+    toast.success('Profile updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
   }
 
   const goToUserPage = (userData) => { 
@@ -154,6 +152,18 @@ const Profile = (props) => {
     navigate(`/${name}`)
     dispatch(selectNavigation(''));
     dispatch(closeDrawer())
+  }
+
+  const cancelProfileUpdate = () => {
+    setFormData({
+      name: user.data.name,
+      email: user.data.email,
+      profilePicture: user.data.profilePicture,
+      about: user.data.about,
+      userType: user.data.type,
+    })
+
+    setBase64Images(user.data.profilePicture)
   }
 
   return (
@@ -272,13 +282,14 @@ const Profile = (props) => {
                           
                         </Box>
                         <Box sx={{ mt: 2, width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                          <Button type="button" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
+                          <Button onClick={cancelProfileUpdate} type="button" variant="outlined" sx={{p:1, width: '48%', border: 1, borderColor: '#dedede'}}>Cancel</Button>
                           <Button
                             type="submit"
                             variant="contained"
                             onClick={isEdit ? handleSave : handleEdit}
                             startIcon={<SaveIcon />}
                             sx={{p:1, width: '48%', boxShadow: 'none'}}
+                            disabled={name.length === 0 || email.length === 0}
                           >
                             Save
                           </Button>
