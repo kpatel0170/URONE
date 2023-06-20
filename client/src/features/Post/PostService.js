@@ -3,8 +3,8 @@ import { API_URL } from '../../utils/env';
 
 const API = API_URL + 'posts/';
 
-
-// Get all posts
+//@desc Get All Posts
+//@route GET /API_URL/posts/
 const getAllPosts = async (data, token) => {
     const config ={
         headers: {

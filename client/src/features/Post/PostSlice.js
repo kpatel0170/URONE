@@ -143,7 +143,7 @@ export const postSlice = createSlice({
         },
         setPostDetailId: (state, action) => {
             state.postDetailId = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
         builder

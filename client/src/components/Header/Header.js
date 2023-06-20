@@ -12,7 +12,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
-import { updateProfileSuccess } from '../../features/User/UserSlice';
 import { selectNavigation, resetNavigation } from '../../features/Nav/NavSlice';
 import { useLocation } from 'react-router-dom';
 

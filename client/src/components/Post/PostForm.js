@@ -20,6 +20,7 @@ export default function PostForm(props) {
     const navigate = useNavigate();
     const {user} = useSelector((state) => state.auth);
     const selectedPost = useSelector((state) => state.post.selectedPost);
+    const selectedNav = useSelector((state) => state.nav.selectedNav);
     const formHeading = useSelector((state) => state.post.postStatus);
     const [formData, setFormData] = useState(selectedPost || { title: '', text: '', image: [] });
 
@@ -246,7 +247,17 @@ export default function PostForm(props) {
                 navigate('/')
                 dispatch(selectNavigation("all"));
             }else if(currentURL === '/'){
-                dispatch(selectNavigation("all"));
+                console.log(user.data.type)
+                if(user.data.type === 'staff' && selectedNav === 'staff'){
+                    console.log('in the if')
+                    dispatch(selectNavigation("staff"));
+                }else if(user.data.type === 'professor' && selectedNav === 'professor'){
+                    console.log('in the else if')
+                    dispatch(selectNavigation("professor"));
+                }else{
+                    console.log('in the else')
+                    dispatch(selectNavigation("all"));
+                }  
             }
         }
     }

@@ -162,9 +162,11 @@ const Profile = (props) => {
       <Grid container sx={{height: '100vh', paddingTop: 7}}>
         <Grid item xs={12} sm={12} sx={{width: '100%', padding: 2, paddingY: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
           <Grid sx={{ width: '65%', background: '#fff', borderRadius: '25px', paddingX: 5, paddingY: 5}} className={isClicked ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
-            <Box onClick={() => goToUserPage(user.data)} sx={{display: 'flex'}}>
-              <ChevronLeftIcon className="context_link" /> 
-              <Typography className="context_link" sx={{fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.6)', cursor: 'pointer'}}>Account</Typography>
+            <Box sx={{marginBottom: 2}}>
+              <Button onClick={() => goToUserPage(user.data)} sx={{display: 'flex', cursor: 'pointer', padding: 0}}>
+                <ChevronLeftIcon className="context_link" /> 
+                <Typography className="context_link" sx={{fontSize: '0.875rem', color: 'rgba(0, 0, 0, 0.6)', cursor: 'pointer'}}>Account</Typography>
+              </Button>
             </Box>
             <Typography sx={{ marginBottom: 4}} className="title_txt">Profile Setting</Typography>
             {isUserLoading ? <Loading /> : <> 
