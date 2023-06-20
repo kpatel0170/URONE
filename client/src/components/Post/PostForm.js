@@ -40,8 +40,6 @@ export default function PostForm(props) {
         }else{
             setFormData({ title: '', text: '', image: [] })
         }
-
-        
     }, [selectedPost])
     
     //start:: input form fields
@@ -219,38 +217,38 @@ export default function PostForm(props) {
 
         console.log(postData)
         
-        // if(!formHeading) {
-        //     dispatch(createPost(postData))
-        //     toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
-        // }else{
-        //     dispatch(updateSinglePost({ postData: postData, postId: selectedPost._id }));
-        //     dispatch(restSelectPost())
-        //     toast.success('Post updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
-        // }
-        // setFormData({
-        //     title: '',
-        //     text: '',
-        //     image: []
-        // })
+        if(!formHeading) {
+            dispatch(createPost(postData))
+            toast.success('Post created successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
+        }else{
+            dispatch(updateSinglePost({ postData: postData, postId: selectedPost._id }));
+            dispatch(restSelectPost())
+            toast.success('Post updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
+        }
+        setFormData({
+            title: '',
+            text: '',
+            image: []
+        })
         
-        // props.deactivtateDrawer(false);
-        // setPreviewImages([]);
-        // setBase64Images([]);
-        // dispatch(closeDrawer())
-        // if(id != undefined){
-        //     console.log('redirect to home page')
-        //     navigate('/')
-        //     dispatch(selectNavigation("all"));
-        // }else{
-        //     console.log('in the else', id)
-        //     console.log(currentURL)
-        //     if(currentURL === '/profile'){
-        //         navigate('/')
-        //         dispatch(selectNavigation("all"));
-        //     }else if(currentURL === '/'){
-        //         dispatch(selectNavigation("all"));
-        //     }
-        // }
+        props.deactivtateDrawer(false);
+        setPreviewImages([]);
+        setBase64Images([]);
+        dispatch(closeDrawer())
+        if(id != undefined){
+            console.log('redirect to home page')
+            navigate('/')
+            dispatch(selectNavigation("all"));
+        }else{
+            console.log('in the else', id)
+            console.log(currentURL)
+            if(currentURL === '/profile'){
+                navigate('/')
+                dispatch(selectNavigation("all"));
+            }else if(currentURL === '/'){
+                dispatch(selectNavigation("all"));
+            }
+        }
     }
     //end:: create/edit post form submit 
 

@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import userService from './UserService';
 
-const user = JSON.parse(localStorage.getItem('user'));
-console.log(user)
 const initialState = {
     users: [],
     singleUser: {},    
@@ -24,11 +22,14 @@ export const getSingleUser = createAsyncThunk('users/getUser', async(userId, thu
 })
 
 //@desc Update single user
-export const updateSingleUser = createAsyncThunk('users/updateUser', async(userData, thunkAPI) => {
+export const updateSingleUser = createAsyncThunk('users/updateUser', async({userData, userId}, thunkAPI) => {
     try{
         console.log(userData)
         const token = thunkAPI.getState().auth.user._id;
-        return await userService.editSingleUser(userData, token)
+        const updatedUser = await userService.editSingleUser(userData, userId, token)  
+        thunkAPI.dispatch(updateProfileSuccess(updatedUser));
+
+        return updatedUser;      
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -43,7 +44,10 @@ export const userSlice = createSlice({
         reset: (state) => initialState,
         setUser: (state, action) => {
             state.singleUser = action.payload;
-        }
+        },
+        updateProfileSuccess: (state, action) => {
+            localStorage.setItem('user', JSON.stringify(action.payload));
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -76,5 +80,5 @@ export const userSlice = createSlice({
         },
 });
 
-export const {reset, setUser} = userSlice.actions;
+export const {reset, setUser, updateProfileSuccess} = userSlice.actions;
 export default userSlice.reducer;

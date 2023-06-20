@@ -12,6 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
+import { updateProfileSuccess } from '../../features/User/UserSlice';
 import { selectNavigation, resetNavigation } from '../../features/Nav/NavSlice';
 import { useLocation } from 'react-router-dom';
 
@@ -19,18 +20,19 @@ const Header = props => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const selectedNav = useSelector((state) => state.nav.selectedNav);    
-    const {user} = useSelector((state) => state.auth)
-    const [toggle, setToggle] = useState(null);
-    const isToggle = Boolean(toggle);
-    const [dropdown, setDropdown] = useState(false);
-    const dropdownRef = useRef(null);
-    const [activeNav, setActiveNav] = useState("");
-
     const location = useLocation();
     const currentURL = location.pathname;
 
-    console.log('....')
+    const dropdownRef = useRef(null);
+
+    const selectedNav = useSelector((state) => state.nav.selectedNav);    
+    const {user} = useSelector((state) => state.auth)
+    // const credentials = useSelector((state) => state.auth.user);
+    const storedCredentials = JSON.parse(localStorage.getItem('user'));
+    const credentials = storedCredentials ? storedCredentials.data : {};
+    const [dropdown, setDropdown] = useState(false);    
+
+    
 
     const backToHome = (event) => {
         navigate('/')
@@ -61,7 +63,7 @@ const Header = props => {
         setDropdown(!dropdown)
     }
 
-    // start:: click event listerner
+    // start:: click event listerner to hide the dropdown menu
     const handleOutsideClick = (event) => {
         setDropdown(false);
         if (dropdownRef.current) {
@@ -86,7 +88,11 @@ const Header = props => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, []);
-    // end:: click event listerner
+    // end:: click event listerner to hide the dropdown menu
+
+    useEffect(() => {
+
+    }, []);
   
     const logoutHandler = (event) => {
         setDropdown(!dropdown)
@@ -118,26 +124,32 @@ const Header = props => {
                                 <Button style={{borderBottom: selectedNav === "staff" ? "2px solid #1a76d2": "2px solid transparent"}} onClick={() => renderPosts('staff')} sx={{textTransform: 'capitalize', color: '#4d4d4d',  borderRadius: 0, padding: '0 8px', minWidth: 'auto', marginRight: '30px'}}>Announcement</Button>
                             </Box>
                             <Box sx={{marginLeft: '3.5rem'}}>
-                                <Button onClick={backToHome} sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button>
+                                {/* <Button onClick={backToHome} sx={{ marginRight: 2, borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', border: 1, borderColor: '#dcdcdc', color: '#4d4d4d', paddingRight: '0.8rem', background: '#f7f7f7'}}><LoopIcon sx={{color: '#1a76d2'}}/>refresh</Button> */}
                                 <Button className='main_btn' onClick={drawerHandler} sx={{borderRadius: '25px', textTransform: 'capitalize', color: '#4d4d4d', paddingRight: '0.8rem', background: '#1a76d2', color: '#fff'}}><AddIcon sx={{color: '#fff'}} />create</Button>
                             </Box>
                         </Grid>
                         <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>                            
                         <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>                                
+                                {credentials && credentials.name ? (
                                     <>
-                                        {user?.data.profilePicture.length != 0 ?                                     
-                                            (
-                                                <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={user?.data.profilePicture} />
-                                            ) :
-                                            (   <>
-                                                    <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
-                                                        <PersonOutlineIcon />
-                                                    </Box>
-                                                </>
-                                            )
-                                        }
+                                        <>
+                                            {credentials.profilePicture.length != 0 ?                                     
+                                                (
+                                                    <Avatar sx={{border: 1, borderColor: '#eee'}} alt="profile" src={credentials.profilePicture} />
+                                                ) :
+                                                (   <>
+                                                        <Box sx={{width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#282424'}}>
+                                                            <PersonOutlineIcon />
+                                                        </Box>
+                                                    </>
+                                                )
+                                            }
+                                        </>
+                                    <Typography sx={{paddingX: 1}}>{credentials.name}</Typography>
                                     </>
-                                    <Typography sx={{paddingX: 1}}>{user?.data.name}</Typography>
+                                ) : (
+                                    <h1>Welcome!</h1>
+                                )}
                                 <Box>
                                     <MoreVertIcon />
                                 </Box>
