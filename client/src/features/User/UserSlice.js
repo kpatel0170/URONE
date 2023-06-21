@@ -1,17 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import userService from './UserService';
 
-const user = JSON.parse(localStorage.getItem('user'));
-console.log(user)
 const initialState = {
     users: [],
-    singleUser: {},
-    selectedUserId: undefined,
+    singleUser: {},    
     isUserError: false,
     isUserSuccess: false,
-    isUserLoading: false,
-    isUserUpdate: false,
-    lsuser: user ? user : null,
+    isUserLoading: false,        
 }
 
 //@desc Get single user
@@ -27,11 +22,14 @@ export const getSingleUser = createAsyncThunk('users/getUser', async(userId, thu
 })
 
 //@desc Update single user
-export const updateSingleUser = createAsyncThunk('users/updateUser', async(userData, thunkAPI) => {
+export const updateSingleUser = createAsyncThunk('users/updateUser', async({userData, userId}, thunkAPI) => {
     try{
         console.log(userData)
         const token = thunkAPI.getState().auth.user._id;
-        return await userService.editSingleUser(userData, token)
+        const updatedUser = await userService.editSingleUser(userData, userId, token)  
+        thunkAPI.dispatch(updateProfileSuccess(updatedUser));
+
+        return updatedUser;      
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -46,7 +44,10 @@ export const userSlice = createSlice({
         reset: (state) => initialState,
         setUser: (state, action) => {
             state.singleUser = action.payload;
-        }
+        },
+        updateProfileSuccess: (state, action) => {
+            localStorage.setItem('user', JSON.stringify(action.payload));
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -69,8 +70,7 @@ export const userSlice = createSlice({
             .addCase(updateSingleUser.fulfilled, (state, action) => {
                 state.isUserLoading = false
                 state.isUserSuccess = true
-                state.lsuser = action.payload
-                state.isUserUpdate = true
+                state.singleUser = action.payload
             })
             .addCase(updateSingleUser.rejected, (state, action) => {
                 state.isUserLoading = true
@@ -80,5 +80,5 @@ export const userSlice = createSlice({
         },
 });
 
-export const {reset, setUser} = userSlice.actions;
+export const {reset, setUser, updateProfileSuccess} = userSlice.actions;
 export default userSlice.reducer;

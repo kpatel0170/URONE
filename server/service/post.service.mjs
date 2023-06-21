@@ -103,9 +103,8 @@ const PostService = {
   async updatePost(id, title, text, image) {
     try {
       const data = {};
-      title ? (data.title = title) : "";
+      data.title = title;
       text ? (data.text = text) : "";
-      // image && image.length ? (data.image = image) : [];
       image ? (data.image = image) : [];
       const updatedPost = await postModel
         .findByIdAndUpdate(id, { $set: data }, { new: true })

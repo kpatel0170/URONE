@@ -252,7 +252,7 @@ function Newsfeed(post) {
   const goToUserPage = (userData) =>{
     console.log('go to user account')
     console.log(userData)
-    dispatch(setUser(userData))
+    dispatch(setUser(userData)) // trigger the current post user's credential
     navigate(`/${userData.name}`)
     dispatch(selectNavigation(''));
     dispatch(closeDrawer())

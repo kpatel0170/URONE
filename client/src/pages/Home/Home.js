@@ -61,26 +61,23 @@ function Home() {
             dispatch(getAllPosts())
             break;
           case 'professor':
-            console.log('...')
             let param = {type: 'usertype', value: selectedNav}
             dispatch(getAllPosts(param))
             break;
           case 'staff':
-            console.log('@@@')
             let param1 = {type: 'usertype', value: selectedNav}
             dispatch(getAllPosts(param1))
             break;
           default:
             dispatch(getAllPosts())
         }
-        
       }
     }
     
     return () => {
       dispatch(reset())
     }
-  }, [user, isError, message, navigate, dispatch])
+  }, [user, isError, selectedNav, message, navigate, dispatch])
 
   return (
     <>

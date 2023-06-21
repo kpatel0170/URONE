@@ -22,7 +22,7 @@ function Login() {
   const inputRef = useRef(null);
 
   // destructure the states
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, temp, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
 
@@ -57,6 +57,7 @@ function Login() {
     }
 
     if (isSuccess || user) {
+      console.log('here...')
       if (isSuccess) {
         toast.success("Welcome to rOne!", {
           position: "bottom-right",
@@ -66,8 +67,18 @@ function Login() {
       navigate("/");
     }
 
+    if(temp){
+      console.log('temp user obtained', temp)
+      setFormData({
+        email: temp.data.email,
+        password: ""
+      })
+    }else{
+      console.log('no temp at the moment')
+    }
+
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [user, temp, isError, isSuccess, message, navigate, dispatch]);
 
   const formInputHandler = (event) => {
     setFormData((prevState) => ({
