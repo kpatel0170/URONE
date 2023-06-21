@@ -144,8 +144,7 @@ const Profile = (props) => {
     console.log(data)
         
     dispatch(updateSingleUser({ userData: data, userId: user.data._id }));      
-    toast.success('Profile updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});
-    navigate('/')
+    toast.success('Profile updated successfully', { position: "bottom-right", hideProgressBar: true, autoClose: 1500, transition:Slide});    
   }
 
   const goToUserPage = (userData) => { 
