@@ -154,7 +154,7 @@ const Header = props => {
                                                 )
                                             }
                                         </>
-                                        <Typography sx={{paddingX: 1}}>{credentials.name}</Typography>
+                                        <Typography className='context_link' sx={{paddingX: 1}}>{credentials.name}</Typography>
                                     </Box>
                                 ) : (
                                     <h1>Welcome!</h1>

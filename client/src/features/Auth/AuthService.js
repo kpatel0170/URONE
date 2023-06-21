@@ -7,9 +7,9 @@ const API = 'http://localhost:3001/api/v1/auth/'
 //Register
 const userRegister = async (userData) => {
     const response = await axios.post(API + "register/", userData)    
-    if(response.data) {
-        localStorage.setItem('user', JSON.stringify(response.data))
-    }
+    // if(response.data) {
+    //     localStorage.setItem('temp', JSON.stringify(response.data))
+    // }
 
     return response.data
 }
@@ -20,6 +20,7 @@ const userLogin = async (userData) => {
 
     if(response.data) {
         localStorage.setItem('user', JSON.stringify(response.data))
+        localStorage.removeItem('temp')
     }
 
     return response.data

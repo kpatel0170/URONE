@@ -75,18 +75,18 @@ function Register() {
       }
     }
 
-    if (isSuccess || user) {
+    if (isSuccess) {
       if (isSuccess) {
         toast.success("You are almost there! Please login..!", {
           position: "bottom-right",
           hideProgressBar: true,
         });
       }
-      navigate("/");
+      navigate("/login");
     }
 
     dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+  }, [isError, isSuccess, message, navigate, dispatch]);
 
   const formInputHandler = (event) => {
     setFormData((prevState) => ({

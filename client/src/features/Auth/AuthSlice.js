@@ -3,9 +3,11 @@ import authService from './AuthService';
 import { fabClasses } from '@mui/material';
 
 const user = JSON.parse(localStorage.getItem('user'));
+const temp = JSON.parse(localStorage.getItem('temp'));
 
 const initialState = {
     user: user ? user : null,
+    temp: temp ? temp : null,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -16,7 +18,7 @@ const initialState = {
 export const userRegister = createAsyncThunk('auth/register', async(user, thunkAPI) => {
     try{
         const response =  await authService.userRegister(user);
-        thunkAPI.dispatch(logOut());
+        // thunkAPI.dispatch(logOut());
         return response;
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()        
@@ -28,6 +30,7 @@ export const userRegister = createAsyncThunk('auth/register', async(user, thunkA
 export const userLogin = createAsyncThunk('auth/login', async(user, thunkAPI) => {
     try{
         return await authService.userLogin(user)
+        localStorage.removeItem('temp')
     } catch(error) {
         const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message);
@@ -61,7 +64,7 @@ export const authSlice = createSlice({
             .addCase(userRegister.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                state.temp = action.payload
             })
             .addCase(userRegister.rejected, (state, action) => {
                 state.isLoading = false
