@@ -180,11 +180,8 @@ function User() {
                                         ))}
                                     </>
                                 ) : (
-                                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', flexDirection: 'column'}}>
-                                    <Box sx={{marginBottom: 3, width: '250px', height: '250px', background: 'whitesmoke', borderRadius: '50%', border: '4px solid #fff'}}>
-                                        <img className='nopost_img' src={process.env.PUBLIC_URL + '/nopost_icon.png'} alt="rOne" />
-                                    </Box>
-                                    <Typography sx={{color: '#565252'}} className='title_txt'>You have no post yet.</Typography>
+                                    <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>                                
+                                        <Typography sx={{color: '#565252'}} className='title_txt'>No post yet.</Typography>
                                     </Box>
                                 )}
                             </>}

@@ -5,10 +5,10 @@ import { logOut, reset } from '../../features/Auth/AuthSlice';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
-import {Avatar, Grid, Menu, MenuItem, Box, Button, Typography, ListItem, ListItemButton, ListItemText, ListItemIcon} from '@mui/material';
+import {Avatar, Grid, IconButton, Box, Button, Typography, ListItem, ListItemButton, ListItemText, ListItemIcon} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import LoopIcon from '@mui/icons-material/Loop';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { setUser } from '../../features/User/UserSlice';
 
 import { getAllPosts, restSelectPost } from '../../features/Post/PostSlice';
 import { openDrawer, closeDrawer } from '../../features/Home/HomeSlice';
@@ -107,6 +107,15 @@ const Header = props => {
         navigate('/profile')
         dispatch(selectNavigation(''));
     }
+
+    const goToUserPage = (userData) =>{
+        console.log('go to user account')
+        console.log(userData)
+        dispatch(setUser(userData)) // trigger the current post user's credential
+        navigate(`/${userData.name}`)
+        dispatch(selectNavigation(''));
+        dispatch(closeDrawer())
+      }
      
     return(
         <React.Fragment>
@@ -128,9 +137,10 @@ const Header = props => {
                             </Box>
                         </Grid>
                         <Grid item xs={3} sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>                            
-                        <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>                                
+                        <Box sx={{background: 'transparent', color: '#9a9595', textTransform: 'none', display: 'flex', alignItems: 'center'}}>                                
+                                
                                 {credentials && credentials.name ? (
-                                    <>
+                                    <Box onClick={() => goToUserPage(credentials)} sx={{cursor: 'pointer', display: 'flex', alignItems: 'center'}}>
                                         <>
                                             {credentials.profilePicture.length != 0 ?                                     
                                                 (
@@ -144,15 +154,18 @@ const Header = props => {
                                                 )
                                             }
                                         </>
-                                    <Typography sx={{paddingX: 1}}>{credentials.name}</Typography>
-                                    </>
+                                        <Typography sx={{paddingX: 1}}>{credentials.name}</Typography>
+                                    </Box>
                                 ) : (
                                     <h1>Welcome!</h1>
                                 )}
-                                <Box>
-                                    <MoreVertIcon />
+                                
+                                <Box sx={{cursor: 'pointer'}} onClick={toggleDropdown}>
+                                    <IconButton aria-label="settings">
+                                        <MoreVertIcon />
+                                    </IconButton>
                                 </Box>
-                            </Button>
+                            </Box>
                             {/* <Button onClick={toggleDropdown} sx={{background: 'transparent', color: '#9a9595', textTransform: 'none'}}>
                                 {userData.profilePicture !== undefined ? 
                                     <>
