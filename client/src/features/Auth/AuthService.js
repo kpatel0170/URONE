@@ -4,17 +4,15 @@ import axios from 'axios'
 const API = 'http://localhost:3001/api/v1/auth/'
 
 
-//Register
+//@desc User Register
+//@route POST /API_URL/register
 const userRegister = async (userData) => {
-    const response = await axios.post(API + "register/", userData)    
-    // if(response.data) {
-    //     localStorage.setItem('temp', JSON.stringify(response.data))
-    // }
-
+    const response = await axios.post(API + "register/", userData)   
     return response.data
 }
 
-//Login
+//@desc User Login
+//@route POST /API_URL/login
 const userLogin = async (userData) => {
     const response = await axios.post(API + "login/", userData)
 

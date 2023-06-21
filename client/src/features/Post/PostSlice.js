@@ -110,17 +110,6 @@ export const createComment = createAsyncThunk('posts/createComment', async(postD
     }
 })
 
-// delete comment
-export const deleteComment = createAsyncThunk('posts/deleteComment', async(postData, thunkAPI) => {
-    try{
-        const token = thunkAPI.getState().auth.user._id;
-        return await postService.deleteComment(postData, token)
-    } catch(error) {
-        const message = (error.response && error.response.data && error.response.data.error) || error.message || error.toString()
-        return thunkAPI.rejectWithValue(message);
-    }
-})
-
 export const postSlice = createSlice({
     name: 'post',
     initialState,
@@ -283,21 +272,6 @@ export const postSlice = createSlice({
             .addCase(createComment.rejected, (state, action) => {
                 state.isLoading = false
                 state.isCommentLoading = false
-                state.isError = true
-                state.message = action.payload
-            })
-            .addCase(deleteComment.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(deleteComment.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
-                state.posts = state.posts.filter(
-                    (post) => post._id !== action.payload.data._id
-                )
-            })
-            .addCase(deleteComment.rejected, (state, action) => {
-                state.isLoading = false
                 state.isError = true
                 state.message = action.payload
             })

@@ -25,7 +25,8 @@ const getAllPosts = async (data, token) => {
     return response.data.data
 }
 
-// Get single post
+//@desc Get single post
+//@route GET /API_URL/posts/post_id
 const getSinglePost = async (id, token) => {
     const config ={
         headers: {
@@ -36,7 +37,8 @@ const getSinglePost = async (id, token) => {
     return response.data.data
 }
 
-// Create post
+//@desc Create post
+//@route POST /API_URL/posts/
 const createPost = async (postData, token) => {
     const config ={
         headers: {
@@ -48,7 +50,8 @@ const createPost = async (postData, token) => {
     return response.data.data
 }
 
-// Update post
+//@desc Update post
+//@route PATCH /API_URL/posts/post_id
 const updatePost = async (postData, id, token) => {
     const config ={
         headers: {
@@ -61,7 +64,8 @@ const updatePost = async (postData, id, token) => {
     return response.data.data
 }
 
-// Delete post
+//@desc Delete post
+//@route DELETE /API_URL/posts/post_id
 const deletePost = async (id, token) => {
     const config ={
         headers: {
@@ -72,7 +76,8 @@ const deletePost = async (id, token) => {
     return response.data
 }
 
-// Like Post
+//@desc Like post
+//@route PATCH /API_URL/posts/post_id/like
 const LikePost = async (postData, token) => {
     const config ={
         headers: {
@@ -86,21 +91,8 @@ const LikePost = async (postData, token) => {
     return response.data.data;
 }
 
-// disLike Post
-const undoLikePost = async (postData, token) => {  
-    const config ={
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }  
-    const body = {
-        "userId": postData.userId
-    }    
-    const response = await axios.patch(API + postData.id  + '/like', body, config);  
-    return response.data.data
-}
-
-// Like Post
+//@desc Dislike post
+//@route PATCH /API_URL/posts/post_id/dislike
 const disLikePost = async (postData, token) => {
     const config ={
         headers: {
@@ -114,21 +106,8 @@ const disLikePost = async (postData, token) => {
     return response.data.data;
 }
 
-// disLike Post
-const undoDisLikePost = async (postData, token) => {  
-    const config ={
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }  
-    const body = {
-        "userId": postData.userId
-    }     
-    const response = await axios.patch(API + postData.id  + '/dislike', body, config);  
-    return response.data.data
-}
-
-// create comment
+//@desc Create comment
+//@route POST /API_URL/posts/comment
 const createComment = async (postData, token) => {
     const config ={
         headers: {
@@ -143,33 +122,15 @@ const createComment = async (postData, token) => {
     return response.data.data
 }
 
-// delete comment
-const deleteComment = async (postData, token) => {
-    const config ={
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
-    }    
-    const body = {
-        "userId": postData.userId,
-        "comment": postData.commentInput
-    }
-    const response = await axios.patch(API + postData.id  + '/comment', body, config)
-    return response.data.data
-}
-
 const postService = {
     createPost,
     updatePost,
     getAllPosts,
     getSinglePost,
     deletePost,
-    LikePost,
-    undoLikePost,
+    LikePost,    
     disLikePost,
-    undoDisLikePost,
-    createComment,
-    deleteComment
+    createComment
 }
 
 export default postService;
