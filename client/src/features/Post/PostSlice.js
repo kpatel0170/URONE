@@ -19,7 +19,7 @@ const initialState = {
 }
 
 // Create post
-export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) => {
+export const createPost = createAsyncThunk('post/', async(postData, thunkAPI) => {
     try{
         console.log(postData)
         const token = thunkAPI.getState().auth.user._id;
@@ -31,7 +31,7 @@ export const createPost = createAsyncThunk('posts/', async(postData, thunkAPI) =
 })
 
 // Update post
-export const updateSinglePost = createAsyncThunk('posts/updatePost', async({ postData, postId }, thunkAPI) => {
+export const updateSinglePost = createAsyncThunk('post/updatePost', async({ postData, postId }, thunkAPI) => {
     try{
         console.log(postData)
         const token = thunkAPI.getState().auth.user._id;

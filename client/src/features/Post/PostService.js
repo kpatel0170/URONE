@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API_URL } from '../../utils/env';
 
-const API = API_URL + 'posts/';
+const API = API_URL + 'post/';
 
 //@desc Get All Posts
 //@route GET /API_URL/posts/
@@ -22,7 +22,7 @@ const getAllPosts = async (data, token) => {
         requestAPI = API
     }
     const response = await axios.get(requestAPI , config)
-    return response.data.data
+    return response.data
 }
 
 //@desc Get single post
@@ -34,7 +34,7 @@ const getSinglePost = async (id, token) => {
         }
     }
     const response = await axios.get(API + id , config)
-    return response.data.data
+    return response.data
 }
 
 //@desc Create post
@@ -47,7 +47,7 @@ const createPost = async (postData, token) => {
         }
     }    
     const response = await axios.post(API , postData, config)
-    return response.data.data
+    return response.data
 }
 
 //@desc Update post
@@ -61,7 +61,7 @@ const updatePost = async (postData, id, token) => {
     }
 
     const response = await axios.patch(API + id , postData, config)
-    return response.data.data
+    return response.data
 }
 
 //@desc Delete post
@@ -88,7 +88,7 @@ const LikePost = async (postData, token) => {
         "userId": postData.userId
     }
     const response = await axios.patch(API + postData.id  + '/like', body, config)
-    return response.data.data;
+    return response.data;
 }
 
 //@desc Dislike post
@@ -103,7 +103,7 @@ const disLikePost = async (postData, token) => {
         "userId": postData.userId
     }
     const response = await axios.patch(API + postData.id  + '/dislike', body, config)
-    return response.data.data;
+    return response.data;
 }
 
 //@desc Create comment
@@ -119,7 +119,7 @@ const createComment = async (postData, token) => {
         "comment": postData.commentInput
     }
     const response = await axios.post(API + postData.id  + '/comment', body, config)
-    return response.data.data
+    return response.data
 }
 
 const postService = {
