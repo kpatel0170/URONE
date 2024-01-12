@@ -1,34 +1,34 @@
-import React from 'react';
-import {useState} from 'react';
+import React from "react";
+import { useState } from "react";
 import styles from "./Sidebar.module.css";
-import { Button, Typography, Box, Modal, IconButton } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import CloseIcon from '@mui/icons-material/Close';
+import { Button, Typography, Box, Modal, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 
-import PostForm from '../Post/PostForm';
+import PostForm from "../Post/PostForm";
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '38%',
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 1
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "38%",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 1
 };
 
-const Sidebar = props => { 
-    const [modal, setModal] = useState(false)
-    const modalOpenHandler = () => setModal(true);
-    const modalCloseHandler = () => setModal(false);   
-    const defaultData = {'text': '', 'image': [], isCreate: true}
+const Sidebar = (props) => {
+  const [modal, setModal] = useState(false);
+  const modalOpenHandler = () => setModal(true);
+  const modalCloseHandler = () => setModal(false);
+  const defaultData = { "text": "", "image": [], isCreate: true };
 
-    return(
-        <>
-            sidebar
-            {/* <Box sx={{ position: 'fixed', width: 1/4, borderLeft: 1, borderColor: '#dedede', height: '100%'}}> 
+  return (
+    <>
+      sidebar
+      {/* <Box sx={{ position: 'fixed', width: 1/4, borderLeft: 1, borderColor: '#dedede', height: '100%'}}> 
                 <Box sx={{p: 2}}>             
                     <Button 
                         variant="contained" 
@@ -65,7 +65,7 @@ const Sidebar = props => {
                     <PostForm onModalClose={modalCloseHandler} data={defaultData}/>
                 </Box>
             </Modal> */}
-        </>
-    )
-}
+    </>
+  );
+};
 export default Sidebar;

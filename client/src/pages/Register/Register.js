@@ -12,7 +12,7 @@ import {
   Button,
   Typography,
   MenuItem,
-  InputAdornment,
+  InputAdornment
 } from "@mui/material";
 import styles from "../Login/Login.module.css";
 import Loading from "../../components/Loading/Loading";
@@ -32,7 +32,7 @@ function Register() {
     email: "",
     password: "",
     passwordConfirmation: "",
-    type: "student",
+    type: "student"
   });
 
   const { name, email, password, passwordConfirmation, type } = formData;
@@ -41,26 +41,26 @@ function Register() {
     input_name: "",
     input_email: "",
     input_password: "",
-    input_passwordConfirmation: "",
+    input_passwordConfirmation: ""
   });
 
   const userType = [
     {
       value: "student",
-      label: "student",
+      label: "student"
     },
     {
       value: "professor",
-      label: "professor",
+      label: "professor"
     },
     {
       value: "staff",
-      label: "staff",
+      label: "staff"
     },
     {
       value: "other",
-      label: "other",
-    },
+      label: "other"
+    }
   ];
 
   const [showPassword, setShowPassword] = useState(false);
@@ -70,7 +70,7 @@ function Register() {
     if (isError) {
       if (message === "Email is already registered") {
         setFormError({
-          email: message + ". Please use a unique email to create an account.",
+          email: message + ". Please use a unique email to create an account."
         });
       }
     }
@@ -79,7 +79,7 @@ function Register() {
       if (isSuccess) {
         toast.success("You are almost there! Please login..!", {
           position: "bottom-right",
-          hideProgressBar: true,
+          hideProgressBar: true
         });
       }
       navigate("/login");
@@ -91,7 +91,7 @@ function Register() {
   const formInputHandler = (event) => {
     setFormData((prevState) => ({
       ...prevState,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     }));
   };
 
@@ -163,15 +163,15 @@ function Register() {
         name: "Please enter user name",
         email: "Please enter an email address",
         password: "Please enter password",
-        passwordConfirmation: "Please enter confirm password",
+        passwordConfirmation: "Please enter confirm password"
       });
     } else if (password.length < 8) {
       setFormError({
-        password: "Password must be 8 characters or more",
+        password: "Password must be 8 characters or more"
       });
     } else if (password !== passwordConfirmation) {
       setFormError({
-        passwordConfirmation: "Password do not match",
+        passwordConfirmation: "Password do not match"
       });
     } else {
       const userData = {
@@ -179,7 +179,7 @@ function Register() {
         email,
         password,
         passwordConfirmation,
-        type,
+        type
       };
 
       console.log(userData);
@@ -197,7 +197,7 @@ function Register() {
       {isLoading && <Loading />}
       <Grid
         container
-        sx={{ height: "100vh", alignItems: "center", background: '#fff' }}
+        sx={{ height: "100vh", alignItems: "center", background: "#fff" }}
         className={styles.grid_wrap}
       >
         <Grid
@@ -214,7 +214,7 @@ function Register() {
               flexDirection: "column",
               justifyContent: "center",
               height: "100vh",
-              paddingX: 9,
+              paddingX: 9
             }}
           >
             <Typography
@@ -259,7 +259,7 @@ function Register() {
                     fontWeight: "medium",
                     fontSize: "0.9rem",
                     lineHeight: "1.2",
-                    paddingTop: "4px",
+                    paddingTop: "4px"
                   }}
                 >
                   {formError.name}
@@ -287,7 +287,7 @@ function Register() {
                     fontWeight: "medium",
                     fontSize: "0.9rem",
                     lineHeight: "1.2",
-                    paddingTop: "4px",
+                    paddingTop: "4px"
                   }}
                 >
                   {formError.email}
@@ -321,7 +321,7 @@ function Register() {
                         />
                       )}
                     </InputAdornment>
-                  ),
+                  )
                 }}
               />
               {formError.password && (
@@ -332,7 +332,7 @@ function Register() {
                     fontWeight: "medium",
                     fontSize: "0.9rem",
                     lineHeight: "1.2",
-                    paddingTop: "4px",
+                    paddingTop: "4px"
                   }}
                 >
                   {formError.password}
@@ -366,7 +366,7 @@ function Register() {
                         />
                       )}
                     </InputAdornment>
-                  ),
+                  )
                 }}
               />
               {formError.passwordConfirmation && (
@@ -377,7 +377,7 @@ function Register() {
                     fontWeight: "medium",
                     fontSize: "0.9rem",
                     lineHeight: "1.2",
-                    paddingTop: "4px",
+                    paddingTop: "4px"
                   }}
                 >
                   {formError.passwordConfirmation}
@@ -416,7 +416,7 @@ function Register() {
                   width: 1,
                   mt: 3,
                   bgcolor: "#0e69d6",
-                  boxShadow: 0,
+                  boxShadow: 0
                 }}
                 type="submit"
               >

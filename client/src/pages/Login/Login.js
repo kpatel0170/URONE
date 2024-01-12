@@ -11,7 +11,7 @@ import {
   Button,
   Typography,
   Grid,
-  InputAdornment,
+  InputAdornment
 } from "@mui/material";
 import styles from "./Login.module.css";
 import Loading from "../../components/Loading/Loading";
@@ -28,14 +28,14 @@ function Login() {
 
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
   const { email, password } = formData;
 
   const [formError, setFormError] = useState({
     email: "",
     password: "",
-    error: "",
+    error: ""
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -45,36 +45,36 @@ function Login() {
     if (isError) {
       if (message === "Invalid password") {
         setFormError({
-          password: "Wrong password",
+          password: "Wrong password"
         });
       } else if (message === "User not found") {
         setFormError({
           email: "There is no user with this email address.",
           error:
-            "No user has found with the email you provided. It seems like user has not registered yet.",
+            "No user has found with the email you provided. It seems like user has not registered yet."
         });
       }
     }
 
     if (isSuccess || user) {
-      console.log('here...')
+      console.log("here...");
       if (isSuccess) {
         toast.success("Welcome to rOne!", {
           position: "bottom-right",
-          hideProgressBar: true,
+          hideProgressBar: true
         });
       }
       navigate("/");
     }
 
-    if(temp){
-      console.log('temp user obtained', temp)
+    if (temp) {
+      console.log("temp user obtained", temp);
       setFormData({
         email: temp.data.email,
         password: ""
-      })
-    }else{
-      console.log('no temp at the moment')
+      });
+    } else {
+      console.log("no temp at the moment");
     }
 
     dispatch(reset());
@@ -83,12 +83,12 @@ function Login() {
   const formInputHandler = (event) => {
     setFormData((prevState) => ({
       ...prevState,
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     }));
 
     setFormError({
       input_email: "",
-      input_password: "",
+      input_password: ""
     });
   };
 
@@ -132,18 +132,18 @@ function Login() {
     if (email.trim() === "" || password.length === 0) {
       setFormError({
         email: "Please enter an email address",
-        password: "Please enter password",
+        password: "Please enter password"
       });
     } else {
       console.log("valid");
       if (password.length < 8) {
         setFormError({
-          password: "Password must be 8 characters or more",
+          password: "Password must be 8 characters or more"
         });
       } else {
         const userData = {
           email,
-          password,
+          password
         };
         dispatch(userLogin(userData));
       }
@@ -160,7 +160,7 @@ function Login() {
       {isLoading && <Loading />}
       <Grid
         container
-        sx={{ height: "100vh", alignItems: "center", background: '#fff' }}
+        sx={{ height: "100vh", alignItems: "center", background: "#fff" }}
         className={styles.grid_wrap}
       >
         <Grid
@@ -177,7 +177,7 @@ function Login() {
               flexDirection: "column",
               justifyContent: "center",
               height: "100vh",
-              paddingX: 9,
+              paddingX: 9
             }}
           >
             <Typography
@@ -190,7 +190,14 @@ function Login() {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={7} md={4} lg={4} sx={{ px: 4, background: '#fff' }}>
+        <Grid
+          item
+          xs={12}
+          sm={7}
+          md={4}
+          lg={4}
+          sx={{ px: 4, background: "#fff" }}
+        >
           <Box sx={{ mb: 5, textAlign: "center" }}>
             <Typography
               sx={{ textAlign: "center", fontWeight: "bold", fontSize: "48px" }}
@@ -222,7 +229,7 @@ function Login() {
                     fontWeight: "medium",
                     fontSize: "0.9rem",
                     lineHeight: "1.2",
-                    paddingTop: "4px",
+                    paddingTop: "4px"
                   }}
                 >
                   {formError.email}
@@ -256,7 +263,7 @@ function Login() {
                         />
                       )}
                     </InputAdornment>
-                  ),
+                  )
                 }}
               />
               {formError.password && (
@@ -267,7 +274,7 @@ function Login() {
                     fontWeight: "medium",
                     fontSize: "0.9rem",
                     lineHeight: "1.2",
-                    paddingTop: "4px",
+                    paddingTop: "4px"
                   }}
                 >
                   {formError.password}
@@ -283,7 +290,7 @@ function Login() {
                   fontWeight: "medium",
                   fontSize: "0.9rem",
                   lineHeight: "1.2",
-                  paddingTop: "4px",
+                  paddingTop: "4px"
                 }}
               >
                 {formError.error}
@@ -298,7 +305,7 @@ function Login() {
                   width: 1,
                   mt: 3,
                   bgcolor: "#0e69d6",
-                  boxShadow: 0,
+                  boxShadow: 0
                 }}
                 type="submit"
               >
@@ -319,7 +326,7 @@ function Login() {
                   width: 1,
                   borderRadius: "25px",
                   border: 2,
-                  borderColor: "#dedede",
+                  borderColor: "#dedede"
                 }}
                 className={styles.button_wrap}
               >
