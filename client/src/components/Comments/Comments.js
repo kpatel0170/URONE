@@ -141,7 +141,7 @@ const Comment = (comment) => {
                 </>
             ) : (
                 <Typography sx={{marginTop: 2, textAlign: 'center', fontSize: '0.85rem', color: '#635e5e'}}>
-                    <span>Hey {user.data.name}, </span>
+                    <span>Hey {user.name}, </span>
                     be the first person to comment the post ...
                 </Typography>
             )}

@@ -81,45 +81,36 @@ function Home() {
 
   return (
     <>
-      <Header activateDrawer={handleDrawer}/>
-      <Grid container sx={{height: '100vh', paddingTop: 7}}>
-        <Grid item xs={12} sm={12} sx={{width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3}}>         
-          <Box className={(isClicked || isDrawerOpen) ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
-            {posts.length != 0 ? (
-              <>
-                {isLoading ? <Loading /> : 
-                <>
-                  {posts.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post, index) => (
-                    <Box key={index}>
-                      <Newsfeed post={post}/>
-                    </Box>
-                  ))}
-                  </>
-                }
-              </>
-            ) : (
-              <>
-                {isLoading ? <Loading /> : 
-                  <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', flexDirection: 'column'}}>
-                    <Box sx={{marginBottom: 3, width: '250px', height: '250px', background: 'whitesmoke', borderRadius: '50%', border: '4px solid #fff'}}>
-                      <img className='nopost_img' src={process.env.PUBLIC_URL + '/nopost_icon.png'} alt="rOne" />
-                    </Box>
-                    <Typography sx={{color: '#565252'}} className='title_txt'>No posts found</Typography>
-                  </Box>
-                }
-              </>
-            )}
-          </Box>
-          <>
-            <Box className={styles.drawer_container}>
-              <Box className={isClicked ? `${styles.drawer_active} ${styles.drawer_wrapper}` : `${styles.drawer_hidden} ${styles.drawer_wrapper}`}>
-                <PostForm deactivtateDrawer={handleDrawer} data={defaultData} />
+    <Header activateDrawer={handleDrawer} />
+    <Grid container sx={{ height: '100vh', paddingTop: 7 }}>
+      <Grid item xs={12} sm={12} sx={{ width: '100%', padding: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 3 }}>
+        <Box className={(isClicked || isDrawerOpen) ? `${styles.content_active} ${styles.main_content_wrap}` : styles.main_content_wrap}>
+          {isLoading && <Loading />}
+          {(posts?.length === 0 && !isLoading) ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', flexDirection: 'column' }}>
+              <Box sx={{ marginBottom: 3, width: '250px', height: '250px', background: 'whitesmoke', borderRadius: '50%', border: '4px solid #fff' }}>
+                <img className='nopost_img' src={process.env.PUBLIC_URL + '/nopost_icon.png'} alt="rOne" />
               </Box>
+              <Typography sx={{ color: '#565252' }} className='title_txt'>No posts found</Typography>
             </Box>
-          </>
-        </Grid>
-      </Grid>      
-    </>
+          ) : (
+            posts?.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post, index) => (
+              <Box key={index}>
+                <Newsfeed post={post} />
+              </Box>
+            ))
+          )}
+        </Box>
+        {/* <>
+          <Box className={styles.drawer_container}>
+            <Box className={isClicked ? `${styles.drawer_active} ${styles.drawer_wrapper}` : `${styles.drawer_hidden} ${styles.drawer_wrapper}`}>
+              <PostForm deactivtateDrawer={handleDrawer} data={defaultData} />
+            </Box>
+          </Box>
+        </> */}
+      </Grid>
+    </Grid>
+  </>
   )
 }
 

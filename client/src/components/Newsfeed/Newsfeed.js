@@ -204,7 +204,7 @@ function Newsfeed(post) {
     console.log("like handler from post list[newsfeed]");
     const data = {
       id: post.post._id,
-      userId: user.data._id,
+      userId: user._id,
     };
     setIsLike(!isLike);
     setIsdisLike(false);
@@ -214,7 +214,7 @@ function Newsfeed(post) {
   const dislikeHandler = (event) => {
     const data = {
       id: post.post._id,
-      userId: user.data._id,
+      userId: user._id,
     };
     setIsdisLike(!isdisLike);
     setIsLike(false);
@@ -282,7 +282,7 @@ function Newsfeed(post) {
           >
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <Box>
-                {post.post.userId?.profilePicture.length != 0 ? (
+                {post.post.userId?.profilePicture?.length != 0 ? (
                   <>
                     <Box
                       sx={{
@@ -400,7 +400,7 @@ function Newsfeed(post) {
                 onClick={toggleDropdown}
                 style={{
                   display:
-                    post.post.userId?._id === user.data._id ? "flex" : "none",
+                    post.post.userId?._id === user._id ? "flex" : "none",
                 }}
               >
                 <MoreVertIcon />
@@ -534,14 +534,14 @@ function Newsfeed(post) {
                 aria-label="up-voting"
                 onClick={likeHandler}
                 style={{
-                  color: post.post.likes.includes(user.data._id)
+                  color: post.post.likes.includes(user._id)
                     ? "#1976d2"
                     : "",
                 }}
               >
                 {/* <ThumbUpAltIcon /> */}
                 
-                {post.post.likes.includes(user.data._id)? (<ThumbUpIcon />) : (<ThumbUpOffAltIcon />)}
+                {post.post.likes.includes(user._id)? (<ThumbUpIcon />) : (<ThumbUpOffAltIcon />)}
               </IconButton>
               <Box sx={{ width: "50px" }}>
                 {post.post.likes.length != 0 && (
@@ -556,15 +556,15 @@ function Newsfeed(post) {
                 aria-label="down-voting"
                 onClick={dislikeHandler}
                 style={{
-                  color: post.post.dislikes.includes(user.data._id)
+                  color: post.post.dislikes.includes(user._id)
                     ? "#1976d2"
                     : "",
                 }}
               >
-                {post.post.dislikes.includes(user.data._id)? (<ThumbDownIcon />) : (<ThumbDownOffAltIcon />)}
+                {post.post.dislikes.includes(user._id)? (<ThumbDownIcon />) : (<ThumbDownOffAltIcon />)}
               </IconButton>
               <Box sx={{ width: "50px" }}>
-                {(post.post.dislikes.length != 0 && (post.post.userId?._id === user.data._id) ) && (
+                {(post.post.dislikes.length != 0 && (post.post.userId?._id === user._id) ) && (
                   <Typography sx={{ marginRight: 1 }}>
                     {post.post.dislikes.length}
                   </Typography>
