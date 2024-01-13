@@ -113,17 +113,16 @@ const Newsfeed = ({ post }) => {
   };
 
   const toggleEditDropdown = (data) => {
-    console.log(data);
     // setDropdown(!dropdown)
     dispatch(openDrawer());
     setCurrentPostID(null);
     setTimeout(() => {
-      setCurrentPostID(data.post._id);
+      setCurrentPostID(data._id);
     }, 100);
 
     dispatch(restSelectPost());
     setTimeout(() => {
-      dispatch(selectPost(data.post));
+      dispatch(selectPost(data));
     }, 100);
   };
 

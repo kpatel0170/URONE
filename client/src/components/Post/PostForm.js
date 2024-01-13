@@ -233,9 +233,9 @@ export default function PostForm(props) {
   //start:: create/edit post form submit
   const submitFormHandler = (event) => {
     console.log("auth user", user);
-    console.log("auth user id:", user.data._id);
+    console.log("auth user id:", user._id);
     event.preventDefault();
-    const userId = user.data._id;
+    const userId = user._id;
     const data = new FormData();
     data.append("title", title);
     data.append("text", text);
@@ -249,7 +249,7 @@ export default function PostForm(props) {
       "title": title != undefined ? title : "",
       "text": text,
       "image": base64Images,
-      "userId": user.data._id
+      "userId": user._id
     };
 
     console.log(postData);
@@ -263,6 +263,9 @@ export default function PostForm(props) {
         transition: Slide
       });
     } else {
+      console.log("in the else");
+      console.log(postData);
+      console.log(selectedPost._id);
       dispatch(
         updateSinglePost({ postData: postData, postId: selectedPost._id })
       );
@@ -295,14 +298,11 @@ export default function PostForm(props) {
         navigate("/");
         dispatch(selectNavigation("all"));
       } else if (currentURL === "/") {
-        console.log(user.data.type);
-        if (user.data.type === "staff" && selectedNav === "staff") {
+        console.log(user.type);
+        if (user.type === "staff" && selectedNav === "staff") {
           console.log("in the if");
           dispatch(selectNavigation("staff"));
-        } else if (
-          user.data.type === "professor" &&
-          selectedNav === "professor"
-        ) {
+        } else if (user.type === "professor" && selectedNav === "professor") {
           console.log("in the else if");
           dispatch(selectNavigation("professor"));
         } else {

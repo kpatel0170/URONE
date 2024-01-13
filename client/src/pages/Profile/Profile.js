@@ -107,14 +107,14 @@ const Profile = (props) => {
     } else {
       console.log(user);
       setFormData({
-        name: user.data.name,
-        email: user.data.email,
-        profilePicture: user.data.profilePicture,
-        about: user.data.about,
-        userType: user.data.type
+        name: user.name,
+        email: user.email,
+        profilePicture: user.profilePicture,
+        about: user.about,
+        userType: user.type
       });
 
-      setBase64Images(user.data.profilePicture);
+      setBase64Images(user.profilePicture);
     }
 
     return () => {
@@ -135,7 +135,6 @@ const Profile = (props) => {
   const profileUpdateHandler = (event) => {
     event.preventDefault();
     console.log(formData);
-    console.log(user.data._id);
 
     const data = {
       name: formData.name,
@@ -145,7 +144,7 @@ const Profile = (props) => {
     };
     console.log(data);
 
-    dispatch(updateSingleUser({ userData: data, userId: user.data._id }));
+    dispatch(updateSingleUser({ userData: data, userId: user._id }));
     toast.success("Profile updated successfully", {
       position: "bottom-right",
       hideProgressBar: true,
@@ -163,14 +162,14 @@ const Profile = (props) => {
 
   const cancelProfileUpdate = () => {
     setFormData({
-      name: user.data.name,
-      email: user.data.email,
-      profilePicture: user.data.profilePicture,
-      about: user.data.about,
-      userType: user.data.type
+      name: user.name,
+      email: user.email,
+      profilePicture: user.profilePicture,
+      about: user.about,
+      userType: user.type
     });
 
-    setBase64Images(user.data.profilePicture);
+    setBase64Images(user.profilePicture);
   };
 
   return (
@@ -207,7 +206,7 @@ const Profile = (props) => {
           >
             <Box sx={{ marginBottom: 2 }}>
               <Button
-                onClick={() => goToUserPage(user.data)}
+                onClick={() => goToUserPage(user)}
                 sx={{ display: "flex", cursor: "pointer", padding: 0 }}
               >
                 <ChevronLeftIcon className="context_link" />

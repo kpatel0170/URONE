@@ -82,7 +82,7 @@ function User() {
     return () => {
       dispatch(reset());
     };
-  }, [user]);
+  }, [user, dispatch, navigate, isError, message, currentUser._id]);
 
   const goToProfile = () => {
     navigate("/profile");
@@ -176,7 +176,7 @@ function User() {
                             )}
                           </Box>
                           <>
-                            {currentUser._id === user.data._id && (
+                            {currentUser._id === user._id && (
                               <Box>
                                 <Box
                                   onClick={goToProfile}
@@ -209,7 +209,7 @@ function User() {
                             )}
                           </>
                         </Box>
-                        {currentUser.about.length !== 0 && (
+                        {currentUser.about?.length !== 0 && (
                           <Box sx={{ display: "flex", marginBottom: 2 }}>
                             <HistoryEduIcon />
                             <Typography
