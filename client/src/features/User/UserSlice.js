@@ -9,30 +9,31 @@ const initialState = {
   isUserLoading: false
 };
 
-//@desc Get single user
+const createAsyncThunkErrorHandler = (error, thunkAPI) => {
+  const message =
+    (error.response && error.response.data && error.response.data.error) ||
+    error.message ||
+    error.toString();
+  return thunkAPI.rejectWithValue(message);
+};
+
 export const getSingleUser = createAsyncThunk(
   "users/getUser",
   async (userId, thunkAPI) => {
     try {
+      console.log(userId);
       const token = thunkAPI.getState().auth.user._id;
       return await userService.getSingleUser(userId, token);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-      throw new Error(message);
+      return createAsyncThunkErrorHandler(error, thunkAPI);
     }
   }
 );
 
-//@desc Update single user
 export const updateSingleUser = createAsyncThunk(
   "users/updateUser",
   async ({ userData, userId }, thunkAPI) => {
     try {
-      console.log(userData);
       const token = thunkAPI.getState().auth.user._id;
       const updatedUser = await userService.editSingleUser(
         userData,
@@ -43,12 +44,7 @@ export const updateSingleUser = createAsyncThunk(
 
       return updatedUser;
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-      throw new Error(message);
+      return createAsyncThunkErrorHandler(error, thunkAPI);
     }
   }
 );
@@ -57,7 +53,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: () => initialState,
     setUser: (state, action) => {
       state.singleUser = action.payload;
     },
@@ -76,7 +72,7 @@ export const userSlice = createSlice({
         state.singleUser = action.payload;
       })
       .addCase(getSingleUser.rejected, (state, action) => {
-        state.isUserLoading = true;
+        state.isUserLoading = false;
         state.isUserError = true;
         state.message = action.payload;
       })
@@ -89,7 +85,7 @@ export const userSlice = createSlice({
         state.singleUser = action.payload;
       })
       .addCase(updateSingleUser.rejected, (state, action) => {
-        state.isUserLoading = true;
+        state.isUserLoading = false;
         state.isUserError = true;
         state.message = action.payload;
       });

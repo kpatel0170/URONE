@@ -1,30 +1,23 @@
 import axios from "axios";
 import { API_URL } from "../../utils/env";
 
-//@desc Get single user
-//@route GET /API_URL/users/:id
+const createRequestConfig = (token) => ({
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
 
 const getSingleUser = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
-  const response = await axios.get(API_URL + "users/" + id, config);
-  return response.data.data;
+  const config = createRequestConfig(token);
+  const response = await axios.get(`${API_URL}user/${id}`, config);
+  console.log(response);
+  return response.data;
 };
 
-//@desc Update single user
-//@route PATCH /API_URL/users/:id
-
 const editSingleUser = async (userData, userId, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
-  const response = await axios.patch(
-    API_URL + "users/" + userId,
+  const config = createRequestConfig(token);
+  const response = await axios.put(
+    `${API_URL}user/${userId}`,
     userData,
     config
   );

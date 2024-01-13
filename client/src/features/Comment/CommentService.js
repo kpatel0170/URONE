@@ -1,43 +1,31 @@
 import axios from "axios";
+import { API_URL } from "../../utils/env";
 
-// const API = 'https://rone.onrender.com/api/v1/posts/'
-const API = "http://localhost:3001/api/v1/posts/";
+const API = API_URL + "/post";
 
-// create comment
 const createComment = async (postData, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
-  const body = {
-    "userId": postData.userId
-  };
   const response = await axios.post(
-    API + postData.id + "/comment",
-    body,
-    config
+    `${API}${postData.id}/comment`,
+    { userId: postData.userId },
+    createRequestConfig(token)
   );
   return response.data;
 };
 
-// delete comment
 const deleteComment = async (postData, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
-  const body = {
-    "userId": postData.userId
-  };
   const response = await axios.patch(
-    API + postData.id + "/comment",
-    body,
-    config
+    `${API}${postData.id}/comment`,
+    { userId: postData.userId },
+    createRequestConfig(token)
   );
   return response.data;
 };
+
+const createRequestConfig = (token) => ({
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
 
 const commentService = {
   createComment,

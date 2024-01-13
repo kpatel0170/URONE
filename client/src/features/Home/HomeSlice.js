@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isDrawer: false
@@ -8,10 +8,9 @@ export const homeSlice = createSlice({
   name: "home",
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: () => initialState,
     toggleDrawer: (state) => {
       state.isDrawer = !state.isDrawer;
-      console.log(state.isDrawer);
     },
     openDrawer: (state) => {
       state.isDrawer = true;

@@ -18,14 +18,12 @@ const initialState = {
   postDetailId: undefined
 };
 
-// Create post
-export const createPost = createAsyncThunk(
-  "post/",
-  async (postData, thunkAPI) => {
+const handleAsyncThunk = (asyncThunk, successCallback) => {
+  return createAsyncThunk(asyncThunk, async (data, thunkAPI) => {
     try {
-      console.log(postData);
       const token = thunkAPI.getState().auth.user._id;
-      return await postService.createPost(postData, token);
+      const response = await successCallback(data, token);
+      return response;
     } catch (error) {
       const message =
         (error.response && error.response.data && error.response.data.error) ||
@@ -33,128 +31,49 @@ export const createPost = createAsyncThunk(
         error.toString();
       return thunkAPI.rejectWithValue(message);
     }
-  }
-);
+  });
+};
+
+// Create post
+export const createPost = handleAsyncThunk("post/", postService.createPost);
 
 // Update post
-export const updateSinglePost = createAsyncThunk(
+export const updateSinglePost = handleAsyncThunk(
   "post/updatePost",
-  async ({ postData, postId }, thunkAPI) => {
-    try {
-      console.log(postData);
-      const token = thunkAPI.getState().auth.user._id;
-      return await postService.updatePost(postData, postId, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
+  postService.updatePost
 );
 
 // Get all posts
-export const getAllPosts = createAsyncThunk(
-  "posts/getPosts",
-  async (data, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await postService.getAllPosts(data, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-      throw new Error(message);
-    }
-  }
+export const getAllPosts = handleAsyncThunk(
+  "post/getPosts",
+  postService.getAllPosts
 );
 
 // Get post
-export const getSinglePost = createAsyncThunk(
-  "posts/getPost",
-  async (id, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await postService.getSinglePost(id, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
+export const getSinglePost = handleAsyncThunk(
+  "post/getPost",
+  postService.getSinglePost
 );
 
 // Delete posts
-export const deletePost = createAsyncThunk(
-  "posts/deletePost",
-  async (id, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await postService.deletePost(id, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
+export const deletePost = handleAsyncThunk(
+  "post/deletePost",
+  postService.deletePost
 );
 
 // Like posts
-export const likePost = createAsyncThunk(
-  "posts/like",
-  async (postData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await postService.LikePost(postData, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+export const likePost = handleAsyncThunk("post/like", postService.LikePost);
 
 // Undo like posts
-export const disLikePost = createAsyncThunk(
-  "posts/disLike",
-  async (postData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await postService.disLikePost(postData, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
+export const disLikePost = handleAsyncThunk(
+  "post/disLike",
+  postService.disLikePost
 );
 
 // create comment
-export const createComment = createAsyncThunk(
-  "posts/createComment",
-  async (postData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await postService.createComment(postData, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
+export const createComment = handleAsyncThunk(
+  "post/createComment",
+  postService.createComment
 );
 
 export const postSlice = createSlice({

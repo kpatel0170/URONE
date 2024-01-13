@@ -1,13 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./AuthService";
-import { fabClasses } from "@mui/material";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const temp = JSON.parse(localStorage.getItem("temp"));
 
 const initialState = {
-  user: user ? user : null,
-  temp: temp ? temp : null,
+  user: user || null,
+  temp: temp || null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -23,9 +22,7 @@ export const userRegister = createAsyncThunk(
       return response;
     } catch (error) {
       const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
+        error.response?.data?.error || error.message || error.toString();
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -36,13 +33,12 @@ export const userLogin = createAsyncThunk(
   "auth/login",
   async (user, thunkAPI) => {
     try {
-      return await authService.userLogin(user);
+      const response = await authService.userLogin(user);
       localStorage.removeItem("temp");
+      return response;
     } catch (error) {
       const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
+        error.response?.data?.error || error.message || error.toString();
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -97,7 +93,7 @@ export const authSlice = createSlice({
         state.user = null;
         state.message = action.payload;
       })
-      .addCase(logOut.fulfilled, (state, action) => {
+      .addCase(logOut.fulfilled, (state) => {
         state.user = null;
       });
   }

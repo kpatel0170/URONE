@@ -9,37 +9,30 @@ const initialState = {
   message: ""
 };
 
-// create comment
+const handleAsyncThunk = async (thunkAPI, serviceFunction, postData) => {
+  try {
+    const token = thunkAPI.getState().auth.user._id;
+    return await serviceFunction(postData, token);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.error) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+};
+
 export const createComment = createAsyncThunk(
   "posts/createComment",
   async (postData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await commentService.createComment(postData, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return handleAsyncThunk(thunkAPI, commentService.createComment, postData);
   }
 );
 
-// delete comment
 export const deleteComment = createAsyncThunk(
   "posts/deleteComment",
   async (postData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user._id;
-      return await commentService.deleteComment(postData, token);
-    } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.error) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+    return handleAsyncThunk(thunkAPI, commentService.deleteComment, postData);
   }
 );
 
@@ -47,7 +40,7 @@ export const commentSlice = createSlice({
   name: "comment",
   initialState,
   reducers: {
-    reset: (state) => initialState
+    reset: () => initialState
   },
   extraReducers: (builder) => {
     builder

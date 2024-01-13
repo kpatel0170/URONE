@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   selectedNav: "all",
@@ -9,7 +9,10 @@ export const navSlice = createSlice({
   name: "nav",
   initialState,
   reducers: {
-    resetNavigation: (state) => initialState,
+    resetNavigation: (state) => {
+      state.selectedNav = initialState.selectedNav;
+      state.currentPage = initialState.currentPage;
+    },
     selectNavigation: (state, action) => {
       state.selectedNav = action.payload;
     },
