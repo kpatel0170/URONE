@@ -8,6 +8,7 @@
 - [Installation](#installation)
 - [Technologies Used](#technologies-used)
 - [Project Directory Structure](#project-directory-structure)
+- [Screenshots](#screenshots)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -65,6 +66,28 @@ Below is the directory structure of the project:
 └── package.json
  
 ```
+## Screenshots:
+
+HomePage:
+![image](https://github.com/kpatel0170/rONE/assets/67594421/6441a780-757e-4c8f-a169-7cf887f64cb4)
+
+Create Post:
+![image](https://github.com/kpatel0170/rONE/assets/67594421/686f94f5-1449-46f1-9f37-5b736385211c)
+
+Create comment/like/dislike:
+![image](https://github.com/kpatel0170/rONE/assets/67594421/3e5f3d23-d26f-469c-94a8-3bd4273a5ad5)
+
+View post:
+![image](https://github.com/kpatel0170/rONE/assets/67594421/2851ef54-8918-4dcd-8cbf-ffa656f1607d)
+
+Edit Post:
+![image](https://github.com/kpatel0170/rONE/assets/67594421/791e8020-0804-4557-929e-891c5ed800e7)
+
+Delete Post:
+![image](https://github.com/kpatel0170/rONE/assets/67594421/6ffb99ad-989d-4eeb-9e68-7f96c0f532d7)
+
+
+
 ## Contributing
 
 We welcome contributions to the project. Here's how you can contribute:
