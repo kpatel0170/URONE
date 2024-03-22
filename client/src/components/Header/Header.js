@@ -30,11 +30,12 @@ const Header = props => {
     const storedCredentials = JSON.parse(localStorage.getItem('user'));
     const credentials = storedCredentials ? storedCredentials.data : {};
     const [dropdown, setDropdown] = useState(false);    
+    // const userData = useSelector((state) => state.auth.user);
 
     
 
     const backToHome = (event) => {
-        navigate('/')
+        navigate('/posts')
         dispatch(getAllPosts())
         dispatch(restSelectPost());
         dispatch(closeDrawer());
@@ -43,8 +44,8 @@ const Header = props => {
     const renderPosts = (value) => {
         let param = {type: 'usertype', value: value}
         dispatch(getAllPosts(param))
-        if(currentURL !== '/'){
-            navigate('/')
+        if(currentURL == '/'){
+            navigate('/posts')
         }
         dispatch(selectNavigation(value));
         // dispatch(restSelectPost());
@@ -98,7 +99,7 @@ const Header = props => {
         dispatch(logOut());
         dispatch(reset())
         dispatch(closeDrawer())
-        navigate('/')
+        navigate('/login')
         dispatch(selectNavigation('all'));
     };
 
